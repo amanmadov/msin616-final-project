@@ -40,6 +40,18 @@ Below you can see the altered database diagram of the Pubs database
 ![Database Schema Screen Shot](https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/db-schema.png)
 
 
+## Modifications on the Database
+
+Some columns like prequel_id on the Titles table have been added to store the prequel of a book.
+<br/>
+Using prequel books recursive queries can be written and executed on the Titles table.
+<br/>
+Some famous book series like "A Game of Thrones", "Harry Potter" and "The Lord of The Rings" are added to the Titles table.
+<br/>
+Some famous author and publisher records are added to related tables.
+<br/>
+Stored procedures are created for the demo Book CRM CRUD app.
+
 
   
   <p align="center">
