@@ -30,7 +30,7 @@ And the fields also have obvious names explaining what they contain.
 
 <p>
   You can find the details about original Pubs DB in the link:
-  <a href="https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs">Microsoft Pubs DB</a>
+  <a href="https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs" target="_blank">Microsoft Pubs DB</a>
 </p>
 
 Below you can see the altered database diagram of the Pubs database
