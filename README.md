@@ -50,27 +50,27 @@ Below you can see the altered database diagram of the Pubs database
 
 ## Modifications on the Database
 
-Titles table have been altered and prequel_id column have been added to store the prequel of a book.
-<br/>
-Using prequel books recursive queries can be written and executed on the Titles table.
-<br/>
-Some famous book series like "A Game of Thrones", "Harry Potter" and "The Lord of The Rings" are added to the Titles table.
-<br/>
-Some famous author and publisher records are added to related tables.
-<br/>
-Some of the columns types are alse modified.
-<br/>
-Stored procedures are created for the demo Book CRUD app.
-<br/>
-Stored procedures for creating/modifying records are created based on the front-end validations.
+- [x] [dbo].[TITLES] table have been altered and prequel_id column have been added to store the prequel of a book.
+- [x] Using prequel books recursive queries can be written and executed on the [dbo].[TITLES] table.
+- [x] Some famous book series like "A Game of Thrones", "Harry Potter" and "The Lord of The Rings" are added to the [dbo].[TITLES] table.
+- [x] Some famous author and publisher records are added to related tables.
+- [x] Some of the columns types are alse modified.
+- [x] Stored procedures are created for the demo Book CRUD app.
+- [x] Stored procedures for creating/modifying records are created based on the front-end validations.
 
 
 <br/>
 <br/>
 
-## Created Custom Stored Procedures
+## Created Custom Stored Procedures and the Front-End UI of the Demo App
 
-1. For adding an Employee to the Employee table
+1. Creating an Employee on the Employee table
+<br/><br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png" width="700" height="600">
+
+<br/>
+
+SP for adding an Employee to the Employee table
 
 <br/>
 
@@ -176,7 +176,13 @@ BEGIN
     END CATCH
 END 
 ```
+<br/>
+Front-end logic of the created stored procedure
+<br/>
 
+![Frontend UI](https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png)
+
+<br/>
 
 
 
