@@ -39,6 +39,14 @@ Below you can see the altered database diagram of the Pubs database
 
 ![Database Schema Screen Shot](https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/db-schema.png)
 
+<br/>
+
+<p>
+  Link for the database schema:<a href="https://drawsql.app/softttt/diagrams/msin616-pubs-db" target="_blank"> DB Schema</a>
+</p>
+
+<br/>
+
 
 ## Modifications on the Database
 
@@ -50,10 +58,21 @@ Some famous book series like "A Game of Thrones", "Harry Potter" and "The Lord o
 <br/>
 Some famous author and publisher records are added to related tables.
 <br/>
-Stored procedures are created for the demo Book CRM CRUD app.
+Stored procedures are created for the demo Book CRUD app.
 
 
-  
+
+
+
+
+
+
+
+
+
+
+<br/>
+<br/>
   <p align="center">
     Simple Front End UI App for the Pubs Database
     <br/> <br/>
