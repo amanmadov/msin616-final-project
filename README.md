@@ -11,11 +11,11 @@
   <h3 align="center">MSIN 616 Advanced Database Management Course Final Project</h3>
 
 ```sql
-SELECT Course FROM [TouroDb].[dbo].[Courses] WHERE Id = 'MSIN616'
+SELECT Course FROM [TouroDb].[dbo].[Courses] WHERE CourseId = 'MSIN616'
 ```
 </div>
 
-
+<br/>
 
 <!-- ABOUT THE PROJECT -->
 
@@ -27,6 +27,17 @@ It is now considered obsolete; it is no longer provided with SQL Server since th
 The tables and fields are quite obvious. 
 They have names such as Authors, Titles, etc., which reflect their content. 
 And the fields also have obvious names explaining what they contain.
+
+<p>
+  You can find the details about original Pubs DB in the link:
+  <a href="https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs">Microsoft Pubs DB</a>
+</p>
+
+Below you can see the altered database diagram of the Pubs database
+
+<br/>
+
+![Database Schema Screen Shot](https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/db-schema.png)
 
 
 
