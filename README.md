@@ -50,13 +50,16 @@ Below you can see the altered database diagram of the Pubs database
 
 ## Modifications on the Database
 
-- [x] [dbo].[TITLES] table have been altered and prequel_id column have been added to store the prequel of a book.
-- [x] Using prequel books recursive queries can be written and executed on the [dbo].[TITLES] table.
-- [x] Some famous book series like "A Game of Thrones", "Harry Potter" and "The Lord of The Rings" are added to the [dbo].[TITLES] table.
+- [x] `[dbo].[TITLES]` table have been altered and prequel_id column have been added to store the prequel of a book.
+- [x] Using prequel books recursive queries can be written and executed on the `[dbo].[TITLES]` table.
+- [x] Some famous book series like "A Game of Thrones" or "The Lord of The Rings" are added to the `[dbo].[TITLES]` table.
 - [x] Some famous author and publisher records are added to related tables.
-- [x] Some of the columns types are alse modified.
+- [x] Some of the column types are also modified.
 - [x] Stored procedures are created for the demo Book CRUD app.
-- [x] Stored procedures for creating/modifying records are created based on the front-end validations.
+- [x] Front-end UI has custom validations to prevent data inconsistency.
+- [x] All stored procedures for creating/modifying records are created based on the front-end validations.
+- [x] Created `[Audit].[Book]` table to keep audit history of the created books.
+- [x] Used `[Adventureworks].[Person].[Person]` and `[AdventureWorks].[HumanResources].[Employee]` tables to generated dummy data.
 
 
 <br/>
@@ -64,20 +67,277 @@ Below you can see the altered database diagram of the Pubs database
 
 ## Created Custom Stored Procedures and the Front-End UI of the Demo App
 
-1. Creating an Employee on the Employee table
-<br/><br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png" width="700" height="600">
+1. Inserting a Book into the `TITLES` table
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
+<br/>
+
+<p>Link for the front-end ui module:<a href="https://drawsql.app/softttt/diagrams/msin616-pubs-db" target="_blank"> VIEW</a></p>
 
 <br/>
 
-SP for adding an Employee to the Employee table
+Stored Procedure for adding a Book into the `TITLES` table
+
+<br/>
+
+```sql
+
+/*
+    Created by Nury Amanmadov
+    Date created: 10.04.2022
+*/
+
+ALTER PROCEDURE [dbo].[USP_InsertBook] 
+     @book_title AS VARCHAR(100)
+    ,@prequel_id AS VARCHAR(6) = NULL
+    ,@book_type AS CHAR(40)
+    ,@book_price AS MONEY
+    ,@book_advance AS MONEY
+    ,@book_royalty INT
+    ,@book_ytd_sales INT
+    ,@book_notes VARCHAR(800)
+    ,@book_pubdate DATETIME
+    ,@pub_id AS CHAR(4) = NULL
+    ,@pub_name AS VARCHAR(40) = NULL
+    ,@pub_city AS VARCHAR(20) = NULL
+    ,@pub_state AS CHAR(2) = NULL
+    ,@pub_country AS VARCHAR(30) = NULL
+    ,@author_id VARCHAR(11) = NULL
+    ,@au_lname VARCHAR(40) = NULL
+    ,@au_fname VARCHAR(20) = NULL
+    ,@au_phone CHAR(12) = NULL
+    ,@au_city VARCHAR(20) = NULL
+    ,@au_state CHAR(2) = NULL
+    ,@au_order TINYINT = 1
+    ,@royalty_per INT = 100
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRY
+        BEGIN TRANSACTION
+            --#region Insert into Publisher Table
+                IF (@pub_id IS NULL)
+                    --#region Create New Publisher
+                    BEGIN 
+                        -- Create pub_id as Max Id + 1
+                        SET @pub_id =   (
+                                            SELECT CAST(MAX(CAST(pub_id AS INT) + 1) AS VARCHAR) 
+                                            FROM publishers
+                                        )
+                        
+                        INSERT INTO [pubs].[dbo].[publishers] 
+                        VALUES  (
+                                     @pub_id
+                                    ,@pub_name
+                                    ,@pub_city
+                                    ,@pub_state
+                                    ,@pub_country
+                                )
+
+                        --#region Insert into Pub_Info Table 
+                            DECLARE @pr_info AS VARCHAR(255)
+                            SET @pr_info = (
+                                                SELECT  'This is sample text data for ' 
+                                                        + pub_name + ', publisher ' 
+                                                        + pub_id + ' in the pubs database. ' 
+                                                        + pub_name + ' is located in ' + city + ' ' + country + '.' AS pr_info
+                                                FROM [pubs].[dbo].[publishers] p 
+                                                WHERE p.pub_id = @pub_id
+                                            )
+
+                            INSERT INTO [pubs].[dbo].[pub_info] 
+                            VALUES  (
+                                        @pub_id
+                                        ,NULL
+                                        ,@pr_info
+                                    )
+                        --#endregion
+                    END 
+                    --#endregion
+                ELSE 
+                    BEGIN
+                        -- Just to make sure that selected publisher exists in the database
+                        IF NOT EXISTS (SELECT TOP 1 1 FROM publishers p WHERE pub_id = @pub_id)
+                            BEGIN
+                                RAISERROR('Publisher with selected ID does not exist', 16, 1) 
+                            END  
+                        ELSE 
+                            BEGIN 
+                                -- Setting params. Will be inserted into Audit.Book table 
+                                SELECT   @pub_name = p.pub_name
+                                        ,@pub_city = p.city
+                                        ,@pub_state = p.[state]
+                                        ,@pub_country = p.country
+                                FROM publishers p
+                                WHERE p.pub_id = @pub_id 
+                            END    
+                    END 
+            --#endregion
+
+            --#region Insert into Titles Table
+                --#region Creating Random TitleId
+                DECLARE @t1 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
+                DECLARE @t2 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
+                DECLARE @t3 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                DECLARE @t4 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                DECLARE @t5 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                DECLARE @t6 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                DECLARE @random_title_id [dbo].[tid] = (SELECT @t1 + @t2 + @t3 + @t4 + @t5 + @t6)
+                --#endregion
+                INSERT INTO titles
+                VALUES
+                (
+                     @random_title_id
+                    ,@book_title
+                    ,@book_type
+                    ,@pub_id
+                    ,@book_price
+                    ,@book_advance
+                    ,@book_royalty
+                    ,@book_ytd_sales
+                    ,@book_notes
+                    ,@book_pubdate
+                    ,@prequel_id
+                )
+
+            --#endregion
+
+            --#region Insert into Authors Table
+                DECLARE @au_zip CHAR(5)
+                DECLARE @au_contract BIT
+                DECLARE @au_address VARCHAR(40)
+
+                IF(@author_id IS NULL)
+                    BEGIN 
+                        -- Generate Random AuthorID
+                        DECLARE @a1 AS CHAR(3) = (SELECT(CAST((FLOOR(RAND()*(999-100+1)+100)) AS CHAR)))
+                        DECLARE @a2 AS CHAR(2) = (SELECT(CAST((FLOOR(RAND()*(99-10+1)+10)) AS CHAR)))
+                        DECLARE @a3 AS CHAR(4) = (SELECT(CAST((FLOOR(RAND()*(9999-1000+1)+1000)) AS CHAR)))
+                        SET @author_id = (SELECT @a1 + '-' + @a2 + '-' + @a3)
+
+                        -- Setting Random Zip in the 99xyz format
+                        SET @au_zip = '99'+ (SELECT(CAST((FLOOR(RAND()*(999-100+1)+100)) AS CHAR)))
+                        -- SELECT @au_zip
+
+                        -- Setting @au_contract as random 
+                        SET @au_contract = (SELECT(CAST((FLOOR(RAND()*(1-0+1)+0)) AS BIT)))
+                        -- SELECT @au_contract
+
+                        -- Setting Random Address from AdventureWorks DB Person.Address table
+                        SET @au_address =   (
+                                                SELECT TOP 1 LEFT(AddressLine1,40) 
+                                                FROM AdventureWorks.Person.Address 
+                                                WHERE AddressLine1 IS NOT NULL ORDER BY NEWID()
+                                            )
+                    
+                        INSERT INTO authors 
+                        VALUES
+                        (
+                             @author_id
+                            ,@au_lname
+                            ,@au_fname
+                            ,@au_phone
+                            ,@au_address
+                            ,@au_city
+                            ,@au_state
+                            ,@au_zip
+                            ,@au_contract
+                        )
+                    END
+                ELSE
+                    BEGIN
+                        IF NOT EXISTS (SELECT TOP 1 1 FROM authors a WHERE a.au_id = @author_id)
+                            BEGIN
+                                RAISERROR('Author with selected ID does not exist', 16, 1) 
+                            END
+                        ELSE 
+                            BEGIN  
+                                SELECT   @au_lname = a.au_lname
+                                        ,@au_fname = a.au_fname
+                                        ,@au_phone = a.phone
+                                        ,@au_city = a.city
+                                        ,@au_state = a.[state]
+                                FROM authors a 
+                                WHERE a.au_id = @author_id
+                            END 
+                    END
+            --#endregion
+
+            --#region Insert into TitleAuthor Table
+                INSERT INTO titleauthor
+                VALUES
+                (
+                     @author_id
+                    ,@random_title_id
+                    ,@au_order
+                    ,@royalty_per
+                )
+            --#endregion
+
+            --#region Insert into Audit Table
+                INSERT INTO Audit.Book 
+                VALUES
+                (
+                     @pub_id 
+                    ,@pub_name 
+                    ,@pub_city   
+                    ,@pub_state  
+                    ,@pub_country
+                    ,@random_title_id 
+                    ,@prequel_id
+                    ,@book_title 
+                    ,@book_type 
+                    ,@book_price 
+                    ,@book_advance 
+                    ,@book_royalty  
+                    ,@book_ytd_sales  
+                    ,@book_notes  
+                    ,@book_pubdate  
+                    ,@author_id  
+                    ,@au_lname
+                    ,@au_fname 
+                    ,@au_phone 
+                    ,@au_address 
+                    ,@au_city 
+                    ,@au_state
+                    ,@au_zip
+                    ,@au_contract 
+                    ,@royalty_per 
+                    ,@au_order 
+                    ,GETDATE()
+                    ,SYSTEM_USER
+                )
+            --#endregion
+
+            PRINT('Book Has Been Sucessfully Added')
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
+        PRINT(ERROR_MESSAGE())
+    END CATCH
+END
+
+```
+
+
+
+
+
+1. Creating an Employee on the `Employee` table
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png">
+<br/>
+
+SP for adding an Employee to the `Employee` table
 
 <br/>
 
 ```sql
 /*
     Created by Nury Amanmadov
-    Date created: 11.04.2022
+    Date created: 11.04.2022 ddMMyyyy
 */
 
 CREATE PROCEDURE [dbo].[USP_CreateEmployee]
@@ -96,19 +356,19 @@ BEGIN
             --#region Insert into Employee Table
 
                 --#region Create Random Id for Emp_id
-                    -- Emp Id pattern: '[A-Z][A-Z][A-Z][1-9][0-9][0-9][0-9][0-9][FM]'
-                    DECLARE @random_emp_id AS dbo.empid
-                    DECLARE @l1 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                    DECLARE @l2 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                    DECLARE @l3 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                    DECLARE @l4 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                    DECLARE @l5 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
-                    DECLARE @l6 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
-                    DECLARE @l7 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
-                    DECLARE @l8 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
-                    DECLARE @l9 AS CHAR(1) = (SELECT((SUBSTRING('FM',(ABS(CHECKSUM(NEWID())) % 2) + 1, 1))))
-                    SET @random_emp_id = (SELECT @l1 + @l2 + @l3 + @l4 + @l5 + @l6 + @l7 + @l8 + @l9)
-                    -- PRINT('EmpID with value: '+ CAST(@random_emp_id AS VARCHAR) + ' is created.')
+                -- Emp Id pattern: '[A-Z][A-Z][A-Z][1-9][0-9][0-9][0-9][0-9][FM]'
+                DECLARE @random_emp_id AS dbo.empid
+                DECLARE @l1 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
+                DECLARE @l2 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
+                DECLARE @l3 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
+                DECLARE @l4 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                DECLARE @l5 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
+                DECLARE @l6 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
+                DECLARE @l7 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
+                DECLARE @l8 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
+                DECLARE @l9 AS CHAR(1) = (SELECT((SUBSTRING('FM',(ABS(CHECKSUM(NEWID())) % 2) + 1, 1))))
+                SET @random_emp_id = (SELECT @l1 + @l2 + @l3 + @l4 + @l5 + @l6 + @l7 + @l8 + @l9)
+                -- PRINT('EmpID with value: '+ CAST(@random_emp_id AS VARCHAR) + ' is created.')
                 --#endregion
 
                 -- Using Person table on AdventureWorks DB we can generate random names for employee
