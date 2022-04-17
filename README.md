@@ -176,8 +176,11 @@ BEGIN
     END CATCH
 END 
 ```
-
-
+<br/>
+Front-end logic of the created stored procedure
+<br/>
+![Frontend UI ](https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png)
+<br/>
 
 
 
