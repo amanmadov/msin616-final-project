@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Book Management CRM </title>
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="index.html" class="site_title"><i class="fa fa-book"></i> <span>Book CRM</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- #region menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2>John D</h2>
+                        </div>
+                    </div>
+                    <!-- #endregion menu profile quick info -->
+
+                    <br />
+
+                    <!-- #region sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="report_books.html">Top Books</a></li>
+                                        <li><a href="report_authors.html">Top Authors </a></li>
+                                        <li><a href="report_publishers.html">Top Publishers</a></li>
+                                        <li><a href="report_employees.html">Employees</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-edit"></i> Inventory Management <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="create_book.html">Create Book</a></li>
+                                        <li><a href="create_author.html">Create Author</a></li>
+                                        <li><a href="add_coauthor.html">Add CoAuthor</a></li>
+                                        <li><a href="create_publisher.html">Create Publisher</a></li>
+                                        <li><a href="create_employee.html">Create Employee</a></li>
+                                        <li><a href="create_job.html">Create Job</a></li>
+                                        <li><a href="create_store.html">Create Store</a></li>
+                                        <li><a href="manage_discount.html">Manage Discount</a></li>
+                                        <li><a href="edit_publisher.html">Edit Publisher</a></li>
+                                        <li><a href="edit_author.html">Edit Author</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- #endregion sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <div class="nav toggle">
+                  <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                </div>
+                <nav class="nav navbar-nav">
+                <ul class=" navbar-right">
+                  <li class="nav-item dropdown open" style="padding-left: 15px;">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                      <img src="images/img.jpg" alt="">John Doe
+                    </a>
+                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item"  href="javascript:;"> Profile</a>
+                        <a class="dropdown-item"  href="javascript:;">
+                          <span class="badge bg-red pull-right">50%</span>
+                          <span>Settings</span>
+                        </a>
+                    <a class="dropdown-item"  href="javascript:;">Help</a>
+                      <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                    </div>
+                  </li>
+  
+                  <li role="presentation" class="nav-item dropdown open">
+                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-envelope-o"></i>
+                      <span class="badge bg-green">6</span>
+                    </a>
+                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>John Smith</span>
+                            <span class="time">3 mins ago</span>
+                          </span>
+                          <span class="message">
+                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>John Smith</span>
+                            <span class="time">3 mins ago</span>
+                          </span>
+                          <span class="message">
+                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>John Smith</span>
+                            <span class="time">3 mins ago</span>
+                          </span>
+                          <span class="message">
+                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>John Smith</span>
+                            <span class="time">3 mins ago</span>
+                          </span>
+                          <span class="message">
+                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <div class="text-center">
+                          <a class="dropdown-item">
+                            <strong>See All Alerts</strong>
+                            <i class="fa fa-angle-right"></i>
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Reports</h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for a book...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row" style="display: block;">
+              
+              <div class="clearfix"></div>
+
+              <div class="col-md-12 col-sm-12  ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Pubs Database <small>TOP AUTHORS</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="x_content">
+
+                    <!-- <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p> -->
+
+                    <div class="table-responsive">
+                      <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                          <tr class="headings">
+                            <th>
+                              <input type="checkbox" id="check-all" class="flat">
+                            </th>
+                            <th class="column-title">Id</th>
+                            <th class="column-title">First Name</th>
+                            <th class="column-title">Last Name</th>
+                            <th class="column-title">Phone</th>
+                            <th class="column-title">Address</th>
+                            <th class="column-title">City</th>
+                            <th class="column-title">State</th>
+                            <th class="column-title">Zip</th>
+                            <th class="column-title">Contract</th>
+                            <th class="column-title no-link last"><span class="nobr">Action</span>
+                            </th>
+                            <th class="bulk-actions" colspan="7">
+                              <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>172-32-1176</td>         <td>Johnson</td>         <td>White</td>         <td>408 496-7223</td>         <td>10932 Bigge Rd.</td>         <td>Menlo Park</td>         <td>CA</td>         <td>94025</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>213-46-8915</td>         <td>Marjorie</td>         <td>Green</td>         <td>415 986-7020</td>         <td>309 63rd St. #411</td>         <td>Oakland</td>         <td>CA</td>         <td>94618</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>238-95-7766</td>         <td>Cheryl</td>         <td>Carson</td>         <td>415 548-7723</td>         <td>589 Darwin Ln.</td>         <td>Berkeley</td>         <td>CA</td>         <td>94705</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>254-26-6712</td>         <td>Tolkien</td>         <td>J.R.R.</td>         <td>            </td>         <td>448 Roanoke Dr.</td>         <td>London</td>         <td>NA</td>         <td>99852</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>267-41-2394</td>         <td>Michael</td>         <td>O'Leary</td>         <td>408 286-2428</td>         <td>22 Cleveland Av. #14</td>         <td>San Jose</td>         <td>CA</td>         <td>95128</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>274-80-9391</td>         <td>Dean</td>         <td>Straight</td>         <td>415 834-2919</td>         <td>5420 College Av.</td>         <td>Oakland</td>         <td>CA</td>         <td>94609</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>341-22-1782</td>         <td>Meander</td>         <td>Smith</td>         <td>913 843-0462</td>         <td>10 Mississippi Dr.</td>         <td>Lawrence</td>         <td>KS</td>         <td>66044</td>         <td>0</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>388-60-7495</td>         <td>Joachim</td>         <td>Von Zur Gathen</td>         <td>000 000-0000</td>         <td>9918 Scottsdale Rd.</td>         <td>Bonn</td>         <td>NA</td>         <td>99409</td>         <td>0</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>408-40-8965</td>         <td>Daron</td>         <td>Acemoglu</td>         <td>999 000-0000</td>         <td>65, rue Faubourg St Antoine</td>         <td>Newton</td>         <td>MA</td>         <td>99402</td>         <td>0</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>409-56-7008</td>         <td>Abraham</td>         <td>Bennet</td>         <td>415 658-9932</td>         <td>6223 Bateman St.</td>         <td>Berkeley</td>         <td>CA</td>         <td>94705</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>427-17-2319</td>         <td>Ann</td>         <td>Dull</td>         <td>415 836-7128</td>         <td>3410 Blonde St.</td>         <td>Palo Alto</td>         <td>CA</td>         <td>94301</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>472-27-2349</td>         <td>Burt</td>         <td>Gringlesby</td>         <td>707 938-6445</td>         <td>PO Box 792</td>         <td>Covelo</td>         <td>CA</td>         <td>95428</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>486-29-1786</td>         <td>Charlene</td>         <td>Locksley</td>         <td>415 585-4620</td>         <td>18 Broadway Av.</td>         <td>San Francisco</td>         <td>CA</td>         <td>94130</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>527-72-3246</td>         <td>Morningstar</td>         <td>Greene</td>         <td>615 297-2723</td>         <td>22 Graybar House Rd.</td>         <td>Nashville</td>         <td>TN</td>         <td>37215</td>         <td>0</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>648-92-1872</td>         <td>Reginald</td>         <td>Blotchet-Halls</td>         <td>503 745-6402</td>         <td>55 Hillsdale Bl.</td>         <td>Corvallis</td>         <td>OR</td>         <td>97330</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>672-71-3249</td>         <td>Akiko</td>         <td>Yokomoto</td>         <td>415 935-4228</td>         <td>3 Silver Ct.</td>         <td>Walnut Creek</td>         <td>CA</td>         <td>94595</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>712-45-1867</td>         <td>Innes</td>         <td>del Castillo</td>         <td>615 996-8275</td>         <td>2286 Cram Pl. #86</td>         <td>Ann Arbor</td>         <td>MI</td>         <td>48105</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>722-51-5454</td>         <td>Michel</td>         <td>DeFrance</td>         <td>219 547-9982</td>         <td>3 Balding Pl.</td>         <td>Gary</td>         <td>IN</td>         <td>46403</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>724-08-9931</td>         <td>Dirk</td>         <td>Stringer</td>         <td>415 843-2991</td>         <td>5420 Telegraph Av.</td>         <td>Oakland</td>         <td>CA</td>         <td>94609</td>         <td>0</td>         <td class="last"><a href="#">View</a></td>     </tr>
+                          <tr class="even pointer">         <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>         <td>724-80-9391</td>         <td>Stearns</td>         <td>MacFeather</td>         <td>415 354-7128</td>         <td>44 Upland Hts.</td>         <td>Oakland</td>         <td>CA</td>         <td>94612</td>         <td>1</td>         <td class="last"><a href="#">View</a></td>     </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+							
+						
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- #region footer content -->
+        <footer>
+          <div class="pull-right">
+              Book Management App by <a href="https://colorlib.com">Touro university</a>
+          </div>
+          <div class="clearfix"></div>
+      </footer>
+      <!-- #endregion footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+   <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+  </body>
+</html>
