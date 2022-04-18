@@ -1018,11 +1018,105 @@ EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/got.png">
 <br/>
 
-
-### X. Delete a Book from Titles table
 <br/>
 
-Stored Procedure for deleting a book
+### X. Listing Continuing Books in s Book Series
+
+<br/>
+
+```sql
+
+/*
+    Created by Nury Amanmadov
+    Date created: 18.04.2022 ddMMyyyy
+
+    Selects all the continuing books in series
+
+*/
+
+CREATE PROCEDURE [dbo].[USP_GetAllContinuingBooksByTitleId]
+    @title_id dbo.tid
+AS 
+BEGIN 
+    IF NOT EXISTS(SELECT TOP 1 1 FROM titles WHERE title_id = @title_id)
+        BEGIN 
+            RAISERROR('Book with provided ID does not exist', 16, 1)
+        END
+
+    ;WITH CTEBooks
+    AS 
+    (
+        SELECT   title_id AS TitleId
+                ,title AS Book
+                ,prequel_id
+                ,CAST(t1.pubdate AS DATE) AS [Publication Date]
+                ,p.pub_name AS Publisher
+                ,[Order In Series] = 1
+        FROM titles t1
+        JOIN publishers p ON p.pub_id = t1.pub_id
+        WHERE title_id = @title_id
+
+        UNION ALL
+
+        SELECT   t2.title_id AS TitleId
+                ,t2.title AS Book
+                ,t2.prequel_id
+                ,CAST(t2.pubdate AS DATE) AS [Publication Date]
+                ,p.pub_name AS Publisher
+                ,[Order In Series] + 1
+        FROM titles t2
+        JOIN publishers p ON p.pub_id = t2.pub_id
+        JOIN CTEBooks ON t2.prequel_id = CTEBooks.TitleId
+    )
+    SELECT  CTEBooks.TitleId 
+            ,CTEBooks.Book
+            ,ISNULL(t.title, 'No Prequel') AS PrequelBook
+            ,[Publication Date]
+            ,a.au_fname + ' ' + a.au_lname AS Author
+            ,CTEBooks.Publisher
+            ,[Order In Series]
+    FROM CTEBooks
+    LEFT JOIN titles t ON CTEBooks.prequel_id = t.title_id
+    LEFT JOIN titleauthor ta ON ta.title_id = CTEBooks.TitleId
+    LEFT JOIN authors a ON a.au_id = ta.au_id
+END
+```
+<br/>
+
+Now if we execute this stored procedure with an `title_id` of a book in a series we will get the continuing books of that series.
+
+<br/>
+
+```sql
+-- For 'The Lord of the Rings' Series
+EXEC [dbo].[USP_GetAllContinuingBooksByTitleId] 'EX5727'
+```
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/snap1.png">
+<br/>
+
+
+```sql
+-- For 'A Game of Thrones' Series
+EXEC [dbo].[USP_GetAllContinuingBooksByTitleId] 'CI5668'
+```
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/snap2.png">
+<br/>
+
+```sql
+-- For 'Harry Potter' Series
+EXEC [dbo].[USP_GetAllContinuingBooksByTitleId] 'VC5136'
+```
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/snap3.png">
+<br/>
+
+
+### XI. Delete a Book from Titles table
+<br/>
+
+Stored procedure for deleting a book
 
 <br/>
 
@@ -1071,7 +1165,7 @@ END
 
 <br/>
 
-### XI. Selecting Records from Audit.Book table
+### XII. Selecting Records from Audit.Book table
 
 <br/>
 
