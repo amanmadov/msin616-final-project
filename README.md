@@ -62,7 +62,7 @@ Below you can see the altered database diagram of the `Pubs` database
 - [x] Some famous book series like **"A Game of Thrones"** or **"The Lord of The Rings"** are added to the `[TITLES]` table.
 - [x] Some famous author and publisher records are added to related tables.
 - [x] Some of the column types are also modified.
-- [x] To simulate a real world full stack app, a demo app with front-end UI has been developed.
+- [x] To simulate a real world full stack app, a demo CRUD app with front-end UI has been developed.
 - [x] `Gentellela`, an open source admin panel, has been used to create front-end UI.
 - [x] Stored procedures are created for the demo CRUD app.
 - [x] Some custom validations has been developed on the Front-end UI to prevent data inconsistency.
@@ -92,7 +92,7 @@ Algorithm flowchart of the creating a book operation
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/flowchart.png">
 <br/>
 
-Stored Procedure for adding a Book into the `TITLES` table
+Stored procedure for adding a book into the `TITLES` table
 
 <br/>
 
@@ -340,7 +340,7 @@ END
 <br/>
 
 `[dbo].[USP_InsertBook]` stored procedure is a bit complex because it does not create just a book. If there is no publisher or author associated with that new book it can also help user to create them. Thats why `@pub_id` and `@author_id` parameters of `[dbo].[USP_InsertBook]` stored procedure are optional.
-If user selects an existing `@pub_id` or `@author_id` from the dropdown menu element on the front-end app, selected Id of that parameter is passed to stored procedure. If an author or publisher for the new book is not found on the dropdown menu (or database) an app makes it easy to create them. Using the **last options** `Create New Author...` and `Create New Publisher...` on the dropdown menu, a user can create a new author or a publisher. Also a book may have prequel or not. So considering all these there a four possible scenarios of creating a book.
+If user selects an existing `@pub_id` or `@author_id` from the dropdown menu element on the front-end app, selected Id of that parameter is passed to stored procedure. If an author or publisher for the new book is not found on the dropdown menu (or database) an app makes it easy to create them. Using the **last options** `Create New Author...` and `Create New Publisher...` on the dropdown menu, a user can create a new author or a publisher. Also a book may have prequel or not. So considering all these, there a 4 possible scenarios of creating a book.
 
 <br/>
 
@@ -460,7 +460,7 @@ EXEC pubs.dbo.USP_InsertBook @pub_id = '9912'
 
 <br/>
 
-Stored Procedure for adding an Author into the `Authors` table
+Stored procedure for adding an author into the `Authors` table
 
 <br/>
 
@@ -519,7 +519,7 @@ END
 ```
 <br/>
 
-### III. Adding a CoArthur into a Book on the Demo App
+### III. Adding a CoAuthor into a Book on the Demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/add-coauthor-ui.png">
@@ -529,12 +529,12 @@ END
 
 <br/>
 
-Stored Procedure for Adding a CoArthur
+Stored procedure for adding a `CoAuthor`
 
 <br/>
 
 ```sql
--- for demonstration purposes some columns like address are generated with dummy data
+-- for demonstration purposes some columns (like address) are generated with dummy data
 CREATE PROCEDURE USP_InsertCoAuthorForTitle
      @title_id dbo.tid 
     ,@au_id VARCHAR(11) = NULL
@@ -639,7 +639,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_employee.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored procedure for adding an Employee to the `Employee` table
+Stored procedure for adding an employee to the `Employee` table
 
 <br/>
 
@@ -759,7 +759,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_books.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored Procedure for getting books as in the form of `HTML table row`
+Stored procedure for getting `books` as in the form of `HTML table row`
 
 <br/>
 
@@ -811,7 +811,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_authors.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored Procedure for getting authors as in the form of `HTML table row`
+Stored procedure for getting `authors` as in the form of `HTML table row`
 
 <br/>
 
@@ -848,7 +848,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_publishers.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored Procedure for getting publishers as in the form of `HTML table row`
+Stored procedure for getting `publishers` as in the form of `HTML table row`
 
 <br/>
 
@@ -891,7 +891,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_employees.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored Procedure for getting publishers as in the form of `HTML table row`
+Stored procedure for getting `employees` as in the form of `HTML table row`
 
 <br/>
 
@@ -988,7 +988,7 @@ END
 
 <br/>
 
-Now if we execute this stored procedure with an id of a continuing book in a series we will get the prequel books of that book.
+Now if we execute this stored procedure with an `title_id` of a continuing book in a series we will get the prequel books of that book.
 
 <br/>
 
