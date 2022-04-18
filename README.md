@@ -69,7 +69,7 @@ Below you can see the altered database diagram of the `Pubs` database
 
 ## Created Custom Stored Procedures and the Front-End UI of the Demo App
 
-1. Creating a Book on the Demo App
+I. Creating a Book on the Demo App
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
 <br/>
@@ -437,6 +437,106 @@ EXEC pubs.dbo.USP_InsertBook @pub_id = '9912'
 ```
 
 <br/>
+
+
+II. Creating an Author on the Demo App
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-author-ui.png">
+<br/>
+
+<p>Link for the front-end ui module:<a href="" target="_blank"> VIEW</a></p>
+
+<br/>
+
+Stored Procedure for adding an Author into the `Authors` table
+
+<br/>
+
+```sql
+CREATE PROCEDURE USP_CreateAuthor
+     @au_lname VARCHAR(40)
+    ,@au_fname VARCHAR(20)
+    ,@au_phone CHAR(12) = '000 000-0000'
+    ,@au_address VARCHAR(250) = NULL
+    ,@au_city VARCHAR(20) = NULL
+    ,@au_state CHAR(2) = NULL
+    ,@au_zip CHAR(5) = NULL
+    ,@au_contract BIT = 0
+AS
+BEGIN
+    BEGIN TRY
+        DECLARE @au_id dbo.tid 
+        -- Generate Random AuthorID using USP_GenerateRandomAuthorId stored procedure
+        EXEC USP_GenerateRandomAuthorId @au_id OUTPUT
+
+        INSERT INTO authors 
+        VALUES
+        (
+             @au_id
+            ,@au_lname
+            ,@au_fname
+            ,@au_phone
+            ,@au_address
+            ,@au_city
+            ,@au_state
+            ,@au_zip
+            ,@au_contract
+        ) 
+    END TRY 
+    BEGIN CATCH
+        PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
+        PRINT(ERROR_MESSAGE())
+    END CATCH 
+END
+```
+<br/>
+
+III. Adding a CoArthur into a Book on the Demo App
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/add-coauthor-ui.png">
+<br/>
+
+<p>Link for the front-end ui module:<a href="" target="_blank"> VIEW</a></p>
+
+<br/>
+
+Stored Procedure for Adding a CoArthur
+
+<br/>
+
+```sql
+
+```
+<br/>
+
+
+
+I. Creating a Book on the Demo App
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
+<br/>
+
+<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
+
+<br/>
+
+Stored Procedure for adding a Book into the `TITLES` table
+
+<br/>
+
+```sql
+
+```
+
+
+
+
+
+
+
 
 1. Creating an Employee on the `Employee` table
 <br/>
