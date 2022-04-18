@@ -923,13 +923,13 @@ END
 ### IX. Listing Books with Prequel
 
 <br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/book-prequel-list.png">
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/book_prequel-list.png">
 <br/>
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/get_prequel.html" target="_blank"> View Demo</a></p>
 <br/>
 
 Here at the front-end side, I developed some logic with javascript to simulate the stored procedure functionality  
-`Recurive` Stored Procedure for getting prequel books for a specific book
+`Recursive` stored procedure for getting prequel books for a specific book
 
 <br/>
 
