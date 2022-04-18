@@ -1175,7 +1175,8 @@ FROM [pubs].[Audit].[Book]
 ```
 <br/>
 <p>Link for the [Audit].[Book] records file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/files/audit-book-records.csv" target="_blank"> View Records</a></p>
-<p>Link for the entire Pubs DB bak file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/db-scripts/pubs-2022417-23-28-58.bak" target="_blank"> View File</a></p>
+<p>Link for the entire Pubs DB scripts file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/db-scripts/PubsDB-Scripts.sql" target="_blank"> View File</a></p>
+<p>Link for the entire Pubs DB bak file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/db-scripts/PubsDB-2022418-16-10-5.bak" target="_blank"> View File</a></p>
 <p>Simple Front End UI App for the Pubs Database <a href="https://amanmadov.github.io/msin616-final-project/">View App</a></p>
 <br/>
 
