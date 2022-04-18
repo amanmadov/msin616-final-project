@@ -74,7 +74,7 @@ I. Creating a Book on the Demo App
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
 <br/>
 
-<p>Link for the front-end ui module:<a href="https://drawsql.app/softttt/diagrams/msin616-pubs-db" target="_blank"> VIEW</a></p>
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_book.html" target="_blank"> View Demo</a></p>
 
 <br/>
 Flowchart of the book creating module
@@ -445,7 +445,7 @@ II. Creating an Author on the Demo App
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-author-ui.png">
 <br/>
 
-<p>Link for the front-end ui module:<a href="" target="_blank"> VIEW</a></p>
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_author.html" target="_blank">View Demo</a></p>
 
 <br/>
 
@@ -514,10 +514,9 @@ III. Adding a CoArthur into a Book on the Demo App
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/add-coauthor-ui.png">
 <br/>
 
-<p>Link for the front-end ui module:<a href="" target="_blank"> VIEW</a></p>
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/add_coauthor.html" target="_blank"> View Demo</a></p>
 
 <br/>
-
 
 Stored Procedure for Adding a CoArthur
 
@@ -625,6 +624,8 @@ IV. Creating an Employee on the demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png">
+<br/>
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_employee.html" target="_blank"> View Demo</a></p>
 <br/>
 
 Stored procedure for adding an Employee to the `Employee` table
@@ -744,8 +745,7 @@ V. Listing Books on the Demo App
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-books.png">
 <br/>
 
-<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
-
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_books.html" target="_blank"> View Demo</a></p>
 <br/>
 
 Stored Procedure for getting books as in the form of `HTML table row`
@@ -792,10 +792,9 @@ VI. Listing Top Authors on the Demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-authors.png">
+
 <br/>
-
-<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
-
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_authors.html" target="_blank"> View Demo</a></p>
 <br/>
 
 Stored Procedure for getting authors as in the form of `HTML table row`
@@ -832,9 +831,7 @@ VII. Listing Top Publishers on the Demo App
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-publishers.png">
 <br/>
-
-<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
-
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_publishers.html" target="_blank"> View Demo</a></p>
 <br/>
 
 Stored Procedure for getting publishers as in the form of `HTML table row`
@@ -877,9 +874,7 @@ VIII. Listing Employees on the Demo App
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-employees.png">
 <br/>
-
-<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
-
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_employees.html" target="_blank"> View Demo</a></p>
 <br/>
 
 Stored Procedure for getting publishers as in the form of `HTML table row`
@@ -1012,7 +1007,7 @@ EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
   <p align="center">
     Simple Front End UI App for the Pubs Database
     <br/> <br/>
-    <a href="https://amanmadov.github.io/msin617-final-project/index.html">View Demo</a>
+    <a href="https://amanmadov.github.io/msin616-final-project/">View Demo</a>
   </p>
 </div>
 
