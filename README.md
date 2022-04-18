@@ -69,7 +69,8 @@ Below you can see the altered database diagram of the `Pubs` database
 
 ## Custom Stored Procedures and the Front-End UI of the Demo App
 <br/>
-I. Creating a Book on the Demo App
+
+### I. Creating a Book on the Demo App
 <br/>
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
@@ -442,7 +443,7 @@ EXEC pubs.dbo.USP_InsertBook @pub_id = '9912'
 <br/>
 
 
-II. Creating an Author on the Demo App
+### II. Creating an Author on the Demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-author-ui.png">
@@ -511,7 +512,7 @@ END
 ```
 <br/>
 
-III. Adding a CoArthur into a Book on the Demo App
+### III. Adding a CoArthur into a Book on the Demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/add-coauthor-ui.png">
@@ -623,7 +624,7 @@ END
 
 
 
-IV. Creating an Employee on the demo App
+### IV. Creating an Employee on the demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png">
@@ -742,7 +743,7 @@ END
 
 
 
-V. Listing Books on the Demo App
+### V. Listing Books on the Demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-books.png">
@@ -793,7 +794,8 @@ END
 <br/>
 
 
-VI. Listing Top Authors on the Demo App
+### VI. Listing Top Authors on the Demo App
+
 <br/>
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-authors.png">
@@ -831,7 +833,7 @@ END
 
 <br/>
 
-VII. Listing Top Publishers on the Demo App
+### VII. Listing Top Publishers on the Demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-publishers.png">
@@ -874,7 +876,7 @@ END
 
 <br/>
 
-VIII. Listing Employees on the Demo App
+### VIII. Listing Employees on the Demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-employees.png">
@@ -912,7 +914,8 @@ END
 <br/>
 
 
-IX. Listing Books with Prequel
+### IX. Listing Books with Prequel
+
 <br/>
 <br/>
 Recurive Stored Procedure for getting prequel books for a specific book
@@ -1005,7 +1008,8 @@ EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
 <br/>
 
 
-X. Delete a Book from Titles table
+### X. Delete a Book from Titles table
+
 <br/>
 Stored Procedure for deleting a book
 
@@ -1056,7 +1060,7 @@ END
 
 <br/>
 
-XI. Selecting Records from `Audit.Book` table
+### XI. Selecting Records from `Audit.Book` table
 
 <br/>
 
