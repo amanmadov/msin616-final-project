@@ -349,7 +349,6 @@
         let got6 = {id:"TC2266",title:"The Winds of Winter",author:"Martin George Raymond Richa"}
         let got7 = {id:"SA4547",title:"A Dream of Spring",author:"Martin George Raymond Richa"}
 
-        //let gotList = [b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17]
         let lotrList = [lotr1,lotr2,lotr3]
         let hpList = [hp1,hp2,hp3,hp4,hp5,hp6,hp7]
         let gotList = [got1,got2,got3,got4,got5,got6,got7]
@@ -359,20 +358,21 @@
         const gotIds = gotList.map(item => item.id);
         
         function showPrequelDiv(){
+
             const bDiv = document.getElementById("bookDiv");
             const dropDownA = document.getElementById("prequelSelectList"); 
-            let selectedVal = dropDownA.value;
-            bDiv.style.display = "flex";
-
             const table = document.getElementById('bookTable');
+            let selectedVal = dropDownA.value;
             let tableRef = table.getElementsByTagName('tbody')[0];
 
+            bDiv.style.display = "flex";
 
             if(lotrIds.includes(selectedVal)){
                 let selectedIndex = lotrList.findIndex(x => x.id === selectedVal);
                 let sliced = lotrList.slice(0,selectedIndex+1).reverse();
                 let element;
                 tableRef.innerHTML = "";
+
                 sliced.forEach((book) => {
                     let newRow = tableRef.insertRow(tableRef.rows.length);
                     newRow.innerHTML = '<td>' +book.id+ '</td><td>'+book.title+'</td><td>'+book.author+'</td>';
@@ -403,30 +403,26 @@
         }
 
 
-
-      
-        
-
 	</script>
 
     <script>
-        // initialize a validator instance from the "FormValidator" constructor.
-        // A "<form>" element is optionally passed as an argument, but is not a must
+        
         var validator = new FormValidator({
             "events": ['blur', 'input', 'change']
         }, document.forms[0]);
-        // on form "submit" event
+
         document.forms[0].onsubmit = function(e) {
             var submit = true,
                 validatorResult = validator.checkAll(this);
             console.log(validatorResult);
             return !!validatorResult.valid;
         };
-        // on form "reset" event
+        
+        
         document.forms[0].onreset = function(e) {
             validator.reset();
         };
-        // stuff related ONLY for this demo page:
+        
         $('.toggleValidationTooltips').change(function() {
             validator.settings.alerts = !this.checked;
             if (this.checked)
