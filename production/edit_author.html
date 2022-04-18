@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Book Management CRM </title>
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="index.html" class="site_title"><i class="fa fa-book"></i> <span>Book CRM</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- #region menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2>John D</h2>
+                        </div>
+                    </div>
+                    <!-- #endregion menu profile quick info -->
+
+                    <br />
+
+                    <!-- #region sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="report_books.html">Top Books</a></li>
+                                        <li><a href="report_authors.html">Top Authors </a></li>
+                                        <li><a href="report_publishers.html">Top Publishers</a></li>
+                                        <li><a href="report_employees.html">Top Publishers</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-edit"></i> Inventory Management <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="create_book.html">Create Book</a></li>
+                                        <li><a href="create_author.html">Create Author</a></li>
+                                        <li><a href="add_coauthor.html">Add CoAuthor</a></li>
+                                        <li><a href="create_publisher.html">Create Publisher</a></li>
+                                        <li><a href="create_employee.html">Create Employee</a></li>
+                                        <li><a href="create_job.html">Create Job</a></li>
+                                        <li><a href="create_store.html">Create Store</a></li>
+                                        <li><a href="manage_discount.html">Manage Discount</a></li>
+                                        <li><a href="edit_publisher.html">Edit Publisher</a></li>
+                                        <li><a href="edit_author.html">Edit Author</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- #endregion sidebar menu -->
+
+                    <!-- #region menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">
+                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <!-- #endregion menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- #region top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <nav class="nav navbar-nav">
+                        <ul class=" navbar-right">
+                            <li class="nav-item dropdown open" style="padding-left: 15px;">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="images/img.jpg" alt="">John Doe
+                                </a>
+                                <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="javascript:;"> Profile</a>
+                                    <a class="dropdown-item" href="javascript:;">
+                                        <span class="badge bg-red pull-right">50%</span>
+                                        <span>Settings</span>
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:;">Help</a>
+                                    <a class="dropdown-item" href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                </div>
+                            </li>
+
+                            <li role="presentation" class="nav-item dropdown open">
+                                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green">6</span>
+                                </a>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <div class="text-center">
+                                            <a class="dropdown-item">
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- #endregion top navigation -->
+
+            <!-- #region page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Book Management Module</h3>
+                        </div>
+
+                        <div class="title_right">
+                            <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for a book...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">Go!</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Edit Author</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Settings 1</a>
+                                                <a class="dropdown-item" href="#">Settings 2</a>
+                                            </div>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <form class="" action="" method="post" novalidate>
+
+                                         <!-- Author Select -->
+                                         <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3  label-align">Author<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <select class="select2_single form-control" tabindex="-1" id="authorSelectList" onchange="showAuthorDiv()" required="required">
+                                                    <option value="null">----Select Author----</option>
+                                                    <option id="341-22-1782" value = "341-22-1782">Smith Meander</option>
+                                                    <option id="388-60-7495" value = "388-60-7495">Von Zur Gathen Joachim</option>
+                                                    <option id="408-40-8965" value = "408-40-8965">Acemoglu Daron</option>
+                                                    <option id="254-26-6712" value = "254-26-6712">J.R.R. Tolkien</option>
+                                                    <option id="527-72-3246" value = "527-72-3246">Greene Morningstar</option>
+                                                    <option id="724-08-9931" value = "724-08-9931">Stringer Dirk</option>
+                                                    <option id="893-72-1158" value = "893-72-1158">McBadden Heather</option>
+                                                    <option id="899-46-2035" value = "899-46-2035">Ringer Anne</option>
+                                                    <option id="998-72-3567" value = "998-72-3567">Ringer Albert</option>
+                                                    <option id="724-80-9391" value = "724-80-9391">MacFeather Stearns</option>
+                                                    <option id="756-30-7391" value = "756-30-7391">Karsen Livia</option>
+                                                    <option id="807-91-6654" value = "807-91-6654">Panteley Sylvia</option>
+                                                    <option id="846-92-7186" value = "846-92-7186">Hunter Sheryl</option>
+                                                    <option id="648-92-1872" value = "648-92-1872">Blotchet-Halls Reginald</option>
+                                                    <option id="672-71-3249" value = "672-71-3249">Yokomoto Akiko</option>
+                                                    <option id="712-45-1867" value = "712-45-1867">del Castillo Innes</option>
+                                                    <option id="722-51-5454" value = "722-51-5454">DeFrance Michel</option>
+                                                    <option id="409-56-7008" value = "409-56-7008">Bennet Abraham</option>
+                                                    <option id="427-17-2319" value = "427-17-2319">Dull Ann</option>
+                                                    <option id="472-27-2349" value = "472-27-2349">Gringlesby Burt</option>
+                                                    <option id="486-29-1786" value = "486-29-1786">Locksley Charlene</option>
+                                                    <option id="172-32-1176" value = "172-32-1176">White Johnson</option>
+                                                    <option id="213-46-8915" value = "213-46-8915">Green Marjorie</option>
+                                                    <option id="238-95-7766" value = "238-95-7766">Carson Cheryl</option>
+                                                    <option id="267-41-2394" value = "267-41-2394">O'Leary Michael</option>
+                                                    <option id="274-80-9391" value = "274-80-9391">Straight Dean</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    <!-- Author Select -->
+
+                                   <!-- Author Create Div -->
+                                    <div class="field item form-group" id="authorDiv" style="display: none;">
+                                    <label class="col-form-label col-md-3 col-sm-3 label-align"><span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="x_panel" style="border:2px solid rgb(71, 71, 234)">
+                                            <div class="x_content">
+                                                <div class="field item form-group">
+                                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-lastname">Last Name<span class="required">*</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 ">
+                                                        <input type="text" id="a-lastname" required="required" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="field item form-group">
+                                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-fname">First Name<span class="required">*</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 ">
+                                                        <input type="text" id="a-fname" name="a-fname" required="required" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="field item form-group">
+                                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-phone">Phone<span class="required">*</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 ">
+                                                        <input id="a-phone" name="a-phone" type="tel" required='required' class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="field item form-group">
+                                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-city">City<span class="required">*</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 ">
+                                                        <input type="text" id="a-city" name="a-city" required="required" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="field item form-group">
+                                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-state">State<span class="required">*</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 ">
+                                                        <input type="text" id="a-state" name="a-state" required="required" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        </div>
+                                    <!-- Author Create Div -->
+
+                                        <!-- <div class="ln_solid"> </div> -->
+
+                                        <div class="form-group">
+                                            <div class="col-md-6 offset-md-3">
+                                                <button type='submit' id="btnUpdate" class="btn btn-primary hidden">Update</button>
+                                                <button type='reset' class="btn btn-success">Reset</button>
+                                            </div>
+                                        </div>
+                                    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #endregion page content -->
+
+            <!-- #region footer content -->
+            <footer>
+                <div class="pull-right">
+                    Book Management App by <a href="https://colorlib.com">Touro university</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- #endregion footer content -->
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../vendors/validator/multifield.js"></script>
+    <script src="../vendors/validator/validator.js"></script>
+    
+    <!-- Javascript functions	-->
+	<script>
+
+        let countries = ['USA','UK','Germany'];
+        let states = ['MA','NY','IL'];
+        let cities = ['Boston','London','New York', 'Munchen'];
+
+
+        function showAuthorDiv(){
+            const authorFormDiv = document.getElementById("authorDiv");
+            const dropDownA = document.getElementById("authorSelectList"); 
+            let ddText = dropDownA.options[dropDownA.selectedIndex].text;
+
+            // split last name and first name like if its selected from Database
+            document.getElementById("a-lastname").value = ddText.split(" ")[0];
+            document.getElementById("a-fname").value = ddText.split(" ")[1];
+            authorFormDiv.style.display = "flex";
+            //btnUpdate.style.display = "inline-block";
+
+
+            let randomCountry = countries[Math.floor(Math.random() * countries.length)];
+            let randomState = states[Math.floor(Math.random() * states.length)];
+            let randomCity = cities[Math.floor(Math.random() * cities.length)];
+            
+            // Generate random state and the city like if its selected from Database
+            document.getElementById("a-state").value = randomState;
+            document.getElementById("a-city").value = randomCity;
+
+            // Generate random phone number like if its selected from Database
+            document.getElementById("a-phone").value = '999 ' + Math.random().toString().slice(2,5) + '-' + Math.random().toString().slice(2,6);;;
+
+        }
+
+        
+	</script>
+
+    <script>
+        // initialize a validator instance from the "FormValidator" constructor.
+        // A "<form>" element is optionally passed as an argument, but is not a must
+        var validator = new FormValidator({
+            "events": ['blur', 'input', 'change']
+        }, document.forms[0]);
+        // on form "submit" event
+        document.forms[0].onsubmit = function(e) {
+            var submit = true,
+                validatorResult = validator.checkAll(this);
+            console.log(validatorResult);
+            return !!validatorResult.valid;
+        };
+        // on form "reset" event
+        document.forms[0].onreset = function(e) {
+            validator.reset();
+        };
+        // stuff related ONLY for this demo page:
+        $('.toggleValidationTooltips').change(function() {
+            validator.settings.alerts = !this.checked;
+            if (this.checked)
+                $('form .alert').remove();
+        }).prop('checked', false);
+
+    </script>
+
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- validator -->
+    <!-- <script src="../vendors/validator/validator.js"></script> -->
+
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+
+</body>
+
+</html>
