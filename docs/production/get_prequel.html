@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Book Management CRM </title>
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="index.html" class="site_title"><i class="fa fa-book"></i> <span>Book CRM</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- #region menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2>John D</h2>
+                        </div>
+                    </div>
+                    <!-- #endregion menu profile quick info -->
+
+                    <br />
+
+                    <!-- #region sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="report_books.html">Top Books</a></li>
+                                        <li><a href="report_authors.html">Top Authors </a></li>
+                                        <li><a href="report_publishers.html">Top Publishers</a></li>
+                                        <li><a href="report_employees.html">Employees</a></li>
+                                        <li><a href="get_prequel.html">List Book Prequel</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-edit"></i> Inventory Management <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="create_book.html">Create Book</a></li>
+                                        <li><a href="create_author.html">Create Author</a></li>
+                                        <li><a href="add_coauthor.html">Add CoAuthor</a></li>
+                                        <li><a href="create_publisher.html">Create Publisher</a></li>
+                                        <li><a href="create_employee.html">Create Employee</a></li>
+                                        <li><a href="create_job.html">Create Job</a></li>
+                                        <li><a href="create_store.html">Create Store</a></li>
+                                        <li><a href="manage_discount.html">Manage Discount</a></li>
+                                        <li><a href="edit_publisher.html">Edit Publisher</a></li>
+                                        <li><a href="edit_author.html">Edit Author</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- #endregion sidebar menu -->
+
+                    <!-- #region menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">
+                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <!-- #endregion menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- #region top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <nav class="nav navbar-nav">
+                        <ul class=" navbar-right">
+                            <li class="nav-item dropdown open" style="padding-left: 15px;">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="images/img.jpg" alt="">John Doe
+                                </a>
+                                <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="javascript:;"> Profile</a>
+                                    <a class="dropdown-item" href="javascript:;">
+                                        <span class="badge bg-red pull-right">50%</span>
+                                        <span>Settings</span>
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:;">Help</a>
+                                    <a class="dropdown-item" href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                </div>
+                            </li>
+
+                            <li role="presentation" class="nav-item dropdown open">
+                                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green">6</span>
+                                </a>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <div class="text-center">
+                                            <a class="dropdown-item">
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- #endregion top navigation -->
+
+            <!-- #region page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Book Management Module</h3>
+                        </div>
+
+                        <div class="title_right">
+                            <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for a book...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">Go!</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>List Prequel</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Settings 1</a>
+                                                <a class="dropdown-item" href="#">Settings 2</a>
+                                            </div>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <form class="" action="" method="post" novalidate>
+                                        
+                                        <!--  Book Select -->
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3  label-align">Book<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <select class="select2_single form-control" tabindex="-1" id="prequelSelectList" required="required" onchange="showPrequelDiv()">
+                                                        <option id="000000" value="null">----Select Book----</option>
+                                                        <option id="DU8845" value = "DU8845">A Storm of Swords</option>
+                                                        <option id="MW2447" value = "MW2447">A Dance with Dragons</option>
+                                                        <option id="OX4936" value = "OX4936">A Clash of Kings</option>
+                                                        <option id="SA4547" value = "SA4547">A Dream of Spring</option>
+                                                        <option id="SU4434" value = "SU4434">A Feast for Crows</option>
+                                                        <option id="TC2266" value = "TC2266">The Winds of Winter</option>
+                                                        <option id="TL7666" value = "TL7666">Harry Potter and the Goblet of Fire</option>
+                                                        <option id="QD5712" value = "QD5712">Harry Potter and the Order of the Phoenix</option>
+                                                        <option id="GU4539" value = "GU4539">Harry Potter and the Deathly Hallows</option>
+                                                        <option id="LS2238" value = "LS2238">Harry Potter and the Half-Blood Prince</option>
+                                                        <option id="YE3356" value = "YE3356">Harry Potter and the Prisoner of Azkaban</option>
+                                                        <option id="BT6646" value = "BT6646">Harry Potter and the Chamber of Secrets</option>
+                                                        <option id="ZJ4675" value = "ZJ4675">The Return of the King</option>
+                                                        <option id="UX2157" value = "UX2157">The Two Towers</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        <!--  Book Select -->
+
+                                        
+
+                                        <!-- Author Create Div -->
+                                            <div class="field item form-group" id="bookDiv" style="display: none;">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align"></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="x_panel">
+                                                        <div class="x_content">
+                                                            
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped jambo_table bulk_action" id="bookTable">
+                                                                    <thead>
+                                                                        <tr class="headings">
+                                                                            <th class="column-title">Id</th>
+                                                                            <th class="column-title">Name</th>
+                                                                            <th class="column-title">Author</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody id="tbody">
+                                                                    </tbody>
+                                                                    
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <!-- Author Create Div -->
+
+                                        
+                                        
+
+                                        <!-- <div class="ln_solid"> </div> -->
+
+                                        <!-- <div class="form-group">
+                                            <div class="col-md-6 offset-md-3">
+                                                <button type='submit' class="btn btn-primary">Insert</button>
+                                                <button type='reset' class="btn btn-success">Reset</button>
+                                            </div>
+                                        </div> -->
+                                    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #endregion page content -->
+
+            <!-- #region footer content -->
+            <footer>
+                <div class="pull-right">
+                    Book Management App by <a href="https://colorlib.com">Touro university</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- #endregion footer content -->
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../vendors/validator/multifield.js"></script>
+    <script src="../vendors/validator/validator.js"></script>
+    
+    <!-- Javascript functions	-->
+	<script>
+
+        let lotr1 = {id:"EX5727",title:"The Fellowship of the Ring",author:"J.R.R. Tolkien"}
+        let lotr2 = {id:"UX2157",title:"The Two Towers",author:"J.R.R. Tolkien"}
+        let lotr3 = {id:"ZJ4675",title:"The Return of the King",author:"J.R.R. Tolkien"}
+
+        let hp1 = {id:"VC5136",title:"Harry Potter and the Philosopher's Stone",author:"Rowling Joanne"}
+        let hp2 = {id:"BT6646",title:"Harry Potter and the Chamber of Secrets",author:"Rowling Joanne"}
+        let hp3 = {id:"YE3356",title:"Harry Potter and the Prisoner of Azkaban",author:"Rowling Joanne"}
+        let hp4 = {id:"TL7666",title:"Harry Potter and the Goblet of Fire",author:"Rowling Joanne"}
+        let hp5 = {id:"QD5712",title:"Harry Potter and the Order of the Phoenix",author:"Rowling Joanne"}
+        let hp6 = {id:"LS2238",title:"Harry Potter and the Half-Blood Prince",author:"Rowling Joanne"}
+        let hp7 = {id:"GU4539",title:"Harry Potter and the Deathly Hallows",author:"Rowling Joanne"}
+        
+        let got1 = {id:"CI5668",title:"A Game of Thrones",author:"Martin George Raymond Richa"}
+        let got2 = {id:"OX4936",title:"A Clash of Kings",author:"Martin George Raymond Richa"}
+        let got3 = {id:"DU8845",title:"A Storm of Swords",author:"Martin George Raymond Richa"}
+        let got4 = {id:"SU4434",title:"A Feast for Crows",author:"Martin George Raymond Richa"}
+        let got5 = {id:"MW2447",title:"A Dance with Dragons",author:"Martin George Raymond Richa"}
+        let got6 = {id:"TC2266",title:"The Winds of Winter",author:"Martin George Raymond Richa"}
+        let got7 = {id:"SA4547",title:"A Dream of Spring",author:"Martin George Raymond Richa"}
+
+        //let gotList = [b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17]
+        let lotrList = [lotr1,lotr2,lotr3]
+        let hpList = [hp1,hp2,hp3,hp4,hp5,hp6,hp7]
+        let gotList = [got1,got2,got3,got4,got5,got6,got7]
+        
+        const lotrIds = lotrList.map(item => item.id);
+        const hpIds = hpList.map(item => item.id);
+        const gotIds = gotList.map(item => item.id);
+        
+        function showPrequelDiv(){
+            const bDiv = document.getElementById("bookDiv");
+            const dropDownA = document.getElementById("prequelSelectList"); 
+            let selectedVal = dropDownA.value;
+            bDiv.style.display = "flex";
+
+            const table = document.getElementById('bookTable');
+            let tableRef = table.getElementsByTagName('tbody')[0];
+
+
+            if(lotrIds.includes(selectedVal)){
+                let selectedIndex = lotrList.findIndex(x => x.id === selectedVal);
+                let sliced = lotrList.slice(0,selectedIndex+1).reverse();
+                let element;
+                tableRef.innerHTML = "";
+                sliced.forEach((book) => {
+                    let newRow = tableRef.insertRow(tableRef.rows.length);
+                    newRow.innerHTML = '<td>' +book.id+ '</td><td>'+book.title+'</td><td>'+book.author+'</td>';
+                });
+            }
+
+            if(hpIds.includes(selectedVal)){
+                let selectedIndex = hpList.findIndex(x => x.id === selectedVal);
+                let sliced = hpList.slice(0,selectedIndex+1).reverse();
+                let element;
+                tableRef.innerHTML = "";
+                sliced.forEach((book) => {
+                    let newRow = tableRef.insertRow(tableRef.rows.length);
+                    newRow.innerHTML = '<td>' +book.id+ '</td><td>'+book.title+'</td><td>'+book.author+'</td>';
+                });
+            }
+
+            if(gotIds.includes(selectedVal)){
+                let selectedIndex = gotList.findIndex(x => x.id === selectedVal);
+                let sliced = gotList.slice(0,selectedIndex+1).reverse();
+                let element;
+                tableRef.innerHTML = "";
+                sliced.forEach((book) => {
+                    let newRow = tableRef.insertRow(tableRef.rows.length);
+                    newRow.innerHTML = '<td>' +book.id+ '</td><td>'+book.title+'</td><td>'+book.author+'</td>';
+                });
+            }
+        }
+
+
+
+      
+        
+
+	</script>
+
+    <script>
+        // initialize a validator instance from the "FormValidator" constructor.
+        // A "<form>" element is optionally passed as an argument, but is not a must
+        var validator = new FormValidator({
+            "events": ['blur', 'input', 'change']
+        }, document.forms[0]);
+        // on form "submit" event
+        document.forms[0].onsubmit = function(e) {
+            var submit = true,
+                validatorResult = validator.checkAll(this);
+            console.log(validatorResult);
+            return !!validatorResult.valid;
+        };
+        // on form "reset" event
+        document.forms[0].onreset = function(e) {
+            validator.reset();
+        };
+        // stuff related ONLY for this demo page:
+        $('.toggleValidationTooltips').change(function() {
+            validator.settings.alerts = !this.checked;
+            if (this.checked)
+                $('form .alert').remove();
+        }).prop('checked', false);
+
+    </script>
+
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- validator -->
+    <!-- <script src="../vendors/validator/validator.js"></script> -->
+
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+
+</body>
+
+</html>
