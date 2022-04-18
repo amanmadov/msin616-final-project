@@ -50,9 +50,9 @@ Below you can see the altered database diagram of the `Pubs` database
 
 ## Modifications on the Database
 
-- [x] `[dbo].[TITLES]` table have been altered and **prequel_id** column have been added to store the prequel of a book.
-- [x] Using prequel books, recursive queries can be written and executed on the `[dbo].[TITLES]` table.
-- [x] Some famous book series like **"A Game of Thrones"** or **"The Lord of The Rings"** are added to the `[dbo].[TITLES]` table.
+- [x] `[TITLES]` table have been altered and **prequel_id** column have been added to store the prequel of a book.
+- [x] Using prequel books, recursive queries can be written and executed on the `[TITLES]` table.
+- [x] Some famous book series like **"A Game of Thrones"** or **"The Lord of The Rings"** are added to the `[TITLES]` table.
 - [x] Some famous author and publisher records are added to related tables.
 - [x] Some of the column types are also modified.
 - [x] To simulate a real world full stack app, a demo app with front-end UI has been developed.
@@ -67,7 +67,7 @@ Below you can see the altered database diagram of the `Pubs` database
 <br/>
 <br/>
 
-## Created Custom Stored Procedures and the Front-End UI of the Demo App
+## Custom Stored Procedures and the Front-End UI of the Demo App
 <br/>
 I. Creating a Book on the Demo App
 <br/>
@@ -78,7 +78,9 @@ I. Creating a Book on the Demo App
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_book.html" target="_blank"> View Demo</a></p>
 
 <br/>
-Flowchart of the book creating module
+
+Algorithm flowchart of the creating a book operation
+
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/flowchart.png">
 <br/>
 
@@ -789,8 +791,10 @@ END
 ```
 
 <br/>
-VI. Listing Top Authors on the Demo App
 
+
+VI. Listing Top Authors on the Demo App
+<br/>
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-authors.png">
 
@@ -910,6 +914,7 @@ END
 
 IX. Listing Books with Prequel
 <br/>
+<br/>
 Stored Procedure for getting prequel books for a specific book
 
 <br/>
@@ -997,7 +1002,6 @@ EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
 
 
 X. Delete a Book from Titles table
-
 <br/>
 Stored Procedure for deleting a book
 
