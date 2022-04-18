@@ -909,31 +909,99 @@ BEGIN
 END
 ```
 
-
 <br/>
 
 
-
-
-
-IX. Listing Books with prequel
+IX. Listing Books with Prequel
 
 <br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-publishers.png">
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/p-books.png">
 <br/>
 
-<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
-
-<br/>
-
-Stored Procedure for getting publishers as in the form of `HTML table row`
+Stored Procedure for getting prequel books for a specific book
 
 <br/>
 
 ```sql
+/*
+    Created by Nury Amanmadov
+    Date created: 17.04.2022 ddMMyyyy
+
+    Selects all the prequel book series of a given book
+
+*/
+
+ALTER PROCEDURE [dbo].[USP_GetAllPrequelBooksByTitleId]
+    @title_id dbo.tid
+AS 
+BEGIN 
+    WITH CTEBooks
+    AS 
+    (
+        SELECT   title_id AS TitleId
+                ,title AS Book
+                ,prequel_id
+                ,CAST(t1.pubdate AS DATE) AS [Publication Date]
+                ,p.pub_name AS Publisher
+        FROM titles t1
+        JOIN publishers p ON p.pub_id = t1.pub_id
+        WHERE title_id = @title_id
+
+        UNION ALL
+
+        SELECT   t2.title_id AS TitleId
+                ,t2.title AS Book
+                ,t2.prequel_id
+                ,CAST(t2.pubdate AS DATE) AS [Publication Date]
+                ,p.pub_name AS Publisher
+        FROM titles t2
+        JOIN publishers p ON p.pub_id = t2.pub_id
+        JOIN CTEBooks ON t2.title_id = CTEBooks.prequel_id
+    )
+    SELECT  CTEBooks.TitleId 
+            ,CTEBooks.Book
+            ,ISNULL(t.title, 'No Prequel') AS PrequelBook
+            ,[Publication Date]
+            ,a.au_fname + ' ' + a.au_lname AS Author
+            ,CTEBooks.Publisher
+    FROM CTEBooks
+    LEFT JOIN titles t ON CTEBooks.prequel_id = t.title_id
+    LEFT JOIN titleauthor ta ON ta.title_id = CTEBooks.TitleId
+    LEFT JOIN authors a ON a.au_id = ta.au_id
+END
 ```
 
+<br/>
 
+Now if we execute this stored procedure with an id of a continuing book in a series we will get the prequel books of that book.
+
+<br/>
+
+```sql
+-- For 'Harry Potter and the Deathly Hallows' in the 'Harry Potter' Series
+EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'GU4539'
+```
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/harry-potter.png">
+<br/>
+
+
+```sql
+-- For 'The Return of the King' in the 'Lord of the Rings' Series
+EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'ZJ4675' 
+```
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/lotr.png">
+<br/>
+
+```sql
+-- For 'A Dream of Spring' in the 'Game of the Thrones' Series
+EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
+```
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/got.png">
+<br/>
 
 
 
