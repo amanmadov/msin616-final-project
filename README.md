@@ -492,6 +492,22 @@ END
 ```
 <br/>
 
+Since creating an `author_id` is used in multiple stored procedures, I created an extra stored procedure that creates `author_id`.
+<br/>
+
+```sql
+CREATE PROCEDURE [dbo].[USP_GenerateRandomAuthorId]
+    @author_id VARCHAR(11) OUTPUT
+AS
+BEGIN
+    DECLARE @a1 AS CHAR(3) = (SELECT(CAST((FLOOR(RAND()*(999-100+1)+100)) AS CHAR)))
+    DECLARE @a2 AS CHAR(2) = (SELECT(CAST((FLOOR(RAND()*(99-10+1)+10)) AS CHAR)))
+    DECLARE @a3 AS CHAR(4) = (SELECT(CAST((FLOOR(RAND()*(9999-1000+1)+1000)) AS CHAR)))
+    SELECT @author_id = (SELECT @a1 + '-' + @a2 + '-' + @a3)
+END
+```
+<br/>
+
 III. Adding a CoArthur into a Book on the Demo App
 
 <br/>
@@ -502,14 +518,121 @@ III. Adding a CoArthur into a Book on the Demo App
 
 <br/>
 
+
 Stored Procedure for Adding a CoArthur
 
 <br/>
 
 ```sql
 
+CREATE PROCEDURE USP_InsertCoAuthorForTitle
+     @title_id dbo.tid 
+    ,@au_id VARCHAR(11) = NULL
+    ,@au_lname VARCHAR(40) = NULL
+    ,@au_fname VARCHAR(20) = NULL
+    ,@au_phone CHAR(12) = '000 000-0000'
+    ,@au_city VARCHAR(20) = NULL
+    ,@au_state CHAR(2) = NULL
+    ,@au_order TINYINT = 2
+    ,@royalty_per INT = 0
+AS
+BEGIN
+    BEGIN TRY 
+        BEGIN TRANSACTION
+            IF NOT EXISTS(SELECT TOP 1 1 FROM titles WHERE title_id = @title_id)
+                BEGIN 
+                    RAISERROR('Book with provided ID does not exist', 16, 1)
+                END
+
+            IF(@au_id IS NULL)
+                BEGIN
+                    DECLARE @au_zip CHAR(5)
+                    DECLARE @au_contract BIT
+                    DECLARE @au_address VARCHAR(40)
+                    -- Generate Random AuthorID using USP_GenerateRandomAuthorId stored procedure
+                    EXEC USP_GenerateRandomAuthorId @au_id OUTPUT
+
+                    -- Setting Random Zip in the 99xyz format
+                    SET @au_zip = '99'+ (SELECT(CAST((FLOOR(RAND()*(999-100+1)+100)) AS CHAR)))
+
+                    -- Setting @au_contract as random 
+                    SET @au_contract = (SELECT(CAST((FLOOR(RAND()*(1-0+1)+0)) AS BIT)))
+
+                    -- Setting Random Address from AdventureWorks DB Person.Address table
+                    SET @au_address =   (
+                                            SELECT TOP 1 LEFT(AddressLine1,40) 
+                                            FROM AdventureWorks.Person.Address 
+                                            WHERE AddressLine1 IS NOT NULL 
+                                            ORDER BY NEWID()
+                                        )
+                
+                    INSERT INTO authors 
+                    VALUES
+                    (
+                         @au_id
+                        ,@au_lname
+                        ,@au_fname
+                        ,@au_phone
+                        ,@au_address
+                        ,@au_city
+                        ,@au_state
+                        ,@au_zip
+                        ,@au_contract
+                    )     
+
+                    INSERT INTO titleauthor
+                    VALUES
+                    (
+                         @au_id
+                        ,@title_id
+                        ,@au_order
+                        ,@royalty_per
+                    )
+                END
+            ELSE 
+                BEGIN 
+                    IF NOT EXISTS(SELECT TOP 1 1 FROM authors WHERE au_id = @au_id)
+                        BEGIN 
+                            RAISERROR('Author with provided ID does not exist', 16, 1)
+                        END
+                    ELSE 
+                        BEGIN 
+                            INSERT INTO titleauthor
+                            VALUES
+                            (
+                                 @au_id
+                                ,@title_id
+                                ,@au_order
+                                ,@royalty_per
+                            )
+                        END
+                END
+            PRINT('CoAuthor for the Provided Book Has Been Sucessfully Added')
+        COMMIT TRANSACTION
+    END TRY 
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
+        PRINT(ERROR_MESSAGE())
+    END CATCH 
+END
 ```
 <br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
