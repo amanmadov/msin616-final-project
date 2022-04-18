@@ -62,7 +62,7 @@ Below you can see the altered database diagram of the `Pubs` database
 - [x] Some famous book series like **"A Game of Thrones"** or **"The Lord of The Rings"** are added to the `[TITLES]` table.
 - [x] Some famous author and publisher records are added to related tables.
 - [x] Some of the column types are also modified.
-- [x] To simulate a real world full stack app, a demo app with front-end UI has been developed.
+- [x] To simulate a real world full stack app, a demo CRUD app with front-end UI has been developed.
 - [x] `Gentellela`, an open source admin panel, has been used to create front-end UI.
 - [x] Stored procedures are created for the demo CRUD app.
 - [x] Some custom validations has been developed on the Front-end UI to prevent data inconsistency.
@@ -92,7 +92,7 @@ Algorithm flowchart of the creating a book operation
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/flowchart.png">
 <br/>
 
-Stored Procedure for adding a Book into the `TITLES` table
+Stored procedure for adding a book into the `TITLES` table
 
 <br/>
 
@@ -340,7 +340,7 @@ END
 <br/>
 
 `[dbo].[USP_InsertBook]` stored procedure is a bit complex because it does not create just a book. If there is no publisher or author associated with that new book it can also help user to create them. Thats why `@pub_id` and `@author_id` parameters of `[dbo].[USP_InsertBook]` stored procedure are optional.
-If user selects an existing `@pub_id` or `@author_id` from the dropdown menu element on the front-end app, selected Id of that parameter is passed to stored procedure. If an author or publisher for the new book is not found on the dropdown menu (or database) an app makes it easy to create them. Using the **last options** `Create New Author...` and `Create New Publisher...` on the dropdown menu, a user can create a new author or a publisher. Also a book may have prequel or not. So considering all these there a four possible scenarios of creating a book.
+If user selects an existing `@pub_id` or `@author_id` from the dropdown menu element on the front-end app, selected Id of that parameter is passed to stored procedure. If an author or publisher for the new book is not found on the dropdown menu (or database) an app makes it easy to create them. Using the **last options** `Create New Author...` and `Create New Publisher...` on the dropdown menu, a user can create a new author or a publisher. Also a book may have prequel or not. So considering all these, there a 4 possible scenarios of creating a book.
 
 <br/>
 
@@ -460,7 +460,7 @@ EXEC pubs.dbo.USP_InsertBook @pub_id = '9912'
 
 <br/>
 
-Stored Procedure for adding an Author into the `Authors` table
+Stored procedure for adding an author into the `Authors` table
 
 <br/>
 
@@ -519,7 +519,7 @@ END
 ```
 <br/>
 
-### III. Adding a CoArthur into a Book on the Demo App
+### III. Adding a CoAuthor into a Book on the Demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/add-coauthor-ui.png">
@@ -529,12 +529,12 @@ END
 
 <br/>
 
-Stored Procedure for Adding a CoArthur
+Stored procedure for adding a `CoAuthor`
 
 <br/>
 
 ```sql
--- for demonstration purposes some columns like address are generated with dummy data
+-- for demonstration purposes some columns (like address) are generated with dummy data
 CREATE PROCEDURE USP_InsertCoAuthorForTitle
      @title_id dbo.tid 
     ,@au_id VARCHAR(11) = NULL
@@ -639,7 +639,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_employee.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored procedure for adding an Employee to the `Employee` table
+Stored procedure for adding an employee to the `Employee` table
 
 <br/>
 
@@ -759,7 +759,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_books.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored Procedure for getting books as in the form of `HTML table row`
+Stored procedure for getting `books` as in the form of `HTML table row`
 
 <br/>
 
@@ -811,7 +811,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_authors.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored Procedure for getting authors as in the form of `HTML table row`
+Stored procedure for getting `authors` as in the form of `HTML table row`
 
 <br/>
 
@@ -848,7 +848,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_publishers.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored Procedure for getting publishers as in the form of `HTML table row`
+Stored procedure for getting `publishers` as in the form of `HTML table row`
 
 <br/>
 
@@ -891,7 +891,7 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_employees.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Stored Procedure for getting publishers as in the form of `HTML table row`
+Stored procedure for getting `employees` as in the form of `HTML table row`
 
 <br/>
 
@@ -923,8 +923,13 @@ END
 ### IX. Listing Books with Prequel
 
 <br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/book_prequel-list.png">
+<br/>
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/get_prequel.html" target="_blank"> View Demo</a></p>
+<br/>
 
-Recurive Stored Procedure for getting prequel books for a specific book
+Here at the front-end side, I developed some logic with javascript to simulate the stored procedure functionality  
+`Recursive` stored procedure for getting prequel books for a specific book
 
 <br/>
 
@@ -983,7 +988,7 @@ END
 
 <br/>
 
-Now if we execute this stored procedure with an id of a continuing book in a series we will get the prequel books of that book.
+Now if we execute this stored procedure with an `title_id` of a continuing book in a series we will get the prequel books of that book.
 
 <br/>
 
@@ -1013,11 +1018,105 @@ EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/got.png">
 <br/>
 
-
-### X. Delete a Book from Titles table
 <br/>
 
-Stored Procedure for deleting a book
+### X. Listing Continuing Books in s Book Series
+
+<br/>
+
+```sql
+
+/*
+    Created by Nury Amanmadov
+    Date created: 18.04.2022 ddMMyyyy
+
+    Selects all the continuing books in series
+
+*/
+
+CREATE PROCEDURE [dbo].[USP_GetAllContinuingBooksByTitleId]
+    @title_id dbo.tid
+AS 
+BEGIN 
+    IF NOT EXISTS(SELECT TOP 1 1 FROM titles WHERE title_id = @title_id)
+        BEGIN 
+            RAISERROR('Book with provided ID does not exist', 16, 1)
+        END
+
+    ;WITH CTEBooks
+    AS 
+    (
+        SELECT   title_id AS TitleId
+                ,title AS Book
+                ,prequel_id
+                ,CAST(t1.pubdate AS DATE) AS [Publication Date]
+                ,p.pub_name AS Publisher
+                ,[Order In Series] = 1
+        FROM titles t1
+        JOIN publishers p ON p.pub_id = t1.pub_id
+        WHERE title_id = @title_id
+
+        UNION ALL
+
+        SELECT   t2.title_id AS TitleId
+                ,t2.title AS Book
+                ,t2.prequel_id
+                ,CAST(t2.pubdate AS DATE) AS [Publication Date]
+                ,p.pub_name AS Publisher
+                ,[Order In Series] + 1
+        FROM titles t2
+        JOIN publishers p ON p.pub_id = t2.pub_id
+        JOIN CTEBooks ON t2.prequel_id = CTEBooks.TitleId
+    )
+    SELECT  CTEBooks.TitleId 
+            ,CTEBooks.Book
+            ,ISNULL(t.title, 'No Prequel') AS PrequelBook
+            ,[Publication Date]
+            ,a.au_fname + ' ' + a.au_lname AS Author
+            ,CTEBooks.Publisher
+            ,[Order In Series]
+    FROM CTEBooks
+    LEFT JOIN titles t ON CTEBooks.prequel_id = t.title_id
+    LEFT JOIN titleauthor ta ON ta.title_id = CTEBooks.TitleId
+    LEFT JOIN authors a ON a.au_id = ta.au_id
+END
+```
+<br/>
+
+Now if we execute this stored procedure with an `title_id` of a book in a series we will get the continuing books of that series.
+
+<br/>
+
+```sql
+-- For 'The Lord of the Rings' Series
+EXEC [dbo].[USP_GetAllContinuingBooksByTitleId] 'EX5727'
+```
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/snap1.png">
+<br/>
+
+
+```sql
+-- For 'A Game of Thrones' Series
+EXEC [dbo].[USP_GetAllContinuingBooksByTitleId] 'CI5668'
+```
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/snap2.png">
+<br/>
+
+```sql
+-- For 'Harry Potter' Series
+EXEC [dbo].[USP_GetAllContinuingBooksByTitleId] 'VC5136'
+```
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/snap3.png">
+<br/>
+
+
+### XI. Delete a Book from Titles table
+<br/>
+
+Stored procedure for deleting a book
 
 <br/>
 
@@ -1066,7 +1165,7 @@ END
 
 <br/>
 
-### XI. Selecting Records from Audit.Book table
+### XII. Selecting Records from Audit.Book table
 
 <br/>
 
