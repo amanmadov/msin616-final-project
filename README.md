@@ -1,4 +1,4 @@
-<div id="top"></div>
+<p align="right"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></p>
 
 <!-- PROJECT LOGO -->
 <br/>
