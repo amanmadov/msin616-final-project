@@ -48,6 +48,13 @@ Below you can see the altered database diagram of the `Pubs` database
 <br/>
 
 
+## Technologies Used
+ - Microsoft SQL Server 2019 - 15.0.4198.2 Developer Edition (64-bit) on Linux (Ubuntu 20.04.3 LTS)
+ - Azure Data Studio version 1.35.1
+ - Docker version 4.4.2 (73305)
+
+<br/>
+
 ## Modifications on the Database
 
 - [x] `[TITLES]` table have been altered and **prequel_id** column have been added to store the prequel of a book.
