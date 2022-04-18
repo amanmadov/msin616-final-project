@@ -913,11 +913,7 @@ END
 
 
 IX. Listing Books with Prequel
-
 <br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/p-books.png">
-<br/>
-
 Stored Procedure for getting prequel books for a specific book
 
 <br/>
