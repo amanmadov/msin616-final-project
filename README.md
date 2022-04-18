@@ -56,12 +56,12 @@ Below you can see the altered database diagram of the `Pubs` database
 - [x] Some famous author and publisher records are added to related tables.
 - [x] Some of the column types are also modified.
 - [x] To simulate a real world full stack app, a demo app with front-end UI has been developed.
-- [x] `Gentellela`, an open source admin panel has been used to create front-end UI.
+- [x] `Gentellela`, an open source admin panel, has been used to create front-end UI.
 - [x] Stored procedures are created for the demo CRUD app.
 - [x] Some custom validations has been developed on the Front-end UI to prevent data inconsistency.
 - [x] All stored procedures for creating/modifying records are created based on the front-end validations.
 - [x] Created `[Audit].[Book]` table to keep audit history of the created books.
-- [x] Used `[Adventureworks].[Person].[Person]` and `[AdventureWorks].[HumanResources].[Employee]` tables to generated dummy data.
+- [x] Used `[Adventureworks].[Person].[Person]` and `[AdventureWorks].[HumanResources].[Employee]` tables to generate dummy data.
 
 
 <br/>
@@ -996,9 +996,68 @@ EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
 <br/>
 
 
+X. Delete a Book from Titles table
 
+<br/>
+Stored Procedure for deleting a book
 
+<br/>
 
+```sql
+/*
+
+Created by Nury Amanmadov
+Date created: 16.04.2022
+
+Rule for deleting a book  
+    - Publisher related to that title will not be deleted
+    - PublisherInfo related to the Publisher of that title will not be deleted
+    - Author related to that title will not be deleted 
+    - Records related to that title from Titles and TitleAuthor tables will be deleted 
+
+Because there are publishers without any title on the initial database created by Microsoft (ex: pub_id with 1622 and 1756)
+
+SELECT DISTINCT pub_id 
+FROM publishers 
+WHERE pub_id NOT IN 
+(
+    SELECT DISTINCT pub_id FROM titles 
+)
+
+*/
+
+CREATE PROCEDURE [dbo].[USP_DeleteBook]
+    @title_id dbo.tid,
+    @au_id dbo.id
+AS
+BEGIN
+    BEGIN TRY 
+        BEGIN TRANSACTION
+            DELETE FROM titles WHERE title_id = @title_id
+            DELETE FROM titleauthor WHERE title_id = @title_id and au_id = @au_id
+            PRINT('Book Has Been Sucessfully Deleted')
+        COMMIT TRANSACTION
+    END TRY 
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
+        PRINT(ERROR_MESSAGE())
+    END CATCH
+END
+```
+
+<br/>
+
+XI. Selecting Records from `Audit.Book` table
+
+<br/>
+
+```sql
+SELECT * 
+FROM [pubs].[Audit].[Book]
+```
+
+<br/>
 
 
 
