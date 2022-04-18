@@ -72,7 +72,6 @@ Below you can see the altered database diagram of the `Pubs` database
 
 ### I. Creating a Book on the Demo App
 <br/>
-<br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
 <br/>
 
