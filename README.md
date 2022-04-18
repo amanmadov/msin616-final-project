@@ -913,11 +913,10 @@ END
 
 <br/>
 
-
 ### IX. Listing Books with Prequel
 
 <br/>
-<br/>
+
 Recurive Stored Procedure for getting prequel books for a specific book
 
 <br/>
@@ -1009,8 +1008,8 @@ EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
 
 
 ### X. Delete a Book from Titles table
-
 <br/>
+
 Stored Procedure for deleting a book
 
 <br/>
