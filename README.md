@@ -1061,14 +1061,17 @@ SELECT *
 FROM [pubs].[Audit].[Book]
 ```
 <br/>
-<p>Link for the records file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/files/audit-book-records.csv" target="_blank"> View Records</a></p>
+<p>Link for the `[Audit].[Book]` records file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/files/audit-book-records.csv" target="_blank"> View Records</a></p>
+<br/>
+
 <br/>
 <br/>
-
-
-
-
 <br/>
+<p>Link for the entire Pubs DB bak file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/db-scripts/pubs-2022417-23-28-58.bak" target="_blank"> View File</a></p>
+<br/>
+
+
+
 <br/>
   <p align="center">
     Simple Front End UI App for the Pubs Database
@@ -1076,17 +1079,6 @@ FROM [pubs].[Audit].[Book]
     <a href="https://amanmadov.github.io/msin616-final-project/">View Demo</a>
   </p>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
