@@ -1072,8 +1072,6 @@ FROM [pubs].[Audit].[Book]
 <br/>
 
 <br/>
-<br/>
-<br/>
 <p>Link for the entire Pubs DB bak file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/db-scripts/pubs-2022417-23-28-58.bak" target="_blank"> View File</a></p>
 <br/>
 
@@ -1083,9 +1081,10 @@ FROM [pubs].[Audit].[Book]
   <p align="center">
     Simple Front End UI App for the Pubs Database
     <br/> <br/>
-    <a href="https://amanmadov.github.io/msin616-final-project/">View Demo</a>
+    <a href="https://amanmadov.github.io/msin616-final-project/">View App</a>
   </p>
-</div>
+
+<br/>
 
 
 
