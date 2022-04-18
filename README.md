@@ -68,8 +68,9 @@ Below you can see the altered database diagram of the `Pubs` database
 <br/>
 
 ## Created Custom Stored Procedures and the Front-End UI of the Demo App
-
+<br/>
 I. Creating a Book on the Demo App
+<br/>
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
 <br/>
@@ -445,7 +446,7 @@ II. Creating an Author on the Demo App
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-author-ui.png">
 <br/>
 
-<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_author.html" target="_blank">View Demo</a></p>
+<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_author.html" target="_blank"> View Demo</a></p>
 
 <br/>
 
@@ -787,7 +788,7 @@ BEGIN
 END
 ```
 
-
+<br/>
 VI. Listing Top Authors on the Demo App
 
 <br/>
