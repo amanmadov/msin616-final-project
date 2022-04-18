@@ -21,11 +21,11 @@ SELECT Course FROM [TouroDb].[dbo].[Courses] WHERE CourseId = 'MSIN616'
 
 ## About The Project
 
-This is the simple database designed using Microsoft's Pubs Database.
-The Pubs database provides a set of fictional pieces of information about publishers, authors, titles and sales of books.
-It is now considered obsolete; it is no longer provided with SQL Server since the 2008 version.
+This is the simple database designed using Microsoft's `Pubs` database.
+The `Pubs` database provides a set of fictional pieces of information about publishers, authors, titles and sales of books.
+It is now considered obsolete; it is no longer provided with `SQL Server` since the 2008 version.
 The tables and fields are quite obvious. 
-They have names such as Authors, Titles, etc., which reflect their content. 
+They have names such as `Authors`, `Titles`, etc., which reflect their content. 
 And the fields also have obvious names explaining what they contain.
 
 <p>
@@ -33,7 +33,7 @@ And the fields also have obvious names explaining what they contain.
   <a href="https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs" target="_blank">Microsoft Pubs DB</a>
 </p>
 
-Below you can see the altered database diagram of the Pubs database
+Below you can see the altered database diagram of the `Pubs` database
 
 <br/>
 
@@ -50,13 +50,15 @@ Below you can see the altered database diagram of the Pubs database
 
 ## Modifications on the Database
 
-- [x] `[dbo].[TITLES]` table have been altered and prequel_id column have been added to store the prequel of a book.
-- [x] Using prequel books recursive queries can be written and executed on the `[dbo].[TITLES]` table.
-- [x] Some famous book series like "A Game of Thrones" or "The Lord of The Rings" are added to the `[dbo].[TITLES]` table.
+- [x] `[dbo].[TITLES]` table have been altered and **prequel_id** column have been added to store the prequel of a book.
+- [x] Using prequel books, recursive queries can be written and executed on the `[dbo].[TITLES]` table.
+- [x] Some famous book series like **"A Game of Thrones"** or **"The Lord of The Rings"** are added to the `[dbo].[TITLES]` table.
 - [x] Some famous author and publisher records are added to related tables.
 - [x] Some of the column types are also modified.
-- [x] Stored procedures are created for the demo Book CRUD app.
-- [x] Front-end UI has custom validations to prevent data inconsistency.
+- [x] To simulate a real world full stack app, a demo app with front-end UI has been developed.
+- [x] `Gentellela`, an open source admin panel has been used to create front-end UI.
+- [x] Stored procedures are created for the demo CRUD app.
+- [x] Some custom validations has been developed on the Front-end UI to prevent data inconsistency.
 - [x] All stored procedures for creating/modifying records are created based on the front-end validations.
 - [x] Created `[Audit].[Book]` table to keep audit history of the created books.
 - [x] Used `[Adventureworks].[Person].[Person]` and `[AdventureWorks].[HumanResources].[Employee]` tables to generated dummy data.
@@ -67,13 +69,16 @@ Below you can see the altered database diagram of the Pubs database
 
 ## Created Custom Stored Procedures and the Front-End UI of the Demo App
 
-1. Inserting a Book into the `TITLES` table
+1. Creating a Book on the Demo App
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
 <br/>
 
 <p>Link for the front-end ui module:<a href="https://drawsql.app/softttt/diagrams/msin616-pubs-db" target="_blank"> VIEW</a></p>
 
+<br/>
+Flowchart of the book creating module
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/flowchart.png">
 <br/>
 
 Stored Procedure for adding a Book into the `TITLES` table
@@ -87,7 +92,7 @@ Stored Procedure for adding a Book into the `TITLES` table
     Date created: 10.04.2022
 */
 
-ALTER PROCEDURE [dbo].[USP_InsertBook] 
+CREATE PROCEDURE [dbo].[USP_InsertBook] 
      @book_title AS VARCHAR(100)
     ,@prequel_id AS VARCHAR(6) = NULL
     ,@book_type AS CHAR(40)
@@ -321,9 +326,116 @@ END
 
 ```
 
+<br/>
 
+`[dbo].[USP_InsertBook]` stored procedure is a bit complex because it does not create just a book. If there is no publisher or author associated with that new book it can also help user to create them. Thats why `@pub_id` and `@author_id` parameters of `[dbo].[USP_InsertBook]` stored procedure are optional.
+If user selects an existing `@pub_id` or `@author_id` from the dropdown menu element on the front-end app, selected Id of that parameter is passed to stored procedure. If an author or publisher for the new book is not found on the dropdown menu (or database) an app makes it easy to create them. Using the **last options** `Create New Author...` and `Create New Publisher...` on the dropdown menu, a user can create a new author or a publisher. Also a book may have prequel or not. So considering all these there a four possible scenarios of creating a book.
 
+<br/>
 
+These Test Cases are:<br/>
+ * Create Book for Existing Author and Existing Publisher
+ * Create Book for Existing Author and Non-Existent Publisher 
+ * Create Book for Non-Existent Author and Existing Publisher
+ * Create Book for Non-Existent Author and Non-Existent Publisher
+
+<br/> 
+Now lets test each of these test cases.
+
+<br/>
+<br/>
+
+**Test Case 1: Create Book for Existing Author and Existing Publisher**
+
+```sql
+EXEC pubs.dbo.USP_InsertBook @author_id = '254-26-6712'
+                            ,@pub_id = '9910'
+                            ,@au_order = 1
+                            ,@royalty_per = 100
+                            ,@book_title = 'The Silmarillion'
+                            ,@book_type = 'Mythopoeia Fantasy'
+                            ,@book_price = 45
+                            ,@book_advance = 2500000
+                            ,@book_royalty = 40
+                            ,@book_ytd_sales = 50000000
+                            ,@book_pubdate = '1977-09-15'
+                            ,@book_notes = 'The Silmarillion is a collection of mythopoeic stories by the English writer J. R. R. Tolkien.'
+```
+
+<br>
+
+**Test Case 4: Create Book for Non-Existent Author and Non-Existent Publisher**
+
+```sql
+EXEC pubs.dbo.USP_InsertBook @pub_name = 'Crown Publishing Group'
+                            ,@pub_city = 'New York City'
+                            ,@pub_state = 'NY'
+                            ,@pub_country = 'US' 
+                            ,@au_lname = 'Acemoglu'
+                            ,@au_fname = 'Daron'
+                            ,@au_phone = '999 000-0000'
+                            ,@au_city = 'Newton'
+                            ,@au_state = 'MA' 
+                            ,@au_order = 1
+                            ,@royalty_per = 50
+                            ,@book_title = 'Why Nations Fail'
+                            ,@book_type = 'Comparative Politics, Economics'
+                            ,@book_price = 70
+                            ,@book_advance = 100000
+                            ,@book_royalty = 30
+                            ,@book_ytd_sales = 500000
+                            ,@book_pubdate = '2012-03-20'
+                            ,@book_notes = 'Why Nations Fail first published in 2012, is a book by economists Daron Acemoglu and James Robinson...'
+```
+
+<br/>
+
+**Test Case 2: Create Book for Existing Author and Non-Existent Publisher **
+
+```sql
+-- A book by Daron Acemoglu author_id = '408-40-8965' with different publisher
+EXEC pubs.dbo.USP_InsertBook @pub_name = 'Cambridge University Press'
+                            ,@pub_city = 'Cambridge'
+                            ,@pub_country = 'UK' 
+                            ,@author_id = '408-40-8965'
+                            ,@au_order = 1
+                            ,@royalty_per = 50
+                            ,@book_title = 'Economic Origins of Dictatorship and Democracy'
+                            ,@book_type = 'Economics, Macroeconomics'
+                            ,@book_price = 30
+                            ,@book_advance = 50000
+                            ,@book_royalty = 15
+                            ,@book_ytd_sales = 500000
+                            ,@book_pubdate = '2012-09-01'
+                            ,@book_notes = 'Book develops a framework for analyzing the creation and consolidation of democracy...'
+
+```
+
+<br/>
+
+**Test Case 3: Create Book for Non-Existent Author and Existing Publisher**
+
+```sql
+-- Different book by 'Cambridge University Press' pub_id = '9912'
+EXEC pubs.dbo.USP_InsertBook @pub_id = '9912' 
+                            ,@au_lname = 'Von Zur Gathen'
+                            ,@au_fname = 'Joachim'
+                            ,@au_phone = '000 000-0000'
+                            ,@au_city = 'Bonn' 
+                            ,@au_order = 1
+                            ,@royalty_per = 50
+                            ,@book_title = 'Modern Computer Algebra'
+                            ,@book_type = 'Computer Science'
+                            ,@book_price = 100
+                            ,@book_advance = 50000
+                            ,@book_royalty = 10
+                            ,@book_ytd_sales = 10000
+                            ,@book_pubdate = '2013-01-01'
+                            ,@book_notes = 'Computer algebra systems are now ubiquitous in all areas of science and engineering...'
+
+```
+
+<br/>
 
 1. Creating an Employee on the `Employee` table
 <br/>
