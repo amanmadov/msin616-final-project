@@ -1060,7 +1060,9 @@ XI. Selecting Records from `Audit.Book` table
 SELECT * 
 FROM [pubs].[Audit].[Book]
 ```
-
+<br/>
+<p>Link for the records file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/files/audit-book-records.csv" target="_blank"> View Records</a></p>
+<br/>
 <br/>
 
 
