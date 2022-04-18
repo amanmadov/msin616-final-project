@@ -92,7 +92,7 @@ Stored Procedure for adding a Book into the `TITLES` table
 
 /*
     Created by Nury Amanmadov
-    Date created: 10.04.2022
+    Date created: 10.04.2022 ddMMyyyy
 */
 
 CREATE PROCEDURE [dbo].[USP_InsertBook] 
@@ -915,7 +915,7 @@ END
 IX. Listing Books with Prequel
 <br/>
 <br/>
-Stored Procedure for getting prequel books for a specific book
+Recurive Stored Procedure for getting prequel books for a specific book
 
 <br/>
 
@@ -931,8 +931,12 @@ Stored Procedure for getting prequel books for a specific book
 ALTER PROCEDURE [dbo].[USP_GetAllPrequelBooksByTitleId]
     @title_id dbo.tid
 AS 
-BEGIN 
-    WITH CTEBooks
+BEGIN
+    IF NOT EXISTS(SELECT TOP 1 1 FROM titles WHERE title_id = @title_id)
+        BEGIN 
+            RAISERROR('Book with provided ID does not exist', 16, 1)
+        END
+    ;WITH CTEBooks
     AS 
     (
         SELECT   title_id AS TitleId
