@@ -348,6 +348,7 @@ Now lets test each of these test cases.
 **Test Case 1: Create Book for Existing Author and Existing Publisher**
 
 ```sql
+-- Publisher Allen & Unwin with pub_id = '9910' and Author J.R.R Tolkien with author_id = '254-26-6712' already exists on the db
 EXEC pubs.dbo.USP_InsertBook @author_id = '254-26-6712'
                             ,@pub_id = '9910'
                             ,@au_order = 1
@@ -390,10 +391,10 @@ EXEC pubs.dbo.USP_InsertBook @pub_name = 'Crown Publishing Group'
 
 <br/>
 
-**Test Case 2: Create Book for Existing Author and Non-Existent Publisher **
+**Test Case 2: Create Book for Existing Author and Non-Existent Publisher**
 
 ```sql
--- A book by Daron Acemoglu author_id = '408-40-8965' with different publisher
+-- A book by existing author Daron Acemoglu with author_id = '408-40-8965' but with different publisher
 EXEC pubs.dbo.USP_InsertBook @pub_name = 'Cambridge University Press'
                             ,@pub_city = 'Cambridge'
                             ,@pub_country = 'UK' 
@@ -416,7 +417,7 @@ EXEC pubs.dbo.USP_InsertBook @pub_name = 'Cambridge University Press'
 **Test Case 3: Create Book for Non-Existent Author and Existing Publisher**
 
 ```sql
--- Different book by 'Cambridge University Press' pub_id = '9912'
+-- Different book by existing 'Cambridge University Press' with pub_id = '9912'
 EXEC pubs.dbo.USP_InsertBook @pub_id = '9912' 
                             ,@au_lname = 'Von Zur Gathen'
                             ,@au_fname = 'Joachim'
