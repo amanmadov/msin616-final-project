@@ -1059,7 +1059,7 @@ END
 
 <br/>
 
-### XI. Selecting Records from `Audit.Book` table
+### XI. Selecting Records from Audit.Book table
 
 <br/>
 
@@ -1070,19 +1070,10 @@ FROM [pubs].[Audit].[Book]
 <br/>
 <p>Link for the `[Audit].[Book]` records file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/files/audit-book-records.csv" target="_blank"> View Records</a></p>
 <br/>
-
-<br/>
 <p>Link for the entire Pubs DB bak file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/db-scripts/pubs-2022417-23-28-58.bak" target="_blank"> View File</a></p>
 <br/>
 
-
-
-<br/>
-  <p align="center">
-    Simple Front End UI App for the Pubs Database
-    <br/> <br/>
-    <a href="https://amanmadov.github.io/msin616-final-project/">View App</a>
-  </p>
+<p>Simple Front End UI App for the Pubs Database <a href="https://amanmadov.github.io/msin616-final-project/">View App</a></p>
 
 <br/>
 
