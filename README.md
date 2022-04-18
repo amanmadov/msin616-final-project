@@ -524,7 +524,7 @@ Stored Procedure for Adding a CoArthur
 <br/>
 
 ```sql
-
+-- for demonstration purposes some columns like address are generated with dummy data
 CREATE PROCEDURE USP_InsertCoAuthorForTitle
      @title_id dbo.tid 
     ,@au_id VARCHAR(11) = NULL
@@ -621,47 +621,8 @@ END
 
 
 
+IV. Creating an Employee on the `Employee` table
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-I. Creating a Book on the Demo App
-
-<br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
-<br/>
-
-<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
-
-<br/>
-
-Stored Procedure for adding a Book into the `TITLES` table
-
-<br/>
-
-```sql
-
-```
-
-
-
-
-
-
-
-
-1. Creating an Employee on the `Employee` table
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png">
 <br/>
@@ -773,12 +734,33 @@ BEGIN
 END 
 ```
 <br/>
-Front-end logic of the created stored procedure
+
+
+
+
+IV. Creating an Employee on the Demo App
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png">
 <br/>
 
-![Frontend UI](https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png)
+<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
 
 <br/>
+
+Stored Procedure for adding a Book into the `TITLES` table
+
+<br/>
+
+```sql
+
+```
+
+
+
+
+
+
 
 
 
