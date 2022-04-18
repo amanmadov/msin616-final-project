@@ -67,7 +67,8 @@ Below you can see the altered database diagram of the `Pubs` database
 <br/>
 <br/>
 
-## Custom Stored Procedures and the Front-End UI of the Demo App
+<div> <h2 align="center">Custom Stored Procedures and the Front-End UI of the Demo App</h2></div>
+
 <br/>
 
 ### I. Creating a Book on the Demo App
