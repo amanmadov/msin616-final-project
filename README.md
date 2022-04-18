@@ -621,13 +621,13 @@ END
 
 
 
-IV. Creating an Employee on the `Employee` table
+IV. Creating an Employee on the demo App
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png">
 <br/>
 
-SP for adding an Employee to the `Employee` table
+Stored procedure for adding an Employee to the `Employee` table
 
 <br/>
 
@@ -738,22 +738,199 @@ END
 
 
 
-IV. Creating an Employee on the Demo App
+V. Listing Books on the Demo App
 
 <br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-employee-ui.png">
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-books.png">
 <br/>
 
 <p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
 
 <br/>
 
-Stored Procedure for adding a Book into the `TITLES` table
+Stored Procedure for getting books as in the form of `HTML table row`
 
 <br/>
 
 ```sql
+/*
+    Created by Nury Amanmadov
+    Date created: 16.04.2022 ddMMyyyy
 
+    Selects TOP 20 Book as in the form of HTML table row records 
+    These records then rendered as an HTML elements on the front-end side
+
+*/
+
+CREATE PROCEDURE [dbo].[USP_GetAllBooks]
+AS 
+BEGIN 
+    SELECT TOP 20
+    '<tr class="even pointer">
+        <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>
+        <td>'+ t.title_id +'</td>
+        <td>'+ title +'</td>
+        <td>'+ a.au_fname + ' ' + a.au_lname +'</td>
+        <td>'+ p.pub_name +'</td>
+        <td>'+ type +'</td>
+        <td>'+ ISNULL(CAST(price AS VARCHAR),'NA') +'</td>
+        <td>'+ ISNULL(CAST(advance AS VARCHAR),'NA') +'</td>
+        <td>'+ ISNULL(CAST(royalty AS VARCHAR),'NA') +'</td>
+        <td>'+ ISNULL(CAST(ytd_sales AS VARCHAR),'NA') +'</td>
+        <td class="last"><a href="#">View</a></td>
+    </tr>' AS TableRow
+    FROM titles t 
+    JOIN publishers p ON t.pub_id = p.pub_id
+    JOIN titleauthor ta ON ta.title_id = t.title_id
+    JOIN authors a ON a.au_id = ta.au_id
+    ORDER BY p.pub_id DESC
+END
+```
+
+
+VI. Listing Top Authors on the Demo App
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-authors.png">
+<br/>
+
+<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
+
+<br/>
+
+Stored Procedure for getting authors as in the form of `HTML table row`
+
+<br/>
+
+```sql
+CREATE PROCEDURE [dbo].[USP_GetAllAuthors]
+AS 
+BEGIN 
+    SELECT TOP 20
+    '<tr class="even pointer">
+        <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>
+        <td>'+ au_id +'</td>
+        <td>'+ au_fname +'</td>
+        <td>'+ au_lname +'</td>
+        <td>'+ ISNULL(CAST(phone AS VARCHAR),'NA') +'</td>
+        <td>'+ ISNULL(CAST(address AS VARCHAR),'NA') +'</td>
+        <td>'+ ISNULL(CAST(city AS VARCHAR),'NA') +'</td>
+        <td>'+ ISNULL(CAST(state AS VARCHAR),'NA') +'</td>
+        <td>'+ ISNULL(CAST(zip AS VARCHAR),'NA') +'</td>
+        <td>'+ ISNULL(CAST(contract AS VARCHAR),'NA') +'</td>
+        <td class="last"><a href="#">View</a></td>
+    </tr>' AS TableRow
+    FROM authors a
+    ORDER BY zip DESC
+END
+```
+
+<br/>
+
+VII. Listing Top Publishers on the Demo App
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-publishers.png">
+<br/>
+
+<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
+
+<br/>
+
+Stored Procedure for getting publishers as in the form of `HTML table row`
+
+<br/>
+
+```sql
+CREATE PROCEDURE [dbo].[USP_GetAllPublishers]
+AS 
+BEGIN 
+    SELECT TOP 20
+                    '<tr class="even pointer">
+                        <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>
+                        <td>'+ p.pub_id +'</td>
+                        <td>'+ p.pub_name +'</td>
+                        <td>'+ p.city +'</td>
+                        <td>'+ ISNULL(p.[state],'NA') +'</td>
+                        <td>'+ p.country +'</td>
+                        <td>'+ CAST(COUNT(DISTINCT t.title_id) AS VARCHAR) +'</td>
+                        <td>'+ CAST(ISNULL(SUM(t.ytd_sales),0) AS VARCHAR) +'</td>
+                        <td>'+ CAST(COUNT(DISTINCT e.emp_id) AS VARCHAR) +'</td>
+                        <td class="last"><a href="#">View</a></td>
+                    </tr>' AS TableRow
+    FROM publishers p 
+    LEFT JOIN titles t ON t.pub_id = p.pub_id
+    LEFT JOIN employee e ON e.pub_id = p.pub_id
+    GROUP BY p.pub_id
+            ,p.pub_name
+            ,p.city
+            ,p.[state]
+            ,p.country
+    ORDER BY SUM(t.ytd_sales) DESC
+END
+```
+
+<br/>
+
+VIII. Listing Employees on the Demo App
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-employees.png">
+<br/>
+
+<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
+
+<br/>
+
+Stored Procedure for getting publishers as in the form of `HTML table row`
+
+<br/>
+
+```sql
+CREATE PROCEDURE [dbo].[USP_GetAllEmployee]
+AS 
+BEGIN 
+    SELECT TOP 100
+                    '<tr class="even pointer">
+                        <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>
+                        <td>'+ e.emp_id +'</td>
+                        <td>'+ e.fname +'</td>
+                        <td>'+ e.lname +'</td>
+                        <td>'+ j.job_desc +'</td>
+                        <td>'+ CAST((e.job_lvl) AS VARCHAR) +'</td>
+                        <td>'+ p.pub_name +'</td>
+                        <td>'+ CAST(CAST(e.hire_date AS DATE) AS VARCHAR) +'</td>
+                        <td class="last"><a href="#">View</a></td>
+                    </tr>' AS TableRow
+    FROM employee e 
+    JOIN publishers p On p.pub_id = e.pub_id 
+    JOIN jobs j ON j.job_id = e.job_id
+    ORDER BY hire_date 
+END
+```
+
+
+<br/>
+
+
+
+
+
+IX. Listing Books with prequel
+
+<br/>
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-publishers.png">
+<br/>
+
+<p>Link for the front-end ui module:<a href=" " target="_blank"> VIEW</a></p>
+
+<br/>
+
+Stored Procedure for getting publishers as in the form of `HTML table row`
+
+<br/>
+
+```sql
 ```
 
 
