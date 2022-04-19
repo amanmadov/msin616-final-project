@@ -529,7 +529,7 @@ END
 
 <br/>
 
-Stored procedure for adding a `CoAuthor`
+Stored procedure for adding a `CoAuthor`. If coauthor does not exist on the dropdown menu we can create a new author and add it.
 
 <br/>
 
@@ -654,7 +654,7 @@ CREATE PROCEDURE [dbo].[USP_CreateEmployee]
     ,@emp_firstname AS VARCHAR(255) = NULL
     ,@emp_minit AS VARCHAR(255) = NULL 
     ,@emp_lastname AS VARCHAR(255) = NULL
-    ,@emp_job_id AS INT = NULL
+    ,@emp_job_id AS INT
     ,@emp_job_lvl AS INT = NULL
     ,@emp_hire_date AS DATETIME = NULL
 AS
@@ -702,10 +702,6 @@ BEGIN
                                             FROM AdventureWorks.Person.Person p 
                                             ORDER BY NEWID()
                                         )
-                
-                -- Using jobs table we can get random job id if given @emp_job_id is null
-                IF (@emp_job_id IS NULL)
-                    SET @emp_job_id = (SELECT TOP 1 job_id FROM [pubs].[dbo].[jobs] j ORDER BY NEWID())
                 
                 -- Using jobs table we can get random job level between max_lvl and min_lvl of the generated @emp_job_id
                 IF (@emp_job_lvl IS NULL)
