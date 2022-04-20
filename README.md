@@ -339,8 +339,10 @@ END
 
 <br/>
 
-`[dbo].[USP_InsertBook]` stored procedure is a bit complex because it does not create just a book. If there is no publisher or author associated with that new book it can also help user to create them. Thats why `@pub_id` and `@author_id` parameters of `[dbo].[USP_InsertBook]` stored procedure are optional.
-If user selects an existing `@pub_id` or `@author_id` from the dropdown menu element on the front-end app, selected Id of that parameter is passed to stored procedure. If an author or publisher for the new book is not found on the dropdown menu (or database) an app makes it easy to create them. Using the **last options** `Create New Author...` and `Create New Publisher...` on the dropdown menu, a user can create a new author or a publisher. Also a book may have prequel or not. So considering all these, there a 4 possible scenarios of creating a book.
+`[dbo].[USP_InsertBook]` stored procedure is a bit complex because it does not create just a book. If there is no publisher or author associated with that new book, it also helps user to create them. Thats why `@pub_id` and `@author_id` parameters of `[dbo].[USP_InsertBook]` stored procedure are optional.
+If user selects an existing publisher or author from the dropdown menu element on the front-end app, selected value of the selected option, as an in the form of `@pub_id` or `@author_id`, is passed to the stored procedure. If an author or publisher for the new book is not found on the dropdown menu (or database) an app makes it easy to create them. Using the **last options** `Create New Author...` and `Create New Publisher...` on the dropdown menu, a user can create a new author or a publisher. Also a book may have prequel or not. So considering all these, there a 4 possible scenarios of creating a book.
+
+Note: Dropdown menu items are populated with the existing authors and publishers in a database.
 
 <br/>
 
