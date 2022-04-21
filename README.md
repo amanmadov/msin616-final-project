@@ -922,7 +922,7 @@ END
 ### IX. Listing Books with Prequel
 
 <br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/book_prequel-list.png">
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/list-prequel.gif">
 <br/>
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/get_prequel.html" target="_blank"> View Demo</a></p>
 <br/>
