@@ -525,7 +525,7 @@ END
 ### III. Adding a CoAuthor into a Book on the Demo App
 
 <br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/add-coauthor-ui.png">
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/add-coauthor2.gif">
 <br/>
 
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/add_coauthor.html" target="_blank"> View Demo</a></p>
