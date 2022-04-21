@@ -80,7 +80,7 @@ Below you can see the altered database diagram of the `Pubs` database
 
 ### I. Creating a Book on the Demo App
 <br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/create-book-ui.png">
+<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/book-insert.gif">
 <br/>
 
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/create_book.html" target="_blank"> View Demo</a></p>
@@ -91,6 +91,7 @@ Algorithm flowchart of the creating a book operation
 
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/flowchart.png">
 <br/>
+
 
 Stored procedure for adding a book into the `TITLES` table
 
