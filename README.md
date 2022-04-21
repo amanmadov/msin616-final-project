@@ -347,11 +347,17 @@ Note: Dropdown menu items are populated with the existing authors and publishers
 
 <br/>
 
-These Test Cases are:<br/>
- * Create Book for Existing Author and Existing Publisher
- * Create Book for Existing Author and Non-Existent Publisher 
- * Create Book for Non-Existent Author and Existing Publisher
- * Create Book for Non-Existent Author and Non-Existent Publisher
+These Test Cases are:
+<br/>
+
+```diff
+
++ Create Book for Existing Author and Existing Publisher
++ Create Book for Existing Author and Non-Existent Publisher
++ Create Book for Non-Existent Author and Existing Publisher
++ Create Book for Non-Existent Author and Non-Existent Publisher
+
+```
 
 <br/> 
 Now lets test each of these test cases.
