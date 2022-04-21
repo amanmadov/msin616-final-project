@@ -1119,6 +1119,26 @@ Stored procedure for deleting a book
 
 <br/>
 
+/*
+
+Created by Nury Amanmadov
+Date created: 16.04.2022
+
+Rule for deleting a book  
+    - Publisher related to that title will not be deleted
+    - PublisherInfo related to the Publisher of that title will not be deleted
+    - Author related to that title will not be deleted 
+    - Records related to that title from Titles and TitleAuthor tables will be deleted 
+
+Because there are publishers without any title on the initial database created by Microsoft (ex: pub_id with 1622 and 1756)
+
+SELECT DISTINCT pub_id 
+FROM publishers 
+WHERE pub_id NOT IN 
+(
+    SELECT DISTINCT pub_id FROM titles 
+)
+
 ```sql
 /*
 
