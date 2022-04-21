@@ -927,8 +927,8 @@ END
 <p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/get_prequel.html" target="_blank"> View Demo</a></p>
 <br/>
 
-Here at the front-end side, I developed some logic with javascript to simulate the stored procedure functionality  
-`Recursive` stored procedure for getting prequel books for a specific book
+Here at the front-end side, I developed some logic with javascript to simulate the stored procedure functionality. 
+This is a `Recursive` stored procedure for getting prequel book or books for a specific book in a series. Used `CTE` inside the query.
 
 <br/>
 
