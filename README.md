@@ -127,9 +127,9 @@ CREATE PROCEDURE [dbo].[USP_InsertBook]
     ,@book_price AS MONEY
     ,@book_advance AS MONEY
     ,@book_royalty INT
-	,@book_ytd_sales INT
-	,@book_notes VARCHAR(800)
-	,@book_pubdate DATETIME
+    ,@book_ytd_sales INT
+    ,@book_notes VARCHAR(800)
+    ,@book_pubdate DATETIME
     ,@book_isbn VARCHAR(17)
     ,@pub_id AS CHAR(4) = NULL
     ,@pub_name AS VARCHAR(40) = NULL
