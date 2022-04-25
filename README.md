@@ -1216,7 +1216,7 @@ FROM [pubs].[Audit].[Book]
 
 <br/>
 
-The library issues library cards to people who wish to borrow books from the library. The library keeps a list of each borrower by storing the card id, borrower name, address, phone number, birthdate, date the card was issued, balance due. A card expires ten years from the time it is issued.
+The library issues library cards to people who wish to borrow books from the library. The library keeps a list of each borrower by storing the `card id`, `borrower name`, `address`, `phone number`, `birthdate`, `date the card was issued`, `balance due`. A card expires `ten years` from the time it is issued.
 If a person is less than 18 years old, then the library will also keep information about the Borrower’s parent or legal guardian such as name, address, phone number.
 A person can have only one valid library card at a given time.
 A person can’t be issued a new library card, if he owes money on an expired card.
@@ -1289,7 +1289,177 @@ BEGIN
 END
 ```
 
+Created dummy borrower data using the stored procedure below. 
 
+```sql
+CREATE PROCEDURE [dbo].[USP_InsertRandomBorrower]
+AS
+BEGIN
+    DECLARE @id INT 
+    DECLARE @ssn VARCHAR(11) 
+    DECLARE @fname VARCHAR(100) 
+    DECLARE @lname VARCHAR(100) 
+    DECLARE @address VARCHAR(200) 
+    DECLARE @phone CHAR(12) 
+    DECLARE @birthdate DATE
+    DECLARE @cardissuedate DATE
+    DECLARE @balancedue DECIMAL(6,2)
+    DECLARE @lgname VARCHAR(200) = NULL 
+    DECLARE @lgaddress VARCHAR(200) = NULL 
+    DECLARE @lgphone VARCHAR(200) = NULL 
+
+    SET @id = (SELECT MAX(id) + 1 FROM borrowers )
+    SET @fname = dbo.fn_GenerateFirstName()
+    SET @lname = dbo.fn_GenerateLastName()
+    SET @ssn = dbo.fn_GenerateRandomSsn(RAND())
+    SET @address = dbo.fn_GenerateRandomAddress()
+    SET @phone = dbo.fn_GenerateRandomPhone(RAND())
+
+    SET @birthdate = dbo.fn_GenerateRandomDate('1999-01-01','2010-01-01',RAND())
+    DECLARE @age INT = DATEDIFF(YY,@birthdate,GETDATE())
+    SET @cardissuedate = DATEADD(year, dbo.fn_GetRandomNumber(5,@age,RAND()), @birthdate)
+    
+    SET @balancedue = 0
+    
+    IF(@age < 17)
+        BEGIN
+            SET @lgname = dbo.fn_GenerateFirstName()
+            --Set randomly address of borrower same as guardians
+            DECLARE @isSameAddress BIT = CAST(ROUND(RAND(),0) AS BIT)
+            IF(@isSameAddress = 0) 
+                BEGIN 
+                    SET @lgaddress = @address 
+                END  
+            ELSE 
+                BEGIN 
+                    SET @lgaddress = dbo.fn_GenerateRandomAddress()
+                END 
+            SET @lgphone = dbo.fn_GenerateRandomPhone(RAND())
+        END 
+
+    INSERT INTO borrowers
+    VALUES 
+    (
+         ISNULL(@id,1) -- if first time 
+        ,ISNULL(@id,1) -- if first time 
+        ,@ssn  
+        ,@fname 
+        ,@lname 
+        ,@address 
+        ,@phone   
+        ,@birthdate 
+        ,@cardissuedate 
+        ,@balancedue 
+        ,0 -- default value
+        ,@lgaddress 
+        ,@lgname
+        ,@lgphone  
+    )
+
+    PRINT('Borrower sucessfully created.')
+END
+```
+
+User defined functions to create necessary dummy data
+
+```sql
+CREATE FUNCTION [dbo].[fn_GenerateFirstName]()
+RETURNS VARCHAR(100) AS
+BEGIN
+    DECLARE @fname VARCHAR(100)
+    SET @fname = 
+                    (
+                        SELECT TOP 1 p.FirstName 
+                        FROM AdventureWorks.Person.Person p  
+                        ORDER BY (SELECT id FROM dbo.view_NewID)
+                    )
+    RETURN @fname
+END;
+```
+<br/>
+
+```sql
+CREATE FUNCTION [dbo].[fn_GenerateLastName]()
+RETURNS VARCHAR(100) AS
+BEGIN
+    DECLARE @lname VARCHAR(100)
+    SET @lname = 
+                    (
+                        SELECT TOP 1 p.LastName 
+                        FROM AdventureWorks.Person.Person p  
+                        ORDER BY (SELECT id FROM dbo.view_NewID)
+                    )
+    RETURN @lname
+END;
+```
+<br/>
+
+```sql
+CREATE FUNCTION [dbo].[fn_GenerateRandomAddress]()
+RETURNS VARCHAR(200) AS
+BEGIN
+    DECLARE @address VARCHAR(200)
+    SET @address = 
+                    (
+                        SELECT TOP 1 ad.AddressLine1
+                        FROM AdventureWorks.Person.Address ad
+                        WHERE AddressLine1 IS NOT NULL
+                        ORDER BY (SELECT id FROM dbo.view_NewID)
+                    )
+    RETURN @address
+END;
+```
+<br/>
+
+```sql
+CREATE FUNCTION [dbo].[fn_GenerateRandomDate](
+	 @DateStart	DATE
+	,@DateEnd	DATE
+    ,@RAND FLOAT
+)
+RETURNS DATE AS
+BEGIN
+    DECLARE @randomDate DATE
+	SET	@randomDate = DateAdd(Day, @RAND * DateDiff(Day, @DateStart, @DateEnd), @DateStart)
+	RETURN 	@randomDate
+END;
+```
+<br/>
+
+```sql
+CREATE FUNCTION [dbo].[fn_GenerateRandomPhone](
+    @RAND FLOAT 
+)
+RETURNS VARCHAR(12) AS
+BEGIN
+    DECLARE @phone VARCHAR(12)
+    DECLARE @p1 AS CHAR(3) = (SELECT(CAST((FLOOR(@RAND*(999-100+1)+100)) AS CHAR)))
+    DECLARE @p2 AS CHAR(3) = (SELECT(CAST((FLOOR(@RAND*(999-100+1)+100)) AS CHAR)))
+    DECLARE @p3 AS CHAR(4) = (SELECT(CAST((FLOOR(@RAND*(9999-1000+1)+1000)) AS CHAR)))
+    SET @phone = (SELECT @p1 + '-' + @p2 + '-' + @p3)
+    RETURN @phone
+END;
+```
+<br/>
+
+```sql
+CREATE FUNCTION [dbo].[fn_GenerateRandomSsn](
+    @RAND FLOAT 
+)
+RETURNS VARCHAR(11) AS
+BEGIN
+    DECLARE @ssn VARCHAR(11)
+    SET @ssn = (
+                    CAST(CAST(100 + (898 * @RAND) AS INT) AS VARCHAR(3)) + 
+                    '-' + 
+                    CAST(CAST(10 + (88 * @RAND) AS INT) AS VARCHAR(2)) + 
+                    '-' + 
+                    CAST(CAST(1000 + (8998 * @RAND) AS INT) AS VARCHAR(4))
+                  )
+    RETURN @ssn
+END;
+```
+<br/>
 
 
 <!-- CONTACT -->
