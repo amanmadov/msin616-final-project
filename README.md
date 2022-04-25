@@ -130,7 +130,7 @@ CREATE PROCEDURE [dbo].[USP_InsertBook]
     ,@book_ytd_sales INT
     ,@book_notes VARCHAR(800)
     ,@book_pubdate DATETIME
-    ,@book_isbn VARCHAR(17)
+    ,@book_isbn VARCHAR(17) = NULL
     ,@pub_id AS CHAR(4) = NULL
     ,@pub_name AS VARCHAR(40) = NULL
     ,@pub_city AS VARCHAR(20) = NULL
@@ -1205,6 +1205,89 @@ FROM [pubs].[Audit].[Book]
 <br/>
 
 
+<br/>
+<br/>
+
+<div> <h2 align="center">Custom Stored Procedures,Functions and Triggers for the Lending library</h2></div>
+
+<br/>
+
+### I. Creating a Borrower on the database
+
+<br/>
+
+The library issues library cards to people who wish to borrow books from the library. The library keeps a list of each borrower by storing the card id, borrower name, address, phone number, birthdate, date the card was issued, balance due. A card expires ten years from the time it is issued.
+If a person is less than 18 years old, then the library will also keep information about the Borrower’s parent or legal guardian such as name, address, phone number.
+A person can have only one valid library card at a given time.
+A person can’t be issued a new library card, if he owes money on an expired card.
+
+<br/>
+
+```sql
+
+/*
+
+Rules for creating a card for borrower
+    - A person can have only one valid library card at a given time.
+    - A person can’t be issued a new library card, if he owes money on an expired card.
+
+*/
+
+CREATE PROCEDURE [dbo].[USP_CreateBorrower]
+     @ssn VARCHAR(11)
+    ,@fname VARCHAR(100)
+    ,@lname VARCHAR(100)
+    ,@address VARCHAR(200)
+    ,@phone CHAR(12)
+    ,@birthdate DATE
+    ,@lg_address VARCHAR(200) = NULL
+    ,@lg_name VARCHAR(100) = NULL 
+    ,@lg_phone VARCHAR(12) = NULL
+AS
+BEGIN
+    BEGIN TRY
+        -- Check if borrower has an active card  
+        IF EXISTS (SELECT TOP 1 1 FROM borrowers WHERE ssn = @ssn AND isexpired = 0)
+            BEGIN 
+                RAISERROR('A person already has an active card.', 16, 1) 
+            END
+
+         -- Check if borrower has an a balancedue on expired card 
+        IF EXISTS (SELECT TOP 1 1 FROM borrowers WHERE ssn = @ssn AND isexpired = 1 AND balancedue > 0)
+            BEGIN 
+                RAISERROR('A person owes library from previous card.', 16, 1) 
+            END
+        
+        DECLARE @id INT = (SELECT MAX(id) + 1 FROM borrowers)
+        DECLARE @cardid INT = (SELECT MAX(card_id) + 1 FROM borrowers)
+
+        -- validation of legal guardian details should be on the front-end 
+
+        INSERT INTO borrowers 
+        VALUES
+        (
+             ISNULL(@id,1) -- if first time 
+            ,ISNULL(@cardid,1) -- if first time 
+            ,@ssn  
+            ,@fname 
+            ,@lname 
+            ,@address 
+            ,@phone   
+            ,@birthdate 
+            ,GETDATE() 
+            ,0 -- initial balance  
+            ,0 -- default value
+            ,@lg_address 
+            ,@lg_name
+            ,@lg_phone
+        ) 
+    END TRY 
+    BEGIN CATCH
+        PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
+        PRINT(ERROR_MESSAGE())
+    END CATCH 
+END
+```
 
 
 
