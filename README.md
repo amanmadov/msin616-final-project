@@ -1645,15 +1645,16 @@ BEGIN
     WHERE bc.isactive = 1 AND isavailable = 1 AND c.type <> 'Reference'  
 END
 ```
-
+<br/>
 
 ### III. Discarding books on the database
 
 <br/>
-The Library assigns a Condition to each book copy. Sample condition values could be `NEW`, `EXCELLENT`, `GOOD`, `WORN`, `POOR`. Eventually copies that are in `POOR` condition will be discarded and replaced with new copies.
+
+The Library assigns a Condition to each book copy. Sample condition values could be `NEW` , `EXCELLENT` , `GOOD` , `WORN` and `POOR`. Eventually copies that are in `POOR` condition will be discarded and replaced with new copies.
 A borrower can acknowledge that he has lost a copy of a book. If so, the copy is marked `LOST` and the book’s cost is added to the card balance. Eventually the copy may be removed from the current inventory of branch copies and stored in a history file.
 
-Added CHECK CONSTRAINT on bookcopies table for the condition column
+Added CHECK CONSTRAINT on `Bookcopies` table for the condition column
 
 ```sql
 ALTER TABLE [dbo].[bookcopies]  WITH CHECK ADD  CONSTRAINT [CK__bookcopie__condi__09746778] 
