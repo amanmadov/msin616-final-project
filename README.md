@@ -1368,6 +1368,12 @@ END
 
 User defined functions to create necessary dummy data
 
+
+```sql
+-- Since inside user defined functions we cant use NEWID() or RAND()
+CREATE View [dbo].[view_NewID] AS SELECT NEWID() AS id
+```
+
 ```sql
 CREATE FUNCTION [dbo].[fn_GenerateFirstName]()
 RETURNS VARCHAR(100) AS
@@ -1418,22 +1424,24 @@ END;
 <br/>
 
 ```sql
-CREATE FUNCTION [dbo].[fn_GenerateRandomDate](
-	 @DateStart	DATE
-	,@DateEnd	DATE
-    ,@RAND FLOAT
+CREATE FUNCTION [dbo].[fn_GenerateRandomDate]
+(
+	 @DateStart DATE
+	,@DateEnd DATE
+        ,@RAND FLOAT
 )
 RETURNS DATE AS
 BEGIN
     DECLARE @randomDate DATE
-	SET	@randomDate = DateAdd(Day, @RAND * DateDiff(Day, @DateStart, @DateEnd), @DateStart)
-	RETURN 	@randomDate
+    SET	@randomDate = DateAdd(Day, @RAND * DateDiff(Day, @DateStart, @DateEnd), @DateStart)
+    RETURN @randomDate
 END;
 ```
 <br/>
 
 ```sql
-CREATE FUNCTION [dbo].[fn_GenerateRandomPhone](
+CREATE FUNCTION [dbo].[fn_GenerateRandomPhone]
+(
     @RAND FLOAT 
 )
 RETURNS VARCHAR(12) AS
@@ -1449,7 +1457,8 @@ END;
 <br/>
 
 ```sql
-CREATE FUNCTION [dbo].[fn_GenerateRandomSsn](
+CREATE FUNCTION [dbo].[fn_GenerateRandomSsn]
+(
     @RAND FLOAT 
 )
 RETURNS VARCHAR(11) AS
