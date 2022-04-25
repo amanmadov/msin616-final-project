@@ -21,10 +21,10 @@ SELECT Course FROM [TouroDb].[dbo].[Courses] WHERE CourseId = 'MSIN616'
 
 ## About The Project
 
-This is a simple database that can be used to maintain the data stored and processed by a lending library. 
+This is a simple database that can be used to maintain the data stored and processed by a **lending library**. 
 The database has been designed by modifying Microsoft's `Pubs` database.
-The `Pubs` database provides a set of fictional pieces of information about publishers, authors, titles and sales of books.
-It is now considered obsolete; it is no longer provided with `SQL Server` since the 2008 version.
+The `Pubs` database provides a set of fictional pieces of information about **publishers**, **authors**, **titles** and **sales** of books.
+It is now considered **obsolete**; it is no longer provided with `SQL Server` since the **2008 version**.
 The tables and fields are quite obvious. 
 They have names such as `Authors`, `Titles`, etc., which reflect their content. 
 And the fields also have obvious names explaining what they contain.
@@ -62,12 +62,13 @@ Below you can see the altered database diagram of the `Pubs` database
 - [x] `Gentellela`, an open source admin panel, has been used to create front-end UI.
 - [x] Stored procedures are created for the demo CRUD app.
 - [x] Some custom validations has been developed on the Front-end UI to prevent data inconsistency.
-- [x] All stored procedures for creating/modifying records are created based on the front-end validations.
+- [x] Almost all stored procedures for creating/modifying records are created based on the front-end validations.
 - [x] `[TITLES]` table have been altered and **prequel_id** column have been added to store the prequel of a book.
 - [x] Using prequel books, recursive queries can be written and executed on the `[TITLES]` table.
+- [x] `[TITLES]` table have been altered and **ISBN** column have been added.
 - [x] Some famous book series like **"A Game of Thrones"** or **"The Lord of The Rings"** are added to the `[TITLES]` table.
 - [x] Some famous author and publisher records are added to related tables.
-- [x] Some of the column types are also modified.
+- [x] Some of the **column types** are also modified.
 - [x] Created `[Audit].[Book]` table to keep audit history of the created books.
 - [x] Used `[Adventureworks].[Person].[Person]` and `[AdventureWorks].[HumanResources].[Employee]` tables to generate dummy data.
 - [x] `Jobs` table has been dropped 
@@ -84,8 +85,8 @@ Below you can see the altered database diagram of the `Pubs` database
 - [x] `Bookcopies` table has been created
 - [x] `Bookcopy_history` table has been created
 - [x] `Books_borrowed` table has been created
-- [x] Created user defined functions to generate and insert dummy data to database.
-- [x] Created triggers to prevent data inconsistency. 
+- [x] Created user defined functions and views to generate and insert **dummy data** to database.
+- [x] Created triggers to **prevent data inconsistency**. 
 
 
 <br/>
