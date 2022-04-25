@@ -1754,10 +1754,10 @@ END
 ```
 <br/>
 
-
 ### IV. Employee restrictions on the database
 
 <br/>
+
 There are several branches within this lending library system. For each branch store the `branch id` , `name` , `address` , `telephone number` , `fax number` , `head librarian` . A branch might employ several librarians, but **only one head librarian**. For each librarian, store the `employee id` , `name` , `address` , `telephone number` , `salary` and `cell phone number` . A librarian may be assigned to **only one** branch. Branches have different types of employees. Some types are : `Librarian` , `Network Administrator` , `Computer Programmer` , `IT Manager` , `Floor Manager` , `Custodian` , `Accountant` , `Data Analyst` . 
 Librarians **must have earned** a degree in library science. 
 For each employee, the library maintains `name` , `address` , `phone number` , `birthdate` , `hire date` and `type of employee` . 
@@ -1780,7 +1780,6 @@ BEGIN
     -- phone can be used as unique identifier
     DECLARE @phone VARCHAR(12) = (SELECT cellphone FROM inserted)
 
-    
     IF(@isHead = 1)
     BEGIN 
         -- Check if head librarian exists for the branch
@@ -1807,10 +1806,10 @@ BEGIN
     PRINT('Employee has been sucessfully added.')
 END
 
+GO
 
-GO
 ALTER TABLE [dbo].[employees] ENABLE TRIGGER [CheckEmployees]
-GO
+
 ```
 <br/>
 
@@ -1829,6 +1828,12 @@ BEGIN
     FROM employees
 END
 ```
+
+
+<br/>
+
+<!-- Resources -->
+## Resources
 
 <p>Link for the entire Pubs DB scripts file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/db-scripts/pubs-db-script-20220425.sql.sql" target="_blank"> View File</a></p>
 <p>Link for the entire Pubs DB bak file:<a href="https://github.com/amanmadov/msin616-final-project/blob/main/db-scripts/pubs-2022425.bak" target="_blank"> View File</a></p>
