@@ -1743,7 +1743,7 @@ END
 <br/>
 
 
-### II. Employee restrictions on the database
+### IV. Employee restrictions on the database
 
 <br/>
 There are several branches within this lending library system. For each branch store the branch id, name, address, telephone number, fax number, head librarian. A branch might employ several librarians, but `only one head librarian`. For each librarian, store the employee id, name, address, telephone number, salary, cell phone number. A librarian may be assigned to only one branch. Branches have different types of employees. Some types are : `Librarian`, `Network Administrator`, `Computer Programmer`, `IT Manager`, `Floor Manager`, `Custodian`, `Accountant`, `Data Analyst`. 
@@ -1755,6 +1755,7 @@ All employees get vacation time depending on their length of service. The minimu
 The library maintains a log of how many hours each clerical type of employee logged during each week that he worked. This log is used to produce paychecks for clerical staff at the end of each week.
 
 Trigger for ensuring restrictions on Employees table
+
 ```sql
 CREATE TRIGGER [dbo].[CheckEmployees] 
 ON [dbo].[employees]
