@@ -1468,6 +1468,9 @@ END;
 For each borrowed book copy, the library keeps track of the copy id and the card number of the person who borrowed it. The library keeps track of the date on which it was borrowed and records the due date which is `two weeks` after the borrow date. When the copy is returned this record is updated with the return date.
 When a book copy is borrowed, the copy is marked as `BORROWED`. When the book copy is returned the copy is marked as `AVAILABLE` or `NOT BORROWED`.
 A borrower can’t borrow a book from a particular branch unless that branch has a copy of that book and it is currently in stock (e.g. not being borrowed by someone else)
+When a borrower returns a book copy after the due date the system calculates the amount owed and any overdue charge incurred is added to the card balance
+A borrower can not use a card to borrow books, if he owes `more than 10 dollars` on that card.
+The library has a list of overdue charges. The charges are currently `.05` each day for `juvenile` books and `.10` per day for adult books. When a book is returned late the borrower pays charges that are in effect at the time the book is returned.
 
 Stored procedure for borrowing operation
 
@@ -1555,7 +1558,6 @@ BEGIN
     END CATCH
 END
 ```
-<br/> 
 
 Stored procedure for returning operation
 <br/> 
@@ -1615,7 +1617,7 @@ END
 Stored procedure for listing all available books
 <br/> 
 
-```
+```sql
 CREATE PROCEDURE [dbo].[USP_GetAllAvailableBooks]
 AS 
 BEGIN 
@@ -1628,6 +1630,109 @@ BEGIN
 END
 ```
 
+
+### III. Discarding books on the database
+
+<br/>
+The Library assigns a Condition to each book copy. Sample condition values could be NEW, EXCELLENT, GOOD, WORN, POOR. Eventually copies that are in POOR condition will be discarded and replaced with new copies.
+A borrower can acknowledge that he has lost a copy of a book. If so, the copy is marked `LOST` and the book’s cost is added to the card balance. Eventually the copy may be removed from the current inventory of branch copies and stored in a history file.
+
+Stored procedure for discarding book in POOR condition 
+
+```sql
+CREATE PROCEDURE [dbo].[USP_DiscardBook]
+    @copy_id INT
+AS 
+BEGIN 
+    -- Check if copy_id is valid
+    IF NOT EXISTS(SELECT TOP 1 1 FROM bookcopies WHERE copy_id = @copy_id)
+        BEGIN 
+            RAISERROR('Book copy with provided ID does not exist', 16, 1)
+        END 
+
+    -- Check if book is returned
+    IF EXISTS(SELECT TOP 1 1 FROM bookcopies WHERE copy_id = @copy_id AND isavailable = 0)
+        BEGIN 
+            RAISERROR('Book copy with provided ID has not been returned', 16, 1)
+        END 
+
+    -- Check if book has not been discarded
+    IF EXISTS(SELECT TOP 1 1 FROM bookcopies WHERE copy_id = @copy_id AND isactive = 0)
+        BEGIN 
+            RAISERROR('Book copy with provided ID has been already discarded', 16, 1)
+        END  
+
+    UPDATE bookcopies SET isavailable = 0, isactive = 0, condition = 'POOR' WHERE copy_id = @copy_id  
+END
+```
+
+Stored procedure for discarding a LOST book
+
+```sql
+CREATE PROCEDURE [dbo].[USP_DiscardLostBook] 
+    @copy_id AS INT,
+    @card_id AS INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRY
+        BEGIN TRANSACTION
+            --#region Check borrowed book exists
+            IF NOT EXISTS(SELECT TOP 1 1 FROM books_borrowed WHERE card_id = @card_id AND copy_id = @copy_id AND isReturned = 0)
+            BEGIN
+                RAISERROR('There is no borrowed book with the given details.', 16, 1) 
+            END
+            --#endregion
+            DECLARE @id INT = (SELECT id FROM books_borrowed WHERE card_id = @card_id AND copy_id = @copy_id AND isReturned = 0)
+            DECLARE @daysElapsed INT = (SELECT DATEDIFF(DD,borroweddate,GETDATE()) FROM books_borrowed WHERE id = @id)
+            
+            -- Set isReturned to true
+            UPDATE books_borrowed SET isReturned = 1, returndate = GETDATE() WHERE id = @id
+            -- Set condition to LOST
+            UPDATE bookcopies SET condition = 'LOST',isavailable = 0, isactive = 0 WHERE copy_id = @copy_id
+            DECLARE @i INT = (SELECT MAX(id) + 1 FROM bookcopy_history)
+            --Insert note to book history table
+            INSERT INTO bookcopy_history 
+            VALUES
+            (
+                ISNULL(@i,1),
+                @copy_id,
+                'Book with id:' + @copy_id + ' has been lost by user with cardid: ' + @card_id,
+                GETDATE()
+            )
+            
+            DECLARE @pr DECIMAL(6,2)
+            IF(@daysElapsed > 14)
+                BEGIN 
+                    DECLARE @typeId INT = (SELECT tc.title_type_id FROM bookcopies bc JOIN titlecategory tc ON tc.title_id = bc.title_id WHERE copy_id = @copy_id)
+                    -- Check if Juvenile
+                    IF(@typeId = 4)
+                        BEGIN 
+                            SET @pr = .05
+                        END 
+                    ELSE 
+                        BEGIN
+                            SET @pr = .10 
+                        END
+                    --Update card balancedue 
+                    UPDATE borrowers SET balancedue = balancedue + (@pr * @daysElapsed) WHERE card_id = @card_id
+                END
+        
+            PRINT('Book Has Been Sucessfully discarded as LOST.')
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
+        PRINT(ERROR_MESSAGE())
+    END CATCH
+END
+```
+<br/>
+
+```sql
+```
+<br/>
 
 
 <!-- CONTACT -->
