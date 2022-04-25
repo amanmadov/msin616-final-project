@@ -71,20 +71,20 @@ Below you can see the altered database diagram of the `Pubs` database
 - [x] Created `[Audit].[Book]` table to keep audit history of the created books.
 - [x] Used `[Adventureworks].[Person].[Person]` and `[AdventureWorks].[HumanResources].[Employee]` tables to generate dummy data.
 - [x] `Jobs` table has been dropped 
-- [x] `Employee` table has been altered
+- [x] `Employees` table has been altered
+- [x] `Employee_type` table has been created
 - [x] `Category` table has been created 
 - [x] `TitleCategory` table has been created 
 - [x] `Degrees` table has been created
 - [x] `Schools` table has been created
 - [x] `Branchs` table has been created
-- [x] `Employee_type` table has been created
 - [x] `Shift_logs` table has been created
 - [x] `Paychecks` table has been created
 - [x] `Borrowers` table has been created
 - [x] `Bookcopies` table has been created
 - [x] `Bookcopy_history` table has been created
 - [x] `Books_borrowed` table has been created
-- [x] Created user defined functions to generate and insert dummy data to db.
+- [x] Created user defined functions to generate and insert dummy data to database.
 - [x] Created triggers to prevent data inconsistency. 
 
 
