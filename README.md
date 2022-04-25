@@ -1825,8 +1825,20 @@ BEGIN
 END
 ```
 
+<br/>
+
+
+<div> <h2 align="center">Library Queries</h2></div>
 
 <br/>
+
+### I. Creating a Borrower on the database
+
+<br/>
+```sql
+```
+
+
 
 <!-- Resources -->
 ## Resources
