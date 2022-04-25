@@ -329,7 +329,8 @@ BEGIN
                     ,@book_royalty  
                     ,@book_ytd_sales  
                     ,@book_notes  
-                    ,@book_pubdate  
+                    ,@book_pubdate
+		    ,@book_isbn
                     ,@author_id  
                     ,@au_lname
                     ,@au_fname 
