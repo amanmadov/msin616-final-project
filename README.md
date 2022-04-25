@@ -1193,7 +1193,7 @@ Rules for creating a card for borrower
 
 */
 
-ALTER PROCEDURE [dbo].[USP_CreateBorrower]
+CREATE PROCEDURE [dbo].[USP_CreateBorrower]
      @ssn VARCHAR(11)
     ,@fname VARCHAR(100)
     ,@lname VARCHAR(100)
@@ -1737,6 +1737,7 @@ For librarians, the library also maintains **when the librarian earned his/her d
 The Library supports two types of PayTypes: `salaried` and `hourly` . Employees that are salaried earn a yearly salary that is paid in **12 payments on the first of each month**. Employees that are clerical, earn **an hourly wage**. 
 All employees get `vacation time` depending on their **length of service**. The minimum amount of vacation time is **two weeks**.
 The library maintains a **log of how many hours each clerical type of employee logged during each week that he worked**. This log is used to produce `paychecks` for **clerical staff** at the end of each week.
+Librarians earn between **20000 and 70000** per year. Pay rate for hourly workers must be at least **15.00**. A librarian can’t be hired before he has earned a **MS in Library Science** degree.
 
 Trigger for ensuring restrictions on `Employees` table
 
@@ -1749,9 +1750,13 @@ BEGIN
     DECLARE @branchId INT = (SELECT branch_id FROM inserted)
     DECLARE @isHead BIT = (SELECT ishead_librarian FROM inserted)
     DECLARE @empTypeId INT = (SELECT employee_type_id FROM inserted)
+    DECLARE @salaryType CHAR(1) = (SELECT salary_type FROM inserted)
+    DECLARE @salary DECIMAL(6,0) = (SELECT salary FROM inserted)
+    DECLARE @degreeid INT = (SELECT degree_id FROM inserted)
     -- phone can be used as unique identifier
     DECLARE @phone VARCHAR(12) = (SELECT cellphone FROM inserted)
 
+    
     IF(@isHead = 1)
     BEGIN 
         -- Check if head librarian exists for the branch
@@ -1775,11 +1780,30 @@ BEGIN
             RAISERROR('Employee is already assigned to', 10, 1)
             ROLLBACK
         END
+
+    -- Check if librarian exists
+    IF(@salaryType = 'C' AND @salary < 15)
+        BEGIN
+            RAISERROR('Minimum hourly pay for clerical employees must be greater than 15 dollars.', 10, 1)
+            ROLLBACK
+        END
+    
+    IF(@empTypeId = 1 AND (@salary < 20000 OR @salary > 70000))
+        BEGIN
+            RAISERROR('Salary for librarians must be between 20000 and 70000', 10, 1)
+            ROLLBACK
+        END
+    
+    IF(@empTypeId = 1 AND @degreeid <> 2)
+        BEGIN
+            RAISERROR('Librarian must have earned MS degree in Library Sciences.', 10, 1)
+            ROLLBACK
+        END
+
     PRINT('Employee has been sucessfully added.')
 END
 
 GO
-
 ALTER TABLE [dbo].[employees] ENABLE TRIGGER [CheckEmployees]
 
 ```
