@@ -1220,16 +1220,16 @@ A person **can’t be issued a new library card**, if he **owes money on an expi
 <br/>
 
 ```sql
-
 /*
 
 Rules for creating a card for borrower
     - A person can have only one valid library card at a given time.
     - A person can’t be issued a new library card, if he owes money on an expired card.
+    - a person can not be younger than 10.
 
 */
 
-CREATE PROCEDURE [dbo].[USP_CreateBorrower]
+ALTER PROCEDURE [dbo].[USP_CreateBorrower]
      @ssn VARCHAR(11)
     ,@fname VARCHAR(100)
     ,@lname VARCHAR(100)
@@ -1252,6 +1252,13 @@ BEGIN
         IF EXISTS (SELECT TOP 1 1 FROM borrowers WHERE ssn = @ssn AND isexpired = 1 AND balancedue > 0)
             BEGIN 
                 RAISERROR('A person owes library from previous card.', 16, 1) 
+            END
+
+        -- Check if borrower is older than 10
+        DECLARE @age INT = DATEDIFF(YY,@birthdate,GETDATE())
+        IF(@age < 10)
+            BEGIN 
+                RAISERROR('Borrower can not be younger than 10.', 16, 1) 
             END
         
         DECLARE @id INT = (SELECT MAX(id) + 1 FROM borrowers)
