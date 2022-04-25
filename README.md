@@ -1461,6 +1461,174 @@ END;
 ```
 <br/>
 
+### II. Borrowing and returning a book operation on the database
+
+<br/>
+
+For each borrowed book copy, the library keeps track of the copy id and the card number of the person who borrowed it. The library keeps track of the date on which it was borrowed and records the due date which is `two weeks` after the borrow date. When the copy is returned this record is updated with the return date.
+When a book copy is borrowed, the copy is marked as `BORROWED`. When the book copy is returned the copy is marked as `AVAILABLE` or `NOT BORROWED`.
+A borrower can’t borrow a book from a particular branch unless that branch has a copy of that book and it is currently in stock (e.g. not being borrowed by someone else)
+
+Stored procedure for borrowing operation
+
+```sql
+/*
+
+    Rules for borrowing a book:
+    - Any reading item that is categorized as reference may not be borrowed.
+    - Copies that are in POOR condition may not be borrowed.
+    - When a book copy is borrowed, the copy is marked as BORROWED. BORROWED copies may not be borrowed.
+    - A borrower can not use a card to borrow books, if he owes more than 10 dollars on that card.
+
+*/
+
+
+ALTER PROCEDURE [dbo].[USP_BorrowBook] 
+    @copy_id AS INT,
+    @card_id AS INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRY
+        BEGIN TRANSACTION
+            --#region Check if copy is of type Reference
+            IF EXISTS(
+                SELECT TOP 1 1 
+                FROM titlecategory tc
+                JOIN bookcopies bc ON bc.title_id = tc.title_id
+                WHERE bc.copy_id = @copy_id AND tc.title_type_id = (SELECT type_id FROM category c WHERE c.[type] = 'Reference')
+            )
+                BEGIN
+                    RAISERROR('Copy of type Reference can not be borrowed.', 16, 1) 
+                END
+            --#endregion
+            --#region Check if copy is in POOR 
+            IF EXISTS (
+                SELECT copy_id
+                FROM bookcopies 
+                WHERE condition = 'POOR' AND copy_id = @copy_id
+            )
+                BEGIN
+                    RAISERROR('Copies in POOR condition can not be borrowed.', 16, 1) 
+                END
+            --#endregion
+            --#region Check if copy is BORROWED or Discarded
+            IF EXISTS (
+                SELECT copy_id
+                FROM bookcopies 
+                WHERE (isactive = 0 OR isavailable = 0) AND copy_id = @copy_id
+            )
+                BEGIN
+                    RAISERROR('Copies that are Discarded or already Borrowed can not be borrowed.', 16, 1) 
+                END
+            --#endregion
+            --#region Check if borrower is available to borrow a book
+            IF EXISTS (
+                SELECT * 
+                FROM borrowers 
+                WHERE card_id = @card_id AND (isexpired = 1 OR balancedue >= 10)
+            )
+                BEGIN
+                    RAISERROR('Either borrowers card expired or borrower owes over 10 dollars.', 16, 1) 
+                END
+            --#endregion
+            UPDATE bookcopies SET isavailable = 0 WHERE copy_id = @copy_id
+            DECLARE @id INT = (SELECT MAX(id) + 1 FROM books_borrowed)
+            INSERT INTO books_borrowed 
+            VALUES 
+            (
+                ISNULL(@id,1),
+                @copy_id,
+                @card_id,
+                GETDATE(),
+                GETDATE() + 14,
+                0,
+                NULL
+            )
+            PRINT('Book Has Been Sucessfully Borrowed')
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
+        PRINT(ERROR_MESSAGE())
+    END CATCH
+END
+```
+<br/> 
+
+Stored procedure for returning operation
+<br/> 
+
+```sql
+CREATE PROCEDURE [dbo].[USP_ReturnBook]
+    @card_id INT,
+    @copy_id INT
+AS 
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRY
+        BEGIN TRANSACTION
+            --#region Check borrowed book exists
+            IF NOT EXISTS(SELECT TOP 1 1 FROM books_borrowed WHERE card_id = @card_id AND copy_id = @copy_id AND isReturned = 0)
+            BEGIN
+                RAISERROR('There is no borrowed book with the given details.', 16, 1) 
+            END
+            --#endregion
+            DECLARE @id INT = (SELECT id FROM books_borrowed WHERE card_id = @card_id AND copy_id = @copy_id AND isReturned = 0)
+            DECLARE @daysElapsed INT = (SELECT DATEDIFF(DD,borroweddate,GETDATE()) FROM books_borrowed WHERE id = @id)
+            --PRINT(CAST(@daysElapsed as varchar))
+
+            -- Set book available to borrow
+            UPDATE bookcopies SET isavailable = 1 WHERE copy_id = @copy_id
+            -- Set isReturned to true
+            UPDATE books_borrowed SET isReturned = 1, returndate = GETDATE() WHERE id = @id
+            
+            DECLARE @pr DECIMAL(6,2)
+            IF(@daysElapsed > 14)
+                BEGIN 
+                    DECLARE @typeId INT = (SELECT tc.title_type_id FROM bookcopies bc JOIN titlecategory tc ON tc.title_id = bc.title_id WHERE copy_id = @copy_id)
+                    -- Check if Juvenile
+                    IF(@typeId = 4)
+                        BEGIN 
+                            SET @pr = .05
+                        END 
+                    ELSE 
+                        BEGIN
+                            SET @pr = .10 
+                        END
+                    --Update card balancedue 
+                    UPDATE borrowers SET balancedue = balancedue + (@pr * @daysElapsed) WHERE card_id = @card_id
+                END
+            
+            PRINT('Book Has Been Sucessfully Returned')
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
+        PRINT(ERROR_MESSAGE())
+    END CATCH
+END
+```
+
+Stored procedure for listing all available books
+<br/> 
+
+```
+CREATE PROCEDURE [dbo].[USP_GetAllAvailableBooks]
+AS 
+BEGIN 
+    SELECT *
+    FROM bookcopies bc
+    JOIN titles t ON t.title_id = bc.title_id
+    JOIN titlecategory tc ON tc.title_id = bc.title_id
+    JOIN category c ON c.type_id = tc.title_type_id
+    WHERE bc.isactive = 1 AND isavailable = 1 AND c.type <> 'Reference'  
+END
+```
+
+
 
 <!-- CONTACT -->
 ## Contact
