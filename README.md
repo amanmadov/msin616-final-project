@@ -1289,6 +1289,17 @@ BEGIN
 END
 ```
 
+Stored procedure for expiring cards after 10 years
+
+```sql
+CREATE PROCEDURE [dbo].[USP_ExpireLibraryCards]
+AS 
+BEGIN 
+    UPDATE borrowers SET isexpired = 1
+    WHERE DATEDIFF(YY,card_issuedate,GETDATE()) >= 10
+END
+```
+
 Created dummy borrower data using the stored procedure below. 
 
 ```sql
@@ -1471,6 +1482,7 @@ A borrower can’t borrow a book from a particular branch unless that branch has
 When a borrower returns a book copy after the due date the system calculates the amount owed and any overdue charge incurred is added to the card balance
 A borrower can not use a card to borrow books, if he owes `more than 10 dollars` on that card.
 The library has a list of overdue charges. The charges are currently `.05` each day for `juvenile` books and `.10` per day for adult books. When a book is returned late the borrower pays charges that are in effect at the time the book is returned.
+Any reading item that is categorized as reference may not be borrowed.
 
 Stored procedure for borrowing operation
 
@@ -1634,7 +1646,7 @@ END
 ### III. Discarding books on the database
 
 <br/>
-The Library assigns a Condition to each book copy. Sample condition values could be NEW, EXCELLENT, GOOD, WORN, POOR. Eventually copies that are in POOR condition will be discarded and replaced with new copies.
+The Library assigns a Condition to each book copy. Sample condition values could be `NEW`, `EXCELLENT`, `GOOD`, `WORN`, `POOR`. Eventually copies that are in `POOR` condition will be discarded and replaced with new copies.
 A borrower can acknowledge that he has lost a copy of a book. If so, the copy is marked `LOST` and the book’s cost is added to the card balance. Eventually the copy may be removed from the current inventory of branch copies and stored in a history file.
 
 Stored procedure for discarding book in POOR condition 
@@ -1730,9 +1742,81 @@ END
 ```
 <br/>
 
+
+### II. Employee restrictions on the database
+
+<br/>
+There are several branches within this lending library system. For each branch store the branch id, name, address, telephone number, fax number, head librarian. A branch might employ several librarians, but `only one head librarian`. For each librarian, store the employee id, name, address, telephone number, salary, cell phone number. A librarian may be assigned to only one branch. Branches have different types of employees. Some types are : `Librarian`, `Network Administrator`, `Computer Programmer`, `IT Manager`, `Floor Manager`, `Custodian`, `Accountant`, `Data Analyst`. 
+Librarians `must have earned` a degree in library science. 
+For each employee, the library maintains name, address, phone number, birthdate, hire date, type of employee. 
+For librarians, the library also maintains when the librarian earned his/her degree and the school at which the librarian earned the degree
+The Library supports two types of PayTypes: `salaried` and `hourly`. Employees that are salaried earn a yearly salary that is paid in 12 payments on the first of each month. Employees that are clerical, earn an hourly wage. 
+All employees get vacation time depending on their length of service. The minimum amount of vacation time is `two weeks`.
+The library maintains a log of how many hours each clerical type of employee logged during each week that he worked. This log is used to produce paychecks for clerical staff at the end of each week.
+
+Trigger for ensuring restrictions on Employees table
 ```sql
+CREATE TRIGGER [dbo].[CheckEmployees] 
+ON [dbo].[employees]
+INSTEAD OF INSERT
+AS
+BEGIN
+    DECLARE @branchId INT = (SELECT branch_id FROM inserted)
+    DECLARE @isHead BIT = (SELECT ishead_librarian FROM inserted)
+    DECLARE @empTypeId INT = (SELECT employee_type_id FROM inserted)
+    -- phone can be used as unique identifier
+    DECLARE @phone VARCHAR(12) = (SELECT cellphone FROM inserted)
+
+    
+    IF(@isHead = 1)
+    BEGIN 
+        -- Check if head librarian exists for the branch
+        IF EXISTS(SELECT TOP 1 1 FROM employees WHERE branch_id = @branchId AND ishead_librarian = 1)
+        BEGIN
+            RAISERROR('There is already a head librarian on this branch', 10, 1)
+            ROLLBACK
+        END
+
+        -- Check if employee is of type librarian
+        IF(@empTypeId <> 1)
+            BEGIN
+                RAISERROR('Only librarians can be head librarian', 10, 1)
+                ROLLBACK
+            END
+    END
+    
+    -- Check if librarian exists
+    IF EXISTS(SELECT TOP 1 1 FROM employees WHERE cellphone = @phone AND isActive = 1)
+        BEGIN
+            RAISERROR('Employee is already assigned to', 10, 1)
+            ROLLBACK
+        END
+    PRINT('Employee has been sucessfully added.')
+END
+
+
+GO
+ALTER TABLE [dbo].[employees] ENABLE TRIGGER [CheckEmployees]
+GO
 ```
 <br/>
+
+Stored procedure for updating yearly Employee Vacation Hours 
+
+```sql
+CREATE PROCEDURE [dbo].[USP_UpdateEmployeeVacationHours]
+AS 
+BEGIN 
+    UPDATE employees 
+    SET vacation_hours = CASE 
+                            WHEN DATEDIFF(YY,hiredate,GETDATE()) BETWEEN 0 AND 5 THEN 114
+                            WHEN DATEDIFF(YY,hiredate,GETDATE()) BETWEEN 5 AND 10 THEN 154
+                            ELSE 200
+                         END
+    FROM employees
+END
+```
+
 
 
 <!-- CONTACT -->
