@@ -21,9 +21,7 @@ SELECT Course FROM [TouroDb].[dbo].[Courses] WHERE CourseId = 'MSIN616'
 
 ## About The Project
 
-Design a database can be used to maintain the data stored and processed by a lending library.
-
-This is the simple database that can be used to maintain the data stored and processed by a lending library. 
+This is a simple database that can be used to maintain the data stored and processed by a lending library. 
 The database has been designed by modifying Microsoft's `Pubs` database.
 The `Pubs` database provides a set of fictional pieces of information about publishers, authors, titles and sales of books.
 It is now considered obsolete; it is no longer provided with `SQL Server` since the 2008 version.
@@ -40,12 +38,12 @@ Below you can see the altered database diagram of the `Pubs` database
 
 <br/>
 
-![Database Schema Screen Shot](https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/db-schema.png)
+![Database Schema Screen Shot](https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/erd.png)
 
 <br/>
 
 <p>
-  Link for the database schema:<a href="https://drawsql.app/softttt/diagrams/msin616-pubs-db" target="_blank"> DB Schema</a>
+  Link for the database schema:<a href="https://drawsql.app/softttt/diagrams/copy-of-msin616-pubs-db"> DB Schema</a>
 </p>
 
 <br/>
@@ -60,18 +58,33 @@ Below you can see the altered database diagram of the `Pubs` database
 
 ## Modifications on the Database
 
-- [x] `[TITLES]` table have been altered and **prequel_id** column have been added to store the prequel of a book.
-- [x] Using prequel books, recursive queries can be written and executed on the `[TITLES]` table.
-- [x] Some famous book series like **"A Game of Thrones"** or **"The Lord of The Rings"** are added to the `[TITLES]` table.
-- [x] Some famous author and publisher records are added to related tables.
-- [x] Some of the column types are also modified.
 - [x] To simulate a real world full stack app, a demo CRUD app with front-end UI has been developed.
 - [x] `Gentellela`, an open source admin panel, has been used to create front-end UI.
 - [x] Stored procedures are created for the demo CRUD app.
 - [x] Some custom validations has been developed on the Front-end UI to prevent data inconsistency.
 - [x] All stored procedures for creating/modifying records are created based on the front-end validations.
+- [x] `[TITLES]` table have been altered and **prequel_id** column have been added to store the prequel of a book.
+- [x] Using prequel books, recursive queries can be written and executed on the `[TITLES]` table.
+- [x] Some famous book series like **"A Game of Thrones"** or **"The Lord of The Rings"** are added to the `[TITLES]` table.
+- [x] Some famous author and publisher records are added to related tables.
+- [x] Some of the column types are also modified.
 - [x] Created `[Audit].[Book]` table to keep audit history of the created books.
 - [x] Used `[Adventureworks].[Person].[Person]` and `[AdventureWorks].[HumanResources].[Employee]` tables to generate dummy data.
+- [x] Jobs table has been dropped 
+- [x] Employee table has been altered
+- [x] Category table has been created 
+- [x] TitleCategory table has been created 
+- [x] Degrees table has been created
+- [x] Schools table has been created
+- [x] Branchs table has been created
+- [x] Librarians table has been created
+- [x] Employee_type table has been created
+- [x] Shift_logs table has been created
+- [x] Paychecks table has been created
+- [x] Borrowers table has been created
+- [x] Bookcopies table has been created
+- [x] Bookcopy_history table has been created
+- [x] Books_borrowed table has been created
 
 
 <br/>
