@@ -84,6 +84,8 @@ Below you can see the altered database diagram of the `Pubs` database
 - [x] `Bookcopies` table has been created
 - [x] `Bookcopy_history` table has been created
 - [x] `Books_borrowed` table has been created
+- [x] Created user defined functions to generate and insert dummy data to db.
+- [x] Created triggers to prevent data inconsistency. 
 
 
 <br/>
@@ -116,19 +118,19 @@ Stored procedure for adding a book into the `TITLES` table
 
 /*
     Created by Nury Amanmadov
-    Date created: 10.04.2022 ddMMyyyy
+    Date created: 10.04.2022
 */
 
 CREATE PROCEDURE [dbo].[USP_InsertBook] 
      @book_title AS VARCHAR(100)
     ,@prequel_id AS VARCHAR(6) = NULL
-    ,@book_type AS CHAR(40)
     ,@book_price AS MONEY
     ,@book_advance AS MONEY
     ,@book_royalty INT
-    ,@book_ytd_sales INT
-    ,@book_notes VARCHAR(800)
-    ,@book_pubdate DATETIME
+	,@book_ytd_sales INT
+	,@book_notes VARCHAR(800)
+	,@book_pubdate DATETIME
+    ,@book_isbn VARCHAR(17)
     ,@pub_id AS CHAR(4) = NULL
     ,@pub_name AS VARCHAR(40) = NULL
     ,@pub_city AS VARCHAR(20) = NULL
@@ -147,15 +149,14 @@ BEGIN
     SET NOCOUNT ON;
     BEGIN TRY
         BEGIN TRANSACTION
+
             --#region Insert into Publisher Table
+
                 IF (@pub_id IS NULL)
                     --#region Create New Publisher
                     BEGIN 
                         -- Create pub_id as Max Id + 1
-                        SET @pub_id =   (
-                                            SELECT CAST(MAX(CAST(pub_id AS INT) + 1) AS VARCHAR) 
-                                            FROM publishers
-                                        )
+                        SET @pub_id = (SELECT CAST(MAX(CAST(pub_id AS INT) + 1) AS VARCHAR) FROM publishers AS VARCHAR)
                         
                         INSERT INTO [pubs].[dbo].[publishers] 
                         VALUES  (
@@ -204,24 +205,26 @@ BEGIN
                                 WHERE p.pub_id = @pub_id 
                             END    
                     END 
+
             --#endregion
 
             --#region Insert into Titles Table
+
                 --#region Creating Random TitleId
-                DECLARE @t1 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                DECLARE @t2 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                DECLARE @t3 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                DECLARE @t4 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                DECLARE @t5 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                DECLARE @t6 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                DECLARE @random_title_id [dbo].[tid] = (SELECT @t1 + @t2 + @t3 + @t4 + @t5 + @t6)
+                    DECLARE @t1 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
+                    DECLARE @t2 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
+                    DECLARE @t3 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                    DECLARE @t4 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                    DECLARE @t5 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                    DECLARE @t6 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
+                    DECLARE @random_title_id [dbo].[tid] = (SELECT @t1 + @t2 + @t3 + @t4 + @t5 + @t6)
                 --#endregion
+
                 INSERT INTO titles
                 VALUES
                 (
                      @random_title_id
                     ,@book_title
-                    ,@book_type
                     ,@pub_id
                     ,@book_price
                     ,@book_advance
@@ -230,11 +233,13 @@ BEGIN
                     ,@book_notes
                     ,@book_pubdate
                     ,@prequel_id
+                    ,@book_isbn
                 )
 
             --#endregion
 
             --#region Insert into Authors Table
+
                 DECLARE @au_zip CHAR(5)
                 DECLARE @au_contract BIT
                 DECLARE @au_address VARCHAR(40)
@@ -256,11 +261,7 @@ BEGIN
                         -- SELECT @au_contract
 
                         -- Setting Random Address from AdventureWorks DB Person.Address table
-                        SET @au_address =   (
-                                                SELECT TOP 1 LEFT(AddressLine1,40) 
-                                                FROM AdventureWorks.Person.Address 
-                                                WHERE AddressLine1 IS NOT NULL ORDER BY NEWID()
-                                            )
+                        SET @au_address = (SELECT TOP 1 LEFT(AddressLine1,40) FROM AdventureWorks.Person.Address WHERE AddressLine1 IS NOT NULL ORDER BY NEWID())
                     
                         INSERT INTO authors 
                         VALUES
@@ -293,9 +294,11 @@ BEGIN
                                 WHERE a.au_id = @author_id
                             END 
                     END
+
             --#endregion
 
             --#region Insert into TitleAuthor Table
+            
                 INSERT INTO titleauthor
                 VALUES
                 (
@@ -307,6 +310,7 @@ BEGIN
             --#endregion
 
             --#region Insert into Audit Table
+
                 INSERT INTO Audit.Book 
                 VALUES
                 (
@@ -318,7 +322,7 @@ BEGIN
                     ,@random_title_id 
                     ,@prequel_id
                     ,@book_title 
-                    ,@book_type 
+                    ,NULL 
                     ,@book_price 
                     ,@book_advance 
                     ,@book_royalty  
@@ -342,6 +346,7 @@ BEGIN
             --#endregion
 
             PRINT('Book Has Been Sucessfully Added')
+
         COMMIT TRANSACTION
     END TRY
     BEGIN CATCH
@@ -350,7 +355,6 @@ BEGIN
         PRINT(ERROR_MESSAGE())
     END CATCH
 END
-
 ```
 
 <br/>
