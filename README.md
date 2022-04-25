@@ -673,92 +673,56 @@ Stored procedure for adding an employee to the `Employee` table
 <br/>
 
 ```sql
+
 /*
     Created by Nury Amanmadov
-    Date created: 11.04.2022 ddMMyyyy
+    Date created: 11.04.2022
 */
 
 CREATE PROCEDURE [dbo].[USP_CreateEmployee]
-     @pub_id AS CHAR(4)
-    ,@emp_firstname AS VARCHAR(255) = NULL
-    ,@emp_minit AS VARCHAR(255) = NULL 
-    ,@emp_lastname AS VARCHAR(255) = NULL
-    ,@emp_job_id AS INT
-    ,@emp_job_lvl AS INT = NULL
-    ,@emp_hire_date AS DATETIME = NULL
+(
+     @firstname AS VARCHAR(100)
+    ,@lastname AS VARCHAR(100)
+    ,@address AS VARCHAR(200)
+    ,@homephone AS CHAR(12)
+    ,@cellphone AS CHAR(12)
+    ,@salary_type AS CHAR(1)
+    ,@salary AS DECIMAL(6,0)
+    ,@birthdate DATE
+    ,@degee_id INT
+    ,@school_id INT
+    ,@branch_id INT
+    ,@ishead_librarin BIT
+    ,@emp_type_id INT
+    ,@degreedate DATE
+)
 AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY 
         BEGIN TRANSACTION
-            --#region Insert into Employee Table
-
-                --#region Create Random Id for Emp_id
-                -- Emp Id pattern: '[A-Z][A-Z][A-Z][1-9][0-9][0-9][0-9][0-9][FM]'
-                DECLARE @random_emp_id AS dbo.empid
-                DECLARE @l1 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                DECLARE @l2 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                DECLARE @l3 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                DECLARE @l4 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                DECLARE @l5 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
-                DECLARE @l6 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
-                DECLARE @l7 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
-                DECLARE @l8 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-0+1)+0)) AS CHAR)))
-                DECLARE @l9 AS CHAR(1) = (SELECT((SUBSTRING('FM',(ABS(CHECKSUM(NEWID())) % 2) + 1, 1))))
-                SET @random_emp_id = (SELECT @l1 + @l2 + @l3 + @l4 + @l5 + @l6 + @l7 + @l8 + @l9)
-                -- PRINT('EmpID with value: '+ CAST(@random_emp_id AS VARCHAR) + ' is created.')
-                --#endregion
-
-                -- Using Person table on AdventureWorks DB we can generate random names for employee
-                IF (@emp_firstname IS NULL) 
-                    SET @emp_firstname = (
-                                            SELECT TOP 1 LEFT(p.FirstName,20) 
-                                            FROM AdventureWorks.Person.Person p 
-                                            ORDER BY NEWID()
-                                         )
-                
-                IF (@emp_minit IS NULL) 
-                    SET @emp_minit = (
-                                        SELECT TOP 1 LEFT(p.MiddleName,1) 
-                                        FROM AdventureWorks.Person.Person p 
-                                        WHERE p.MiddleName IS NOT NULL 
-                                        ORDER BY NEWID()
-                                     )
-                
-                IF (@emp_lastname IS NULL) 
-                    SET @emp_lastname = (
-                                            SELECT TOP 1 LEFT(p.LastName,30) 
-                                            FROM AdventureWorks.Person.Person p 
-                                            ORDER BY NEWID()
-                                        )
-                
-                -- Using jobs table we can get random job level between max_lvl and min_lvl of the generated @emp_job_id
-                IF (@emp_job_lvl IS NULL)
-                    SET @emp_job_lvl =  (
-                                            SELECT TOP 1 FLOOR(RAND() * (max_lvl - min_lvl + 1) + min_lvl) 
-                                            FROM [pubs].[dbo].[jobs] 
-                                            WHERE job_id = @emp_job_id ORDER BY NEWID()
-                                        )
-                
-                -- Using Employee table on AdventureWorks DB we can generate random hiredate for employee
-                IF (@emp_hire_date IS NULL)
-                    SET @emp_hire_date = (
-                                            SELECT TOP 1 CAST(e.HireDate AS DATETIME) 
-                                            FROM AdventureWorks.HumanResources.Employee e 
-                                            ORDER BY NEWID()
-                                         )
-
-                INSERT INTO [pubs].[dbo].[employee] 
+            DECLARE @id INT = (SELECT MAX(employee_id) + 1 FROM employees)
+                INSERT INTO [pubs].[dbo].[employees] 
                 VALUES (
-                             @random_emp_id
-                            ,@emp_firstname
-                            ,@emp_minit
-                            ,@emp_lastname
-                            ,@emp_job_id
-                            ,@emp_job_lvl
-                            ,@pub_id
-                            ,@emp_hire_date
-                        )
+                             @id
+                            ,@firstname 
+                            ,@lastname 
+                            ,@address 
+                            ,@homephone 
+                            ,@cellphone  
+                            ,@salary_type 
+                            ,@salary  
+                            ,@birthdate 
+                            ,GETDATE() 
+                            ,114 
+                            ,@degee_id 
+                            ,@school_id 
+                            ,@branch_id 
+                            ,@ishead_librarin 
+                            ,@emp_type_id 
+                            ,@degreedate
+                            ,1
+                       )
             --#endregion
             PRINT('Employee Has Been Sucessfully Added')
         COMMIT TRANSACTION
