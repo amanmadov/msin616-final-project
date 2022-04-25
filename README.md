@@ -21,7 +21,10 @@ SELECT Course FROM [TouroDb].[dbo].[Courses] WHERE CourseId = 'MSIN616'
 
 ## About The Project
 
-This is the simple database designed using Microsoft's `Pubs` database.
+Design a database can be used to maintain the data stored and processed by a lending library.
+
+This is the simple database that can be used to maintain the data stored and processed by a lending library. 
+The database has been designed by modifying Microsoft's `Pubs` database.
 The `Pubs` database provides a set of fictional pieces of information about publishers, authors, titles and sales of books.
 It is now considered obsolete; it is no longer provided with `SQL Server` since the 2008 version.
 The tables and fields are quite obvious. 
