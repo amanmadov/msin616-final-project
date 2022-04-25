@@ -241,14 +241,6 @@
                                         </div>
 
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-mname">Middle Name
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <input type="text" id="a-mname"  class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-fname">First Name<span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 ">
@@ -256,135 +248,144 @@
                                             </div>
                                         </div>
 
-                                        <!-- Job Select -->
-                                            <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3  label-align">Job<span class="required">*</span></label>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <select class="select2_single form-control" tabindex="-1" id="jobSelectList"  onchange="showAuthorDiv()" required="required">
-                                                        <option id="000000" value="null">----Select Job----</option>
-                                                        <option id="1" value = "1">New Hire - Job not specified</option>
-                                                        <option id="2" value = "2">Chief Executive Officer</option>
-                                                        <option id="3" value = "3">Business Operations Manager</option>
-                                                        <option id="4" value = "4">Chief Financial Officier</option>
-                                                        <option id="5" value = "5">Publisher</option>
-                                                        <option id="6" value = "6">Managing Editor</option>
-                                                        <option id="7" value = "7">Marketing Manager</option>
-                                                        <option id="8" value = "8">Public Relations Manager</option>
-                                                        <option id="9" value = "9">Acquisitions Manager</option>
-                                                        <option id="10" value = "10">Productions Manager</option>
-                                                        <option id="11" value = "11">Operations Manager</option>
-                                                        <option id="12" value = "12">Editor</option>
-                                                        <option id="13" value = "13">Sales Representative</option>
-                                                        <option id="14" value = "14">Designer</option>
-                                                        <!-- <option id="create" value = "create">Create New Job</option> -->
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        <!-- Job Select -->
-
-                                        <!-- Author Job Div -->
-                                            <div class="field item form-group" id="jobDiv" style="display: none;">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align"><span class="required">*</span></label>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <div class="x_panel" style="border:2px solid rgb(71, 71, 234)">
-                                                        <div class="x_content">
-                                                            <div class="field item form-group">
-                                                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-phone">Job Description<span class="required">*</span>
-                                                                </label>
-                                                                <div class="col-md-6 col-sm-6 ">
-                                                                    <input id="a-phone" name="a-phone" type="tel" required='required' class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="field item form-group">
-                                                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-city">Min Level<span class="required">*</span>
-                                                                </label>
-                                                                <div class="col-md-6 col-sm-6 ">
-                                                                    <input type="text" id="a-city" name="a-city" required="required" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="field item form-group">
-                                                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-state">Max Level<span class="required">*</span>
-                                                                </label>
-                                                                <div class="col-md-6 col-sm-6 ">
-                                                                    <input type="text" id="a-state" name="a-state" required="required" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <!-- Author Job Div -->
-
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3  label-align">Job Level<span class="required">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input class="form-control" type="number" class='number' name="au-order" data-validate-minmax="1,10" required='required'>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-add">Address<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <input type="text" id="a-add" name="a-add" required="required" class="form-control">
                                             </div>
                                         </div>
 
-                                        
-                                        <!-- Publisher Select -->
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3  label-align">Publisher<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-hphone">Home Phone</label>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <input type="text" id="a-hphone" name="a-hphone" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="a-cphone">Cell Phone<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <input type="text" id="a-cphone" name="a-cphone" required="required" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <!-- Salary Select -->
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="salarySelectList">Salary Type<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <select class="select2_single form-control" tabindex="-1" id="publisherSelectList" onchange="showPublisherDiv()" required="required">
-                                                    <option value="null">----Select Publisher----</option>
-                                                    <option id="0736" value="0736"> New Moon Books</option>
-                                                    <option id="0877" value="0877"> Binnet & Hardley</option>
-                                                    <option id="1389" value="1389"> AlGOdata Infosystems</option>
-                                                    <option id="9952" value="9952"> Scootney Books</option>
-                                                    <option id="1622" value="1622"> Five Lakes Publishing</option>
-                                                    <option id="1756" value="1756"> Ramona Publishers</option>
-                                                    <option id="9901" value="9901"> GGG&G</option>
-                                                    <option id="9999" value="9999"> Lucerne Publishing</option>                                                     
-                                                    <!-- <option value="createPublisher">Create New Publisher...</option> -->
+                                                <select class="select2_single form-control" tabindex="-1" id="salarySelectList" required="required">
+                                                    <option id="1" value = "1">Salaried</option>
+                                                    <option id="2" value = "2">Clerical</option>
                                                 </select>
                                             </div>
                                         </div>
+                                        <!-- Salary Select -->
 
-                                        <!-- Publisher Create Div -->
-                                            <div class="field item form-group" id="publisherDiv" style="display: none;">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align"><span class="required">*</span></label>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <div class="x_panel"  style="border:2px solid rgb(71, 71, 234)">
-                                                        <div class="x_content">
-                                                            <div class="field item form-group">
-                                                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Name<span class="required">*</span>
-                                                                </label>
-                                                                <div class="col-md-6 col-sm-6 ">
-                                                                    <input type="text" id="pub-name" required="required" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="field item form-group">
-                                                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">City <span class="required">*</span>
-                                                                </label>
-                                                                <div class="col-md-6 col-sm-6 ">
-                                                                    <input type="text" id="pub-city" name="pub-city" required="required" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="field item form-group">
-                                                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">State <span class="required">*</span>
-                                                                </label>
-                                                                <div class="col-md-6 col-sm-6 ">
-                                                                    <input type="text" id="pub-state" name="pub-state" required="required" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="field item form-group">
-                                                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Country <span class="required">*</span>
-                                                                </label>
-                                                                <div class="col-md-6 col-sm-6 ">
-                                                                    <input type="text" id="pub-country" name="pub-country" required="required" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="sal">Salary <span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input class="form-control" type="number" class='number' name="sal" data-validate-minmax="10,1000000" required='required'>
                                             </div>
-                                        <!-- Publisher Create Div -->
+                                        </div>
+
+
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="bdate">BirthDate<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input class="form-control" class='date' type="date" name="bdate" required='required'>
+                                            </div>
+                                        </div>
+
+                                        <!-- Degree Select -->
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="degreeSelectList">Degree</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <select class="select2_single form-control" id="degreeSelectList">
+                                                    <option id="1" value = "1">Bachelors Degree in Library Science</option>
+                                                    <option id="2" value = "2">Masters Degree in Library Science</option>
+                                                    <option id="3" value = "3">Online Masters of Library Science</option>
+                                                    <option id="4" value = "4">Graduate Certificate in Library Science</option>
+                                                    <option id="999" value = "999">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Degree Select -->
+
+                                        <!-- School Select -->
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="schoolSelectList">School</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <select class="select2_single form-control"   id="schoolSelectList">
+                                                    <option id="1" value = "1">Touro University</option>
+                                                    <option id="2" value = "2">University of North Carolina at Chapel Hill</option>
+                                                    <option id="3" value = "3">University of Washington</option>
+                                                    <option id="4" value = "4">University of Maryland at College Park</option>
+                                                    <option id="5" value = "5">University of Texas at Austin</option>
+                                                    <option id="6" value = "6">The State University of New Jersey at New Brunswick</option>
+                                                    <option id="7" value = "7">Syracuse University</option>
+                                                    <option id="8" value = "8">University of Illinois at Urbana-Champaign</option>
+                                                    <option id="9999" value = "9999">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- School Select -->
+
+                                        <!-- Branch Select -->
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="branchSelectList">Branch</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <select class="select2_single form-control"   id="branchSelectList">
+                                                    <option id="1" value = "1">Brooklyn</option>
+                                                    <option id="2" value = "2">Central Valley</option>
+                                                    <option id="3" value = "3">Clay</option>
+                                                    <option id="4" value = "4">Valley Stream</option>
+                                                    <option id="5" value = "5">Ithaca</option>
+                                                    <option id="6" value = "6">Lake George</option>
+                                                    <option id="7" value = "7">De Witt</option>
+                                                    <option id="8" value = "8">New Hartford</option>
+                                                    <option id="9" value = "9">New York</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Branch Select -->
+
+                                        <!-- headlib Select -->
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="bhSelectList">Is Branch Head</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <select class="select2_single form-control" id="bhSelectList">
+                                                    <option id="1" value = "1">No</option>
+                                                    <option id="2" value = "2">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- headlib Select -->
+
+                                        <!-- employeetype Select -->
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="etSelectList">Employee type</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <select class="select2_single form-control" id="etSelectList">
+                                                    <option id="1" value="1">Librarian</option>
+                                                    <option id="2" value="2">Network Administrator</option>
+                                                    <option id="3" value="3">Computer Programmer</option>
+                                                    <option id="4" value="4">IT Manager</option>
+                                                    <option id="5" value="5">Floor Manager</option>
+                                                    <option id="6" value="6">Custodian</option>
+                                                    <option id="7" value="7">Accountant</option>
+                                                    <option id="8" value="8">Data Analyst</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- employeetype Select -->
+
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="ddate">Degree Date<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input class="form-control" class='date' type="date" name="ddate" required='required'>
+                                            </div>
+                                        </div>
                                         
-
-                                        <!-- <div class="ln_solid"> </div> -->
-
                                         <div class="form-group">
                                             <div class="col-md-6 offset-md-3">
                                                 <button type='submit' class="btn btn-primary">Create</button>
@@ -419,23 +420,6 @@
     
     <!-- Javascript functions	-->
 	<script>
-
-
-        function showAuthorDiv(){
-            const authorFormDiv = document.getElementById("jobDiv");
-            const dropDownA = document.getElementById("jobSelectList"); 
-            let style = (dropDownA.value == "create") ? "flex" : "none";
-            authorFormDiv.style.display = style;
-        }
-
-        function showPublisherDiv(){
-            const publisherFormDiv = document.getElementById("publisherDiv");
-            const dropDownP = document.getElementById("publisherSelectList"); 
-            let style = (dropDownP.value == "createPublisher") ? "flex" : "none";
-            publisherFormDiv.style.display = style;
-        }
-
-
 		function hideshow(){
 			var password = document.getElementById("password1");
 			var slash = document.getElementById("slash");
