@@ -1840,6 +1840,25 @@ List the title of the book that is the most popular book to be borrowed. (Namely
 <br/>
 
 ```sql
+SELECT   t.title
+        ,COUNT(id) AS [Borrowed Count]
+FROM books_borrowed bb 
+JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+JOIN titles t ON t.title_id = bc.title_id
+GROUP BY t.title
+HAVING COUNT(id) >= ALL
+(
+    SELECT  COUNT(id) AS [Borrowed Count]
+    FROM books_borrowed bb 
+    JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+    JOIN titles t ON t.title_id = bc.title_id
+    GROUP BY t.title
+)
+```
+
+Borrowed books with total count 
+
+```sql
 SELECT  t.title
         ,COUNT(id) AS [Borrowed Count]
 FROM books_borrowed bb 
@@ -1848,6 +1867,8 @@ JOIN titles t ON t.title_id = bc.title_id
 GROUP BY t.title
 ORDER BY [Borrowed Count] DESC
 ```
+
+
 
 <br/>
 
