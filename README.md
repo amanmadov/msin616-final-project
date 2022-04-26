@@ -1877,6 +1877,439 @@ WHERE subQ.RowNo = 3
 
 <br/>
 
+### Query 3
+
+For each employee, list his/her name and the name of the branch for which he/she is currently working and how many employees are working for that branch.
+
+<br/>
+
+```sql
+SELECT  e.employee_id
+        ,e.first_name + ' ' + e.last_name AS [Fullname]
+        ,b.name
+        ,COUNT(e.employee_id) OVER (PARTITION BY b.branch_id) AS [Branch Employee Count]
+FROM employees e 
+JOIN branchs b ON e.branch_id = b.branch_id
+ORDER BY [Branch Employee Count]  DESC
+```
+
+<br/>
+
+### Query 4
+
+For each book, list the title and publisher of the book and the number of copies currently stocked for this title in each branch, regardless of whether it is currently on loan.
+
+<br/>
+
+```sql
+SELECT  t.title
+        ,t.title_id
+        ,p.pub_name
+        ,bc.branch_id
+        ,COUNT(bc.title_id) AS [Copy Count]
+FROM titles t 
+JOIN publishers p ON t.pub_id = p.pub_id
+JOIN bookcopies bc ON bc.title_id = t.title_id
+GROUP BY t.title
+        ,t.title_id
+        ,p.pub_name
+        ,bc.branch_id
+```
+
+<br/>
+
+
+### Query 5
+
+For each quarter of the current year, for each branch list the total amount of books that have been borrowed in that quarter. The first quarter is months Jan, Feb, Mar. The second quarter is months Apr , May , June etc. List the amounts for each of these quarters, on the same row.
+
+<br/>
+
+```sql
+SELECT  b.name
+        ,(
+            SELECT COUNT(bb.copy_id) AS [Total]
+            FROM bookcopies bc 
+            JOIN books_borrowed bb ON bb.copy_id = bc.copy_id
+            WHERE MONTH(bb.borroweddate) IN (1,2,3) AND b.branch_id = bc.branch_id
+        ) AS [Count Of First Quarter]
+        ,(
+            SELECT COUNT(bb.copy_id) AS [Total]
+            FROM bookcopies bc 
+            JOIN books_borrowed bb ON bb.copy_id = bc.copy_id
+            WHERE MONTH(bb.borroweddate) IN (4,5,6) AND b.branch_id = bc.branch_id
+        ) AS [Count Of Second Quarter]
+        ,(
+            SELECT COUNT(bb.copy_id) AS [Total]
+            FROM bookcopies bc 
+            JOIN books_borrowed bb ON bb.copy_id = bc.copy_id
+            WHERE MONTH(bb.borroweddate) IN (7,8,9) AND b.branch_id = bc.branch_id
+        ) AS [Count Of Third Quarter]
+        ,(
+            SELECT COUNT(bb.copy_id) AS [Total]
+            FROM bookcopies bc 
+            JOIN books_borrowed bb ON bb.copy_id = bc.copy_id
+            WHERE MONTH(bb.borroweddate) IN (10,11,12) AND b.branch_id = bc.branch_id
+        ) AS [Count Of Fourth Quarter]
+FROM branchs b
+```
+
+<br/>
+
+
+### Query 6
+
+For each card, list the name of the borrower and the name of the books he currently has borrowed on the card, that have not yet been returned
+
+<br/>
+
+```sql
+SELECT  b.first_name + ' ' + b.last_name AS [Borrower Fullname]
+        ,t.title
+FROM borrowers b 
+JOIN books_borrowed bb ON b.card_id = bb.card_id
+JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+JOIN titles t ON t.title_id = bc.title_id
+WHERE bb.isReturned = 0
+ORDER BY [Borrower Fullname]
+```
+
+<br/>
+
+
+### Query 7
+
+For each card, list the name of the borrower and on the same row the quantity of books that have been borrowed in 2020 and the quantity of books that have been borrowed in 2021 with that card.
+
+<br/>
+
+```sql
+SELECT  b.first_name + ' ' + b.last_name AS [Borrower Fullname]
+        ,(
+            SELECT COUNT(bb.id)
+            FROM books_borrowed bb 
+            WHERE YEAR(bb.borroweddate) = 2020 AND b.card_id = bb.card_id
+        ) AS [Borrowed2020]
+        ,(
+            SELECT COUNT(bb.id)
+            FROM books_borrowed bb 
+            WHERE YEAR(bb.borroweddate) = 2021 AND b.card_id = bb.card_id
+        ) AS [Borrowed2021]
+        ,(
+            SELECT COUNT(bb.id)
+            FROM books_borrowed bb 
+            WHERE YEAR(bb.borroweddate) = 2022 AND b.card_id = bb.card_id
+        ) AS [Borrowed2022]
+FROM borrowers b 
+```
+
+<br/>
+
+
+### Query 8
+
+For a specific card, list which other cards borrowed ALL the same books as was borrowed using this card. (divide query). You choose the card you will be matching.
+
+<br/>
+
+```sql
+SELECT AllBooks.card_id
+FROM 
+(
+    SELECT DISTINCT bb.card_id
+                    ,title
+    FROM books_borrowed bb 
+    JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+    JOIN titles t ON t.title_id = bc.title_id
+) AS AllBooks
+JOIN 
+(
+    SELECT DISTINCT bb.card_id
+                    ,title
+    FROM books_borrowed bb 
+    JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+    JOIN titles t ON t.title_id = bc.title_id
+    WHERE bb.card_id = 2
+) AS Card1Books ON Card1Books.title = AllBooks.title
+GROUP BY AllBooks.card_id
+HAVING COUNT(AllBooks.title) =  (
+                                    SELECT COUNT(title)
+                                    FROM books_borrowed bb 
+                                    JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+                                    JOIN titles t ON t.title_id = bc.title_id
+                                    WHERE bb.card_id = 2
+                                )
+```
+
+<br/>
+
+
+### Query 9
+
+List the name of the employee that has been working for the library the longest amount of time
+
+<br/>
+
+```sql
+SELECT  e.first_name + ' ' + e.last_name AS [Employee Fullname]
+        ,e.hiredate
+        ,DATEDIFF(YY,e.hiredate,GETDATE()) AS [Years of Employment]
+FROM employees e
+WHERE e.hiredate = (SELECT MIN(hiredate) FROM employees)
+```
+
+<br/>
+
+
+### Query 10
+
+For each book , list the title and branch that it is in, if it isn’t currently on loan
+
+<br/>
+
+```sql
+SELECT   t.title
+        ,b.name
+FROM titles t 
+JOIN bookcopies bc ON t.title_id = bc.title_id
+LEFT JOIN books_borrowed bb ON bb.copy_id = bc.copy_id
+JOIN branchs b ON b.branch_id = bc.branch_id
+WHERE bc.isactive = 1 AND isavailable = 1
+```
+
+<br/>
+
+
+### Query 11
+
+List the names of borrowers and the card id that they have if it hasn’t expired.
+
+<br/>
+
+```sql
+SELECT   b.first_name + ' ' + b.last_name AS [Borrower]
+        ,b.card_id
+FROM borrowers b 
+WHERE isexpired = 0
+```
+
+<br/>
+
+
+### Query 12
+
+For each author, list his name and the titles of the books he has written
+
+<br/>
+
+```sql
+SELECT DISTINCT  a.au_fname + ' ' + a.au_lname AS [Author]
+                ,t.title
+FROM authors a 
+JOIN titleauthor ta On ta.au_id = a.au_id
+JOIN titles t ON t.title_id = ta.title_id
+```
+
+<br/>
+
+
+### Query 13
+
+For each author, list his name and the name of categories of books he has written
+
+<br/>
+
+```sql
+SELECT DISTINCT  a.au_fname + ' ' + a.au_lname AS [Author]
+                ,c.[type]
+FROM authors a 
+JOIN titleauthor ta On ta.au_id = a.au_id
+JOIN titles t ON t.title_id = ta.title_id
+JOIN titlecategory tc ON tc.title_id = t.title_id
+JOIN category c ON c.type_id = tc.title_type_id
+```
+
+<br/>
+
+
+### Query 14
+
+For each employee, calculate the amount of money he should have earned this year based on his logged hours.
+
+<br/>
+
+```sql
+SELECT subQ.employee_id
+        ,subQ.[Hours Total] * e.salary
+FROM 
+(
+    SELECT e.employee_id
+        ,SUM(sl.[hours]) AS [Hours Total]
+    FROM employees e 
+    JOIN shift_logs sl ON e.employee_id = sl.employee_id
+    WHERE YEAR(sl.shiftdate) = YEAR(GETDATE()) AND e.salary_type = 'C'
+    GROUP BY e.employee_id
+) subQ
+JOIN employees e ON e.employee_id = subQ.employee_id
+```
+
+<br/>
+
+
+### Query 15
+
+List the title of books that have never been borrowed.
+
+<br/>
+
+```sql
+SELECT t.title
+FROM titles t
+WHERE t.title_id NOT IN 
+(
+    SELECT DISTINCT t.title_id
+    FROM borrowers b 
+    JOIN books_borrowed bb ON b.card_id = bb.card_id
+    JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+    JOIN titles t ON t.title_id = bc.title_id
+)
+```
+
+<br/>
+
+
+### Query 16
+
+For each branch, list the total quantity of books, total quantity by category, total quantity by author
+
+<br/>
+
+```sql
+SELECT b.name
+,(
+    SELECT COUNT(bc.copy_id)
+    FROM bookcopies bc 
+    WHERE bc.branch_id = b.branch_id
+) AS [Book Count]
+,(
+    SELECT COUNT(DISTINCT tc.title_type_id)
+    FROM bookcopies bc 
+    JOIN titles t ON t.title_id = bc.title_id
+    JOIN titlecategory tc ON tc.title_id = t.title_id
+    WHERE bc.branch_id = b.branch_id
+) AS [Category Count]
+,(
+    SELECT COUNT(DISTINCT ta.au_id)
+    FROM bookcopies bc 
+    JOIN titles t ON t.title_id = bc.title_id
+    JOIN titleauthor ta On t.title_id = ta.title_id
+    WHERE bc.branch_id = b.branch_id
+) AS [Category Count]
+FROM branchs b 
+```
+
+<br/>
+
+### Query 17
+
+For each card, list the name of the cardholder, list the category of books and each book that was borrowed on this card. In the same query list to the how many books have been borrowed for each category, and how many books have been borrowed in total with this card.
+
+<br/>
+
+```sql
+WITH CTE 
+AS
+(
+    SELECT  b.first_name + ' ' + b.last_name AS [Borrower]
+            ,t.title
+            ,c.[type]
+    FROM borrowers b 
+    JOIN books_borrowed bb ON b.card_id = bb.card_id
+    JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+    JOIN titles t ON t.title_id = bc.title_id
+    JOIN titlecategory tc ON tc.title_id = t.title_id
+    JOIN category c ON c.type_id = tc.title_type_id
+)
+SELECT   Borrower
+        ,title
+        ,[type]
+        ,COUNT(c.title) OVER (PARTITION BY Borrower,TYPE) AS [Category Count]
+        ,COUNT(c.title) [Total Books Borrowed]
+FROM CTE c
+GROUP BY Borrower
+        ,title
+        ,[type]
+ORDER BY [Borrower]
+```
+
+<br/>
+
+
+### Query 18
+
+On one row, list the how many employees are currently employed for each type of employee.
+
+<br/>
+
+```sql
+SELECT et.[type]
+        ,COUNT(e.employee_id) AS [Employee Count]
+FROM employees e 
+JOIN employee_type et ON e.employee_type_id = et.id
+WHERE e.isActive = 1
+GROUP BY et.[type]
+ORDER BY [Employee Count] DESC 
+```
+
+<br/>
+
+### Query 19
+
+What is the name of the borrower, who has currently borrowed the most books.
+
+<br/>
+
+```sql
+SELECT  b.first_name + ' ' + b.last_name AS [Borrower]
+FROM borrowers b  
+JOIN books_borrowed bb ON bb.card_id = b.card_id
+GROUP BY b.first_name + ' ' + b.last_name
+HAVING COUNT(bb.copy_id) >= ALL
+(
+    SELECT COUNT(copy_id)
+    FROM books_borrowed
+    GROUP BY card_id
+) 
+```
+
+<br/>
+
+
+### Query 20
+
+List the names of borrowers who have borrowed both book A and book B (you can choose the specific book titles).
+
+<br/>
+
+```sql
+SELECT DISTINCT b.first_name + ' ' + b.last_name AS [Borrower]
+FROM titles t 
+JOIN bookcopies bc ON t.title_id = bc.title_id
+JOIN books_borrowed bb ON bb.copy_id = bc.copy_id
+JOIN borrowers b ON b.card_id = bb.card_id
+WHERE t.title_id = 'UX2157'
+INTERSECT
+SELECT DISTINCT b.first_name + ' ' + b.last_name AS [Borrower]
+FROM titles t 
+JOIN bookcopies bc ON t.title_id = bc.title_id
+JOIN books_borrowed bb ON bb.copy_id = bc.copy_id
+JOIN borrowers b ON b.card_id = bb.card_id
+WHERE t.title_id = 'BR5671'
+```
+
+<br/>
+
+
 
 <!-- Resources -->
 ## Resources
