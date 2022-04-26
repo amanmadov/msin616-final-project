@@ -1848,7 +1848,7 @@ JOIN titles t ON t.title_id = bc.title_id
 GROUP BY t.title
 HAVING COUNT(id) >= ALL
 (
-    SELECT  COUNT(id) AS [Borrowed Count]
+    SELECT COUNT(id) AS [Borrowed Count]
     FROM books_borrowed bb 
     JOIN bookcopies bc ON bc.copy_id = bb.copy_id
     JOIN titles t ON t.title_id = bc.title_id
@@ -1859,7 +1859,7 @@ HAVING COUNT(id) >= ALL
 Borrowed books with total count 
 
 ```sql
-SELECT  t.title
+SELECT   t.title
         ,COUNT(id) AS [Borrowed Count]
 FROM books_borrowed bb 
 JOIN bookcopies bc ON bc.copy_id = bb.copy_id
@@ -1867,8 +1867,6 @@ JOIN titles t ON t.title_id = bc.title_id
 GROUP BY t.title
 ORDER BY [Borrowed Count] DESC
 ```
-
-
 
 <br/>
 
@@ -1882,7 +1880,7 @@ Which librarian has the third highest salary at the current time?
 SELECT * 
 FROM
 ( 
-    SELECT  e.employee_id
+    SELECT   e.employee_id
             ,first_name + ' ' + last_name AS [Full Name]
             ,salary
             ,ROW_NUMBER() OVER(ORDER BY salary DESC) AS RowNo
@@ -1906,13 +1904,13 @@ For each employee, list his/her name and the name of the branch for which he/she
 <br/>
 
 ```sql
-SELECT  e.employee_id
+SELECT   e.employee_id
         ,e.first_name + ' ' + e.last_name AS [Fullname]
         ,b.name
         ,COUNT(e.employee_id) OVER (PARTITION BY b.branch_id) AS [Branch Employee Count]
 FROM employees e 
 JOIN branchs b ON e.branch_id = b.branch_id
-ORDER BY [Branch Employee Count]  DESC
+ORDER BY [Branch Employee Count] DESC
 ```
 
 <br/>
@@ -1924,7 +1922,7 @@ For each book, list the title and publisher of the book and the number of copies
 <br/>
 
 ```sql
-SELECT  t.title
+SELECT   t.title
         ,t.title_id
         ,p.pub_name
         ,bc.branch_id
@@ -1943,7 +1941,9 @@ GROUP BY t.title
 
 ### Query 5
 
-For each quarter of the current year, for each branch list the total amount of books that have been borrowed in that quarter. The first quarter is months Jan, Feb, Mar. The second quarter is months Apr , May , June etc. List the amounts for each of these quarters, on the same row.
+For each quarter of the current year, for each branch list the total amount of books that have been borrowed in that quarter. 
+The first quarter is months Jan, Feb, Mar. The second quarter is months Apr, May, June etc. 
+List the amounts for each of these quarters, on the same row.
 
 <br/>
 
@@ -1986,7 +1986,7 @@ For each card, list the name of the borrower and the name of the books he curren
 <br/>
 
 ```sql
-SELECT  b.first_name + ' ' + b.last_name AS [Borrower Fullname]
+SELECT   b.first_name + ' ' + b.last_name AS [Borrower Fullname]
         ,t.title
 FROM borrowers b 
 JOIN books_borrowed bb ON b.card_id = bb.card_id
@@ -2006,7 +2006,7 @@ For each card, list the name of the borrower and on the same row the quantity of
 <br/>
 
 ```sql
-SELECT  b.first_name + ' ' + b.last_name AS [Borrower Fullname]
+SELECT   b.first_name + ' ' + b.last_name AS [Borrower Fullname]
         ,(
             SELECT COUNT(bb.id)
             FROM books_borrowed bb 
@@ -2030,7 +2030,8 @@ FROM borrowers b
 
 ### Query 8
 
-For a specific card, list which other cards borrowed ALL the same books as was borrowed using this card. (divide query). You choose the card you will be matching.
+For a specific card, list which other cards borrowed ALL the same books as was borrowed using this card. (divide query). 
+You choose the card you will be matching.
 
 <br/>
 
@@ -2038,7 +2039,7 @@ For a specific card, list which other cards borrowed ALL the same books as was b
 SELECT AllBooks.card_id
 FROM 
 (
-    SELECT DISTINCT bb.card_id
+    SELECT DISTINCT  bb.card_id
                     ,title
     FROM books_borrowed bb 
     JOIN bookcopies bc ON bc.copy_id = bb.copy_id
@@ -2046,7 +2047,7 @@ FROM
 ) AS AllBooks
 JOIN 
 (
-    SELECT DISTINCT bb.card_id
+    SELECT DISTINCT  bb.card_id
                     ,title
     FROM books_borrowed bb 
     JOIN bookcopies bc ON bc.copy_id = bb.copy_id
@@ -2073,7 +2074,7 @@ List the name of the employee that has been working for the library the longest 
 <br/>
 
 ```sql
-SELECT  e.first_name + ' ' + e.last_name AS [Employee Fullname]
+SELECT   e.first_name + ' ' + e.last_name AS [Employee Fullname]
         ,e.hiredate
         ,DATEDIFF(YY,e.hiredate,GETDATE()) AS [Years of Employment]
 FROM employees e
@@ -2085,7 +2086,7 @@ WHERE e.hiredate = (SELECT MIN(hiredate) FROM employees)
 
 ### Query 10
 
-For each book , list the title and branch that it is in, if it isn’t currently on loan
+For each book, list the title and branch that it is in, if it isn’t currently on loan
 
 <br/>
 
@@ -2161,12 +2162,12 @@ For each employee, calculate the amount of money he should have earned this year
 <br/>
 
 ```sql
-SELECT subQ.employee_id
-        ,subQ.[Hours Total] * e.salary
+SELECT  subQ.employee_id
+       ,subQ.[Hours Total] * e.salary
 FROM 
 (
-    SELECT e.employee_id
-        ,SUM(sl.[hours]) AS [Hours Total]
+    SELECT  e.employee_id
+           ,SUM(sl.[hours]) AS [Hours Total]
     FROM employees e 
     JOIN shift_logs sl ON e.employee_id = sl.employee_id
     WHERE YEAR(sl.shiftdate) = YEAR(GETDATE()) AND e.salary_type = 'C'
@@ -2234,7 +2235,8 @@ FROM branchs b
 
 ### Query 17
 
-For each card, list the name of the cardholder, list the category of books and each book that was borrowed on this card. In the same query list to the how many books have been borrowed for each category, and how many books have been borrowed in total with this card.
+For each card, list the name of the cardholder, list the category of books and each book that was borrowed on this card. 
+In the same query list to the how many books have been borrowed for each category, and how many books have been borrowed in total with this card.
 
 <br/>
 
@@ -2242,7 +2244,7 @@ For each card, list the name of the cardholder, list the category of books and e
 WITH CTE 
 AS
 (
-    SELECT  b.first_name + ' ' + b.last_name AS [Borrower]
+    SELECT   b.first_name + ' ' + b.last_name AS [Borrower]
             ,t.title
             ,c.[type]
     FROM borrowers b 
@@ -2274,7 +2276,7 @@ On one row, list the how many employees are currently employed for each type of 
 <br/>
 
 ```sql
-SELECT et.[type]
+SELECT   et.[type]
         ,COUNT(e.employee_id) AS [Employee Count]
 FROM employees e 
 JOIN employee_type et ON e.employee_type_id = et.id
@@ -2292,7 +2294,7 @@ What is the name of the borrower, who has currently borrowed the most books.
 <br/>
 
 ```sql
-SELECT  b.first_name + ' ' + b.last_name AS [Borrower]
+SELECT b.first_name + ' ' + b.last_name AS [Borrower]
 FROM borrowers b  
 JOIN books_borrowed bb ON bb.card_id = b.card_id
 GROUP BY b.first_name + ' ' + b.last_name
