@@ -1832,12 +1832,42 @@ END
 
 <br/>
 
-### I. Creating a Borrower on the database
+### I. List the title of the book that is the most popular book to be borrowed. (Namely, it has been borrowed most often number of times )
 
 <br/>
 ```sql
+SELECT  t.title
+        ,COUNT(id) AS [Borrowed Count]
+FROM books_borrowed bb 
+JOIN bookcopies bc ON bc.copy_id = bb.copy_id
+JOIN titles t ON t.title_id = bc.title_id
+GROUP BY t.title
+ORDER BY [Borrowed Count] DESC
 ```
+<br/>
 
+### II. Which librarian has the third highest salary at the current time?
+
+<br/>
+```sql
+SELECT * 
+FROM
+( 
+    SELECT  e.employee_id
+            ,first_name + ' ' + last_name AS [Full Name]
+            ,salary
+            ,ROW_NUMBER() OVER(ORDER BY salary DESC) AS RowNo
+    FROM employees e 
+    WHERE isActive = 1 AND e.employee_type_id = 
+                                                (
+                                                    SELECT et.id 
+                                                    FROM employee_type  et
+                                                    WHERE [type] = 'Librarian'
+                                                )
+) subQ
+WHERE subQ.RowNo = 3
+```
+<br/>
 
 
 <!-- Resources -->
