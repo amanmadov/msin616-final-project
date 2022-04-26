@@ -72,6 +72,7 @@ Below you can see the altered database diagram of the `Pubs` database
 - [x] Created `[Audit].[Book]` table to keep audit history of the created books.
 - [x] Used `[Adventureworks].[Person].[Person]` and `[AdventureWorks].[HumanResources].[Employee]` tables to generate dummy data.
 - [x] `Jobs` table has been dropped 
+- [X] `Roysched` table has been dropped 
 - [x] `Employees` table has been altered
 - [x] `Employee_type` table has been created
 - [x] `Category` table has been created 
