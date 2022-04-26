@@ -1832,9 +1832,12 @@ END
 
 <br/>
 
-### I. List the title of the book that is the most popular book to be borrowed. (Namely, it has been borrowed most often number of times )
+### Query 1
+
+List the title of the book that is the most popular book to be borrowed. (Namely, it has been borrowed most often number of times )
 
 <br/>
+
 ```sql
 SELECT  t.title
         ,COUNT(id) AS [Borrowed Count]
@@ -1844,11 +1847,15 @@ JOIN titles t ON t.title_id = bc.title_id
 GROUP BY t.title
 ORDER BY [Borrowed Count] DESC
 ```
-<br/>
-
-### II. Which librarian has the third highest salary at the current time?
 
 <br/>
+
+### Query 2
+
+Which librarian has the third highest salary at the current time?
+
+<br/>
+
 ```sql
 SELECT * 
 FROM
@@ -1867,6 +1874,7 @@ FROM
 ) subQ
 WHERE subQ.RowNo = 3
 ```
+
 <br/>
 
 
