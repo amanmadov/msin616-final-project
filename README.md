@@ -209,10 +209,7 @@ BEGIN
             --#endregion
 
             --#region Insert into Titles Table
-
-                --#region Creating Random TitleId
                     DECLARE @random_title_id [dbo].[tid] = [dbo].[fn_GenerateRandomTitleId](RAND())
-                --#endregion
 
                 INSERT INTO titles
                 VALUES
