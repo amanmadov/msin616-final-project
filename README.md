@@ -638,7 +638,7 @@ BEGIN
                 BEGIN 
                     IF NOT EXISTS(SELECT TOP 1 1 FROM authors WHERE au_id = @au_id)
                         BEGIN 
-                            ;THROW 50001, 'Author with provided ID does not exist', 1
+                            ;THROW 50002, 'Author with provided ID does not exist', 1
                         END
                     ELSE 
                         BEGIN 
@@ -878,44 +878,7 @@ END
 
 <br/>
 
-### VIII. Listing Employees on the Demo App
-
-<br/>
-<img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/top-employees.png">
-<br/>
-<p>Link for the front-end ui module:<a href="https://amanmadov.github.io/msin616-final-project/production/report_employees.html" target="_blank"> View Demo</a></p>
-<br/>
-
-Stored procedure for getting `employees` as in the form of `HTML table row`
-
-<br/>
-
-```sql
-CREATE PROCEDURE [dbo].[USP_GetAllEmployee]
-AS 
-BEGIN 
-    SELECT TOP 100
-                    '<tr class="even pointer">
-                        <td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>
-                        <td>'+ e.emp_id +'</td>
-                        <td>'+ e.fname +'</td>
-                        <td>'+ e.lname +'</td>
-                        <td>'+ j.job_desc +'</td>
-                        <td>'+ CAST((e.job_lvl) AS VARCHAR) +'</td>
-                        <td>'+ p.pub_name +'</td>
-                        <td>'+ CAST(CAST(e.hire_date AS DATE) AS VARCHAR) +'</td>
-                        <td class="last"><a href="#">View</a></td>
-                    </tr>' AS TableRow
-    FROM employee e 
-    JOIN publishers p On p.pub_id = e.pub_id 
-    JOIN jobs j ON j.job_id = e.job_id
-    ORDER BY hire_date 
-END
-```
-
-<br/>
-
-### IX. Listing Books with Prequel
+### VIII. Listing Books with Prequel
 
 <br/>
 <img src="https://github.com/amanmadov/msin616-final-project/blob/main/custom-images/list-prequel.gif">
@@ -943,7 +906,7 @@ AS
 BEGIN
     IF NOT EXISTS(SELECT TOP 1 1 FROM titles WHERE title_id = @title_id)
         BEGIN 
-            RAISERROR('Book with provided ID does not exist', 16, 1)
+            ;THROW 50001, 'Book with provided ID does not exist', 1
         END
     ;WITH CTEBooks
     AS 
@@ -1015,7 +978,7 @@ EXEC USP_GetAllPrequelBooksByTitleId @title_id = 'SA4547'
 
 <br/>
 
-### X. Listing Continuing Books in s Book Series
+### IX. Listing Continuing Books in s Book Series
 
 <br/>
 
@@ -1035,7 +998,7 @@ AS
 BEGIN 
     IF NOT EXISTS(SELECT TOP 1 1 FROM titles WHERE title_id = @title_id)
         BEGIN 
-            RAISERROR('Book with provided ID does not exist', 16, 1)
+	    ;THROW 50001, 'Book with provided ID does not exist', 1
         END
 
     ;WITH CTEBooks
@@ -1108,7 +1071,7 @@ EXEC [dbo].[USP_GetAllContinuingBooksByTitleId] 'VC5136'
 <br/>
 
 
-### XI. Delete a Book from Titles table
+### X. Delete a Book from Titles table
 <br/>
 
 Stored procedure for **deleting** a book
@@ -1160,7 +1123,7 @@ END
 
 <br/>
 
-### XII. Selecting Records from Audit.Book table
+### XI. Selecting Records from Audit.Book table
 
 <br/>
 
@@ -1463,7 +1426,45 @@ BEGIN
     RETURN @ssn
 END;
 ```
+
 <br/>
+
+```sql
+CREATE FUNCTION [dbo].[fn_GenerateRandomTitleId](
+    @RAND FLOAT 
+)
+RETURNS [dbo].[tid] AS
+BEGIN
+    DECLARE @random_title_id [dbo].[tid]
+    DECLARE @isFound BIT = 0
+    WHILE (@isFound = 0)
+        BEGIN
+            DECLARE @randomid1 UNIQUEIDENTIFIER = (SELECT id FROM dbo.view_NewID)
+            DECLARE @randomid2 UNIQUEIDENTIFIER = (SELECT id FROM dbo.view_NewID)
+            DECLARE @t1 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(@randomid1)) % 26) + 1, 1))
+            DECLARE @t2 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(@randomid2)) % 26) + 1, 1))
+            DECLARE @t3 AS CHAR(1) = (SELECT(CAST((FLOOR(@RAND*(9-1+1)+1)) AS CHAR)))
+            DECLARE @t4 AS CHAR(1) = (SELECT(CAST((FLOOR(@RAND*(9-1+1)+1)) AS CHAR)))
+            DECLARE @t5 AS CHAR(1) = (SELECT(CAST((FLOOR(@RAND*(9-1+1)+1)) AS CHAR)))
+            DECLARE @t6 AS CHAR(1) = (SELECT(CAST((FLOOR(@RAND*(9-1+1)+1)) AS CHAR)))
+            SET @random_title_id = (SELECT @t1 + @t2 + @t3 + @t4 + @t5 + @t6)
+            
+            IF EXISTS(SELECT TOP 1 1 FROM [titles] WHERE title_id = @random_title_id)
+                BEGIN
+                    CONTINUE
+                END
+            ELSE 
+                BEGIN
+                    SET @isFound = 1
+                END
+        END
+    RETURN @random_title_id
+END;
+```
+
+<br/>
+
+
 
 ### II. Borrowing and returning a book operation on the database
 
@@ -1490,7 +1491,6 @@ Stored procedure for **borrowing** operation
 
 */
 
-
 ALTER PROCEDURE [dbo].[USP_BorrowBook] 
     @copy_id AS INT,
     @card_id AS INT
@@ -1500,45 +1500,45 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
             --#region Check if copy is of type Reference
-            IF EXISTS(
-                SELECT TOP 1 1 
-                FROM titlecategory tc
-                JOIN bookcopies bc ON bc.title_id = tc.title_id
-                WHERE bc.copy_id = @copy_id AND tc.title_type_id = (SELECT type_id FROM category c WHERE c.[type] = 'Reference')
-            )
-                BEGIN
-                    RAISERROR('Copy of type Reference can not be borrowed.', 16, 1) 
-                END
+                IF EXISTS(
+                    SELECT TOP 1 1 
+                    FROM titlecategory tc
+                    JOIN bookcopies bc ON bc.title_id = tc.title_id
+                    WHERE bc.copy_id = @copy_id AND tc.title_type_id = (SELECT type_id FROM category c WHERE c.[type] = 'Reference')
+                )
+                    BEGIN
+                        ;THROW 50001, 'Copy of type Reference can not be borrowed', 1 
+                    END
             --#endregion
             --#region Check if copy is in POOR 
-            IF EXISTS (
-                SELECT copy_id
-                FROM bookcopies 
-                WHERE condition = 'POOR' AND copy_id = @copy_id
-            )
-                BEGIN
-                    RAISERROR('Copies in POOR condition can not be borrowed.', 16, 1) 
-                END
+                IF EXISTS (
+                    SELECT copy_id
+                    FROM bookcopies 
+                    WHERE condition = 'POOR' AND copy_id = @copy_id
+                )
+                    BEGIN
+                        ;THROW 50002, 'Copies in POOR condition can not be borrowed', 1  
+                    END
             --#endregion
             --#region Check if copy is BORROWED or Discarded
-            IF EXISTS (
-                SELECT copy_id
-                FROM bookcopies 
-                WHERE (isactive = 0 OR isavailable = 0) AND copy_id = @copy_id
-            )
-                BEGIN
-                    RAISERROR('Copies that are Discarded or already Borrowed can not be borrowed.', 16, 1) 
-                END
+                IF EXISTS (
+                    SELECT copy_id
+                    FROM bookcopies 
+                    WHERE (isactive = 0 OR isavailable = 0) AND copy_id = @copy_id
+                )
+                    BEGIN
+                        ;THROW 50003, 'Copies that are Discarded or already Borrowed can not be borrowed.', 1  
+                    END
             --#endregion
             --#region Check if borrower is available to borrow a book
-            IF EXISTS (
-                SELECT * 
-                FROM borrowers 
-                WHERE card_id = @card_id AND (isexpired = 1 OR balancedue >= 10)
-            )
-                BEGIN
-                    RAISERROR('Either borrowers card expired or borrower owes over 10 dollars.', 16, 1) 
-                END
+                IF EXISTS (
+                    SELECT * 
+                    FROM borrowers 
+                    WHERE card_id = @card_id AND (isexpired = 1 OR balancedue >= 10)
+                )
+                    BEGIN
+                        ;THROW 50004, 'Either borrowers card expired or borrower owes over 10 dollars.', 1
+                    END
             --#endregion
             UPDATE bookcopies SET isavailable = 0 WHERE copy_id = @copy_id
             DECLARE @id INT = (SELECT MAX(id) + 1 FROM books_borrowed)
@@ -1579,7 +1579,7 @@ BEGIN
             --#region Check borrowed book exists
             IF NOT EXISTS(SELECT TOP 1 1 FROM books_borrowed WHERE card_id = @card_id AND copy_id = @copy_id AND isReturned = 0)
             BEGIN
-                RAISERROR('There is no borrowed book with the given details.', 16, 1) 
+		;THROW 50001, 'There is no borrowed book with the given details.', 1 
             END
             --#endregion
             DECLARE @id INT = (SELECT id FROM books_borrowed WHERE card_id = @card_id AND copy_id = @copy_id AND isReturned = 0)
@@ -1660,19 +1660,20 @@ BEGIN
     -- Check if copy_id is valid
     IF NOT EXISTS(SELECT TOP 1 1 FROM bookcopies WHERE copy_id = @copy_id)
         BEGIN 
-            RAISERROR('Book copy with provided ID does not exist', 16, 1)
+	    ;THROW 50001, 'Book copy with provided ID does not exist.', 1 
         END 
 
     -- Check if book is returned
     IF EXISTS(SELECT TOP 1 1 FROM bookcopies WHERE copy_id = @copy_id AND isavailable = 0)
         BEGIN 
-            RAISERROR('Book copy with provided ID has not been returned', 16, 1)
+	    ;THROW 50002, 'Book copy with provided ID has not been returned.', 1 
         END 
 
     -- Check if book has not been discarded
     IF EXISTS(SELECT TOP 1 1 FROM bookcopies WHERE copy_id = @copy_id AND isactive = 0)
         BEGIN 
-            RAISERROR('Book copy with provided ID has been already discarded', 16, 1)
+	    ;THROW 50003, 'Book copy with provided ID has been already discarded.', 1 
+	    
         END  
 
     UPDATE bookcopies SET isavailable = 0, isactive = 0, condition = 'POOR' WHERE copy_id = @copy_id  
@@ -1693,7 +1694,8 @@ BEGIN
             --#region Check borrowed book exists
             IF NOT EXISTS(SELECT TOP 1 1 FROM books_borrowed WHERE card_id = @card_id AND copy_id = @copy_id AND isReturned = 0)
             BEGIN
-                RAISERROR('There is no borrowed book with the given details.', 16, 1) 
+		;THROW 50001, 'There is no borrowed book with the given details.', 1 
+		
             END
             --#endregion
             DECLARE @id INT = (SELECT id FROM books_borrowed WHERE card_id = @card_id AND copy_id = @copy_id AND isReturned = 0)
