@@ -122,7 +122,7 @@ Stored procedure for adding a book into the `TITLES` table
     Date created: 10.04.2022
 */
 
-ALTER PROCEDURE [dbo].[USP_InsertBook] 
+CREATE PROCEDURE [dbo].[USP_InsertBook] 
      @book_title AS VARCHAR(100)
     ,@prequel_id AS VARCHAR(6) = NULL
     ,@book_price AS MONEY
@@ -484,7 +484,7 @@ Stored procedure for adding an author into the `Authors` table
     Date created: 17.04.2022
 */
 
-ALTER PROCEDURE [dbo].[USP_CreateAuthor]
+CREATE PROCEDURE [dbo].[USP_CreateAuthor]
      @au_lname VARCHAR(40)
     ,@au_fname VARCHAR(20)
     ,@au_phone CHAR(12) = '000 000-0000'
@@ -900,7 +900,7 @@ This is a `Recursive` stored procedure for getting prequel book or books for a s
 
 */
 
-ALTER PROCEDURE [dbo].[USP_GetAllPrequelBooksByTitleId]
+CREATE PROCEDURE [dbo].[USP_GetAllPrequelBooksByTitleId]
     @title_id dbo.tid
 AS 
 BEGIN
@@ -1491,7 +1491,7 @@ Stored procedure for **borrowing** operation
 
 */
 
-ALTER PROCEDURE [dbo].[USP_BorrowBook] 
+CREATE PROCEDURE [dbo].[USP_BorrowBook] 
     @copy_id AS INT,
     @card_id AS INT
 AS
