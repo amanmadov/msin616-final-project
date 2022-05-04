@@ -595,7 +595,7 @@ BEGIN
                     DECLARE @au_address VARCHAR(40)
 
                     -- Generate Random AuthorID
-                    SET @au_address = dbo.fn_GenerateRandomAuthorId(RAND())
+                    SET @au_id = dbo.fn_GenerateRandomAuthorId(RAND())
 
                     -- Setting Random Zip in the 99xyz format
                     SET @au_zip = '99'+ (SELECT(CAST((FLOOR(RAND()*(999-100+1)+100)) AS CHAR)))
