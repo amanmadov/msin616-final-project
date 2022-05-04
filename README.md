@@ -216,7 +216,7 @@ BEGIN
                 (
                      @random_title_id
                     ,@book_title
-                    ,@pub_id
+                    ,ISNULL(@pub_id,1)
                     ,@book_price
                     ,@book_advance
                     ,@book_royalty
