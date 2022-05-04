@@ -117,13 +117,12 @@ Stored procedure for adding a book into the `TITLES` table
 <br/>
 
 ```sql
-
 /*
     Created by Nury Amanmadov
     Date created: 10.04.2022
 */
 
-CREATE PROCEDURE [dbo].[USP_InsertBook] 
+ALTER PROCEDURE [dbo].[USP_InsertBook] 
      @book_title AS VARCHAR(100)
     ,@prequel_id AS VARCHAR(6) = NULL
     ,@book_price AS MONEY
@@ -132,7 +131,7 @@ CREATE PROCEDURE [dbo].[USP_InsertBook]
     ,@book_ytd_sales INT
     ,@book_notes VARCHAR(800)
     ,@book_pubdate DATETIME
-    ,@book_isbn VARCHAR(17) = NULL
+    ,@book_isbn VARCHAR(17)
     ,@pub_id AS CHAR(4) = NULL
     ,@pub_name AS VARCHAR(40) = NULL
     ,@pub_city AS VARCHAR(20) = NULL
@@ -153,7 +152,6 @@ BEGIN
         BEGIN TRANSACTION
 
             --#region Insert into Publisher Table
-
                 IF (@pub_id IS NULL)
                     --#region Create New Publisher
                     BEGIN 
@@ -194,7 +192,7 @@ BEGIN
                         -- Just to make sure that selected publisher exists in the database
                         IF NOT EXISTS (SELECT TOP 1 1 FROM publishers p WHERE pub_id = @pub_id)
                             BEGIN
-                                RAISERROR('Publisher with selected ID does not exist', 16, 1) 
+                                ;THROW 50001, 'Publisher with selected ID does not exist', 1
                             END  
                         ELSE 
                             BEGIN 
@@ -213,13 +211,7 @@ BEGIN
             --#region Insert into Titles Table
 
                 --#region Creating Random TitleId
-                    DECLARE @t1 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                    DECLARE @t2 AS CHAR(1) = (SELECT SUBSTRING('ABCDEFGHIJKLMNOPQRSTUVWXYZ',(ABS(CHECKSUM(NEWID())) % 26) + 1, 1))
-                    DECLARE @t3 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                    DECLARE @t4 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                    DECLARE @t5 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                    DECLARE @t6 AS CHAR(1) = (SELECT(CAST((FLOOR(RAND()*(9-1+1)+1)) AS CHAR)))
-                    DECLARE @random_title_id [dbo].[tid] = (SELECT @t1 + @t2 + @t3 + @t4 + @t5 + @t6)
+                    DECLARE @random_title_id [dbo].[tid] = [dbo].[fn_GenerateRandomTitleId](RAND())
                 --#endregion
 
                 INSERT INTO titles
@@ -249,18 +241,13 @@ BEGIN
                 IF(@author_id IS NULL)
                     BEGIN 
                         -- Generate Random AuthorID
-                        DECLARE @a1 AS CHAR(3) = (SELECT(CAST((FLOOR(RAND()*(999-100+1)+100)) AS CHAR)))
-                        DECLARE @a2 AS CHAR(2) = (SELECT(CAST((FLOOR(RAND()*(99-10+1)+10)) AS CHAR)))
-                        DECLARE @a3 AS CHAR(4) = (SELECT(CAST((FLOOR(RAND()*(9999-1000+1)+1000)) AS CHAR)))
-                        SET @author_id = (SELECT @a1 + '-' + @a2 + '-' + @a3)
-
+                        SET @author_id = dbo.fn_GenerateRandomAuthorId(RAND())
+                        
                         -- Setting Random Zip in the 99xyz format
                         SET @au_zip = '99'+ (SELECT(CAST((FLOOR(RAND()*(999-100+1)+100)) AS CHAR)))
-                        -- SELECT @au_zip
 
                         -- Setting @au_contract as random 
                         SET @au_contract = (SELECT(CAST((FLOOR(RAND()*(1-0+1)+0)) AS BIT)))
-                        -- SELECT @au_contract
 
                         -- Setting Random Address from AdventureWorks DB Person.Address table
                         SET @au_address = (SELECT TOP 1 LEFT(AddressLine1,40) FROM AdventureWorks.Person.Address WHERE AddressLine1 IS NOT NULL ORDER BY NEWID())
@@ -283,7 +270,7 @@ BEGIN
                     BEGIN
                         IF NOT EXISTS (SELECT TOP 1 1 FROM authors a WHERE a.au_id = @author_id)
                             BEGIN
-                                RAISERROR('Author with selected ID does not exist', 16, 1) 
+                                ;THROW 50002, 'Author with selected ID does not exist', 1 
                             END
                         ELSE 
                             BEGIN  
@@ -330,7 +317,7 @@ BEGIN
                     ,@book_royalty  
                     ,@book_ytd_sales  
                     ,@book_notes  
-                    ,@book_pubdate
+                    ,@book_pubdate  
                     ,@author_id  
                     ,@au_lname
                     ,@au_fname 
@@ -495,7 +482,12 @@ Stored procedure for adding an author into the `Authors` table
 <br/>
 
 ```sql
-CREATE PROCEDURE USP_CreateAuthor
+/*
+    Created by Nury Amanmadov
+    Date created: 17.04.2022
+*/
+
+ALTER PROCEDURE [dbo].[USP_CreateAuthor]
      @au_lname VARCHAR(40)
     ,@au_fname VARCHAR(20)
     ,@au_phone CHAR(12) = '000 000-0000'
@@ -507,9 +499,9 @@ CREATE PROCEDURE USP_CreateAuthor
 AS
 BEGIN
     BEGIN TRY
+        -- Generate Random AuthorID 
         DECLARE @au_id dbo.tid 
-        -- Generate Random AuthorID using USP_GenerateRandomAuthorId stored procedure
-        EXEC USP_GenerateRandomAuthorId @au_id OUTPUT
+        SET @au_id = dbo.fn_GenerateRandomAuthorId(RAND())
 
         INSERT INTO authors 
         VALUES
@@ -533,19 +525,34 @@ END
 ```
 <br/>
 
-Since creating an `author_id` is used in multiple stored procedures, I created an extra stored procedure that creates `author_id`.
+Since creating an `author_id` is used in multiple stored procedures, I created a function that creates `author_id`.
 <br/>
 
 ```sql
-CREATE PROCEDURE [dbo].[USP_GenerateRandomAuthorId]
-    @author_id VARCHAR(11) OUTPUT
-AS
+CREATE FUNCTION [dbo].[fn_GenerateRandomAuthorId](
+    @RAND FLOAT 
+)
+RETURNS VARCHAR(11) AS
 BEGIN
-    DECLARE @a1 AS CHAR(3) = (SELECT(CAST((FLOOR(RAND()*(999-100+1)+100)) AS CHAR)))
-    DECLARE @a2 AS CHAR(2) = (SELECT(CAST((FLOOR(RAND()*(99-10+1)+10)) AS CHAR)))
-    DECLARE @a3 AS CHAR(4) = (SELECT(CAST((FLOOR(RAND()*(9999-1000+1)+1000)) AS CHAR)))
-    SELECT @author_id = (SELECT @a1 + '-' + @a2 + '-' + @a3)
-END
+    DECLARE @author_id VARCHAR(11)
+    DECLARE @isFound BIT = 0
+    WHILE (@isFound = 0)
+        BEGIN
+            DECLARE @a1 AS CHAR(3) = (SELECT(CAST((FLOOR(@RAND*(999-100+1)+100)) AS CHAR)))
+            DECLARE @a2 AS CHAR(2) = (SELECT(CAST((FLOOR(@RAND*(99-10+1)+10)) AS CHAR)))
+            DECLARE @a3 AS CHAR(4) = (SELECT(CAST((FLOOR(@RAND*(9999-1000+1)+1000)) AS CHAR)))
+            SET @author_id = (SELECT @a1 + '-' + @a2 + '-' + @a3)
+            IF EXISTS(SELECT TOP 1 1 FROM [authors] WHERE au_id = @author_id)
+                BEGIN
+                    CONTINUE
+                END
+            ELSE 
+                BEGIN
+                    SET @isFound = 1
+                END
+        END
+    RETURN @author_id
+END;
 ```
 <br/>
 
