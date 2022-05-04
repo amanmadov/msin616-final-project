@@ -160,7 +160,7 @@ BEGIN
                         
                         INSERT INTO [pubs].[dbo].[publishers] 
                         VALUES  (
-                                     @pub_id
+                                     ISNULL(@pub_id,1)
                                     ,@pub_name
                                     ,@pub_city
                                     ,@pub_state
@@ -180,7 +180,7 @@ BEGIN
 
                             INSERT INTO [pubs].[dbo].[pub_info] 
                             VALUES  (
-                                        @pub_id
+                                        ISNULL(@pub_id,1)
                                         ,NULL
                                         ,@pr_info
                                     )
@@ -300,7 +300,7 @@ BEGIN
                 INSERT INTO Audit.Book 
                 VALUES
                 (
-                     @pub_id 
+                     ISNULL(@pub_id,1) 
                     ,@pub_name 
                     ,@pub_city   
                     ,@pub_state  
