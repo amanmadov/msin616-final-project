@@ -1152,87 +1152,76 @@ A person **can’t be issued a new library card**, if he **owes money on an expi
 
 <br/>
 
-```sql
+```sql 
 /*
 
-    Rules for borrowing a book:
-    - Any reading item that is categorized as reference may not be borrowed.
-    - Copies that are in POOR condition may not be borrowed.
-    - When a book copy is borrowed, the copy is marked as BORROWED. BORROWED copies may not be borrowed.
-    - A borrower can not use a card to borrow books, if he owes more than 10 dollars on that card.
+Rules for creating a card for borrower
+    - A person can have only one valid library card at a given time.
+    - A person can’t be issued a new library card, if he owes money on an expired card.
+    - a person can not be younger than 10.
 
 */
 
-CREATE PROCEDURE [dbo].[USP_BorrowBook] 
-    @copy_id AS INT,
-    @card_id AS INT
+CREATE PROCEDURE [dbo].[USP_CreateBorrower]
+     @ssn VARCHAR(11)
+    ,@fname VARCHAR(100)
+    ,@lname VARCHAR(100)
+    ,@address VARCHAR(200)
+    ,@phone CHAR(12)
+    ,@birthdate DATE
+    ,@lg_address VARCHAR(200) = NULL
+    ,@lg_name VARCHAR(100) = NULL 
+    ,@lg_phone VARCHAR(12) = NULL
 AS
 BEGIN
-    SET NOCOUNT ON;
     BEGIN TRY
-        BEGIN TRANSACTION
-            --#region Check if copy is of type Reference
-                IF EXISTS(
-                    SELECT TOP 1 1 
-                    FROM titlecategory tc
-                    JOIN bookcopies bc ON bc.title_id = tc.title_id
-                    WHERE bc.copy_id = @copy_id AND tc.title_type_id = (SELECT type_id FROM category c WHERE c.[type] = 'Reference')
-                )
-                    BEGIN
-                        ;THROW 50001, 'Copy of type Reference can not be borrowed', 1 
-                    END
-            --#endregion
-            --#region Check if copy is in POOR 
-                IF EXISTS (
-                    SELECT copy_id
-                    FROM bookcopies 
-                    WHERE condition = 'POOR' AND copy_id = @copy_id
-                )
-                    BEGIN
-                        ;THROW 50002, 'Copies in POOR condition can not be borrowed', 1  
-                    END
-            --#endregion
-            --#region Check if copy is BORROWED or Discarded
-                IF EXISTS (
-                    SELECT copy_id
-                    FROM bookcopies 
-                    WHERE (isactive = 0 OR isavailable = 0) AND copy_id = @copy_id
-                )
-                    BEGIN
-                        ;THROW 50003, 'Copies that are Discarded or already Borrowed can not be borrowed.', 1  
-                    END
-            --#endregion
-            --#region Check if borrower is available to borrow a book
-                IF EXISTS (
-                    SELECT * 
-                    FROM borrowers 
-                    WHERE card_id = @card_id AND (isexpired = 1 OR balancedue >= 10)
-                )
-                    BEGIN
-                        ;THROW 50004, 'Either borrowers card expired or borrower owes over 10 dollars.', 1
-                    END
-            --#endregion
-            UPDATE bookcopies SET isavailable = 0 WHERE copy_id = @copy_id
-            DECLARE @id INT = (SELECT MAX(id) + 1 FROM books_borrowed)
-            INSERT INTO books_borrowed 
-            VALUES 
-            (
-                ISNULL(@id,1),
-                @copy_id,
-                @card_id,
-                GETDATE(),
-                GETDATE() + 14,
-                0,
-                NULL
-            )
-            PRINT('Book Has Been Sucessfully Borrowed')
-        COMMIT TRANSACTION
-    END TRY
+        -- Check if borrower has an active card  
+        IF EXISTS (SELECT TOP 1 1 FROM borrowers WHERE ssn = @ssn AND isexpired = 0)
+            BEGIN  
+                ;THROW 50001, 'A person already has an active card.', 1
+            END
+
+         -- Check if borrower has an a balancedue on expired card 
+        IF EXISTS (SELECT TOP 1 1 FROM borrowers WHERE ssn = @ssn AND isexpired = 1 AND balancedue > 0)
+            BEGIN 
+                ;THROW 50002, 'A person owes library from previous card.', 1
+            END
+
+        -- Check if borrower is older than 10
+        DECLARE @age INT = DATEDIFF(YY,@birthdate,GETDATE())
+        IF(@age < 10)
+            BEGIN 
+                ;THROW 50003, 'Borrower can not be younger than 10.', 1 
+            END
+        
+        DECLARE @id INT = (SELECT MAX(id) + 1 FROM borrowers)
+        DECLARE @cardid INT = (SELECT MAX(card_id) + 1 FROM borrowers)
+
+        -- validation of legal guardian details should be on the front-end 
+
+        INSERT INTO borrowers 
+        VALUES
+        (
+             ISNULL(@id,1) -- if first time 
+            ,ISNULL(@cardid,1) -- if first time 
+            ,@ssn  
+            ,@fname 
+            ,@lname 
+            ,@address 
+            ,@phone   
+            ,@birthdate 
+            ,GETDATE() 
+            ,0 -- initial balance  
+            ,0 -- default value
+            ,@lg_address 
+            ,@lg_name
+            ,@lg_phone
+        ) 
+    END TRY 
     BEGIN CATCH
-        ROLLBACK TRANSACTION
         PRINT('An Error Occured During The Transaction. Error SP: ' + ERROR_PROCEDURE() + 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR))
         PRINT(ERROR_MESSAGE())
-    END CATCH
+    END CATCH 
 END
 ```
 
