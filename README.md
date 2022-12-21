@@ -10,20 +10,23 @@
 
 <br/>
 
-This is a simple database that can be used to maintain the data stored and processed by a **lending library**. 
-The database has been designed by modifying Microsoft's `Pubs` database.
-The `Pubs` database provides a set of fictional pieces of information about **publishers**, **authors**, **titles** and **sales** of books.
-It is now considered **obsolete**; it is no longer provided with `SQL Server` since the **2008 version**.
-The tables and fields are quite obvious. 
-They have names such as `Authors`, `Titles`, etc., which reflect their content. 
-And the fields also have obvious names explaining what they contain.
+<div style="text-align: justify">
+    This is a simple database that can be used to maintain the data stored and processed by a **lending library**. 
+    The database has been designed by modifying Microsoft's `Pubs` database.
+    The `Pubs` database provides a set of fictional pieces of information about **publishers**, **authors**, **titles** and **sales** of books.
+    It is now considered **obsolete**; it is no longer provided with `SQL Server` since the **2008 version**.
+    The tables and fields are quite obvious. 
+    They have names such as `Authors`, `Titles`, etc., which reflect their content. 
+    And the fields also have obvious names explaining what they contain.
 
-<p>
-  You can find the details about original Pubs DB in the link:
-  <a href="https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs" target="_blank">Microsoft Pubs DB</a>
-</p>
+    <p>
+        You can find the details about original Pubs DB in the link:
+        <a href="https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs" target="_blank">Microsoft Pubs DB</a>
+    </p>
 
-Below you can see the altered database diagram of the `Pubs` database
+    Below you can see the altered database diagram of the `Pubs` database
+
+</div>
 
 <br/>
 
