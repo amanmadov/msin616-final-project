@@ -15,9 +15,6 @@
   <h2 align="center">Graduate School of Technology</h2>
   <h3 align="center">MSIN 616 Advanced Database Management Course Final Project</h3>
 
-```sql
-SELECT Course FROM [TouroDb].[dbo].[Courses] WHERE CourseId = 'MSIN616'
-```
 </div>
 
 <br/>
