@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br/>
 <div align="center">
-    <img src="custom-images/touro-logo.png" width=120 alt="Touro University Logo">
+    <img src="custom-images/touro-university-logo-blue" width=120 alt="Touro University Logo">
     <h2 align="center">Graduate School of Technology</h2>
     <h3 align="center">MSIN 616 Advanced Database Management Course Final Project</h3>
 </div>
