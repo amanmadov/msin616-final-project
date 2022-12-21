@@ -10,10 +10,6 @@
 
 <br/>
 
-<!-- ABOUT THE PROJECT -->
-
-## About The Project
-
 This is a simple database that can be used to maintain the data stored and processed by a **lending library**. 
 The database has been designed by modifying Microsoft's `Pubs` database.
 The `Pubs` database provides a set of fictional pieces of information about **publishers**, **authors**, **titles** and **sales** of books.
