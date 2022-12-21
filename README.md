@@ -9,7 +9,7 @@
 </div>
 
 <br/>
-
+<p>
 This is a simple database that can be used to maintain the data stored and processed by a **lending library**. 
 The database has been designed by modifying Microsoft's `Pubs` database.
 The `Pubs` database provides a set of fictional pieces of information about **publishers**, **authors**, **titles** and **sales** of books.
@@ -18,7 +18,7 @@ The tables and fields are quite obvious.
 They have names such as `Authors`, `Titles`, etc., which reflect their content. 
 And the fields also have obvious names explaining what they contain.
 
-<p>
+
   You can find the details about original Pubs DB in the link:
   <a href="https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs" target="_blank">Microsoft Pubs DB</a>
 </p>
