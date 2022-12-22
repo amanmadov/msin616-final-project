@@ -1,5 +1,5 @@
 
-<img src="custom-images/touro-university-logo-blue.png" width=120 alt="Logo" align="left"><img align="right" src="https://img.shields.io/badge/License-MIT-yellow.svg" width=100>
+<img src="custom-images/touro-university-logo-blue.png" width=80 alt="Logo" align="left"><img align="right" src="https://img.shields.io/badge/License-MIT-yellow.svg" width=100>
 
 <!-- PROJECT LOGO -->
 <br/>
