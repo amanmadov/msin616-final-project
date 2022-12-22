@@ -1,11 +1,10 @@
-<p align="right"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></p>
+
+<img src="custom-images/touro-university-logo-blue.png" width=120 alt="Logo" align="left"><img align="right" src="https://img.shields.io/badge/License-MIT-yellow.svg" width=100>
 
 <!-- PROJECT LOGO -->
 <br/>
 <div align="center">
-    <img src="custom-images/touro-university-logo-blue.png" width=120 alt="Touro University Logo">
-    <h2 align="center">Graduate School of Technology</h2>
-    <h3 align="center">MSIN 616 Advanced Database Management Course Final Project</h3>
+    <h3 align="center">Graduate School of Technology<br>MSIN 616-Advanced Database Management Course Final Project</h3>
 </div>
 
 <br/>
