@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br/>
 <div align="center">
-    <h3 align="center">Graduate School of Technology<br>MSIN 616-Advanced Database Management Course Final Project</h3>
+    <h3 align="center">Touro University<br>Graduate School of Technology<br>MSIN 616-Advanced Database Management Course Final Project</h3>
 </div>
 
 <br/>
