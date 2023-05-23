@@ -38,17 +38,17 @@ Below you can see the altered database diagram of the `Pubs` database
 
 
 ## Technologies Used
- - Microsoft SQL Server 2019 - 15.0.4198.2 Developer Edition (64-bit) on Linux (Ubuntu 20.04.3 LTS)
- - Azure Data Studio version 1.35.1
- - Docker version 4.4.2 (73305)
+ - **`Microsoft SQL Server 2019`** - 15.0.4198.2 Developer Edition (64-bit) on Linux (Ubuntu 20.04.3 LTS)
+ - **`Azure Data Studio`** version 1.35.1
+ - **`Docker`** version 4.4.2 (73305)
 
 <br/>
 
 ## Modifications on the Database
 
-- [x] To simulate a real world full stack app, a demo CRUD app with front-end UI has been developed.
+- [x] To simulate a real world full stack app, a demo **CRUD** app with front-end UI has been developed.
 - [x] `Gentellela`, an open source admin panel, has been used to create front-end UI.
-- [x] Stored procedures are created for the demo CRUD app.
+- [x] Stored procedures are created for the demo **CRUD** app.
 - [x] Some custom validations has been developed on the Front-end UI to prevent data inconsistency.
 - [x] Almost all stored procedures for creating/modifying records are created based on the front-end validations.
 - [x] `[TITLES]` table have been altered and **prequel_id** column have been added to store the prequel of a book.
